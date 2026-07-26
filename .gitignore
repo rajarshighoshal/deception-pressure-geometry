@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.DS_Store
+.env
+.runpod_curl.cfg
+
+# large data and run artifacts — kept out of git, archived separately
+results/
+checkpoints/
+data/raw/
+data/cache/
+runpod_results/
+logs/
+*.pt
+*.safetensors
+
+# local working material
+notes/
+drafts/
+*.docx
+.private/

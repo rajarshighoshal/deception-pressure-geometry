@@ -1,0 +1,98 @@
+{
+  "schema_version": 2,
+  "kind": "relational_structured_action_protocol",
+  "protocol_id": "relational-structured-action-v2-live-sequential",
+  "conceptual_version": 2,
+  "status": "frozen_live_protocol_pending_run_authorization",
+  "model": {
+    "logical_id": "meta-llama/Llama-3.1-8B-Instruct",
+    "artifact_identity_bound_by": "selection_and_run_contract"
+  },
+  "supersession": {
+    "supersedes_for_future_use": ["relational-operational-choice-v1-pre-response"],
+    "historical_artifacts_immutable": true,
+    "retroactive_relabeling_allowed": false
+  },
+  "execution": {
+    "stage": "live_sequential_transcript",
+    "field_order": ["status", "caveat"],
+    "transcript_mutation": "append_each_field_immediately",
+    "status_visible_at_caveat_anchor": true,
+    "environment_appends_eot_after": "caveat",
+    "primary_prose_allowed": false
+  },
+  "generation": {
+    "sampling_space": "full_vocabulary",
+    "draws_per_field": 1,
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "retry_attempts": 0,
+    "parser_or_generation_rescue_allowed": false
+  },
+  "rng": {
+    "derivation": "sha256_source_rng_seed_source_rng_stream_id_field_domain",
+    "deterministic": true,
+    "field_domains": {
+      "status": "relational-structured-action-v2/status",
+      "caveat": "relational-structured-action-v2/caveat"
+    },
+    "domains_must_be_distinct": true
+  },
+  "tokenizer": {
+    "artifacts": {
+      "tokenizer.json": "79e3e522635f3171300913bb421464a87de6222182a0570b9b2ccba2a964b2b4",
+      "tokenizer_config.json": "177c7b61e616fecb84c17ce0591acb92c6c4d60e9ac5ababfb940ff23bbcd424",
+      "special_tokens_map.json": "6f38c73729248f6c127296386e3cdde96e254636cc58b4169d3fd32328d9a8ec"
+    },
+    "eot_token_id": 128009
+  },
+  "fields": [
+    {
+      "name": "status",
+      "index": 0,
+      "outcome_role": "primary",
+      "commit_key": "committed_status",
+      "prefix": {
+        "text": "Status:",
+        "utf8_hex": "5374617475733a",
+        "sha256": "755c8b2a9fb114460e0909ab65c8cd47696b7648cbcdad3dbccd937c40660d0f",
+        "token_ids": [2583, 25],
+        "trailing_whitespace": false
+      },
+      "candidates": [
+        {"raw_token_id": 51935, "decoded_exact": " PASS", "mapped_action": "PASS"},
+        {"raw_token_id": 34207, "decoded_exact": " FAIL", "mapped_action": "FAIL"},
+        {"raw_token_id": 82504, "decoded_exact": " SKIP", "mapped_action": "SKIP"}
+      ],
+      "default_action": "NO_ACTION"
+    },
+    {
+      "name": "caveat",
+      "index": 1,
+      "outcome_role": "secondary_conditional_descriptive",
+      "commit_key": "committed_caveat",
+      "prefix": {
+        "text": "\nCaveat:",
+        "utf8_hex": "0a4361766561743a",
+        "sha256": "1cd4447923bfec95be4992b4f724b9cfcd27ca1563eb22ae0cb59c34220c1753",
+        "token_ids": [198, 34, 525, 266, 25],
+        "trailing_whitespace": false
+      },
+      "candidates": [
+        {"raw_token_id": 51493, "decoded_exact": " INCLUDE", "mapped_action": "INCLUDE"},
+        {"raw_token_id": 70500, "decoded_exact": " OMIT", "mapped_action": "OMIT"},
+        {"raw_token_id": 43969, "decoded_exact": " NONE", "mapped_action": "NONE"},
+        {"raw_token_id": 82504, "decoded_exact": " SKIP", "mapped_action": "SKIP"}
+      ],
+      "default_action": "NO_ACTION"
+    }
+  ],
+  "record_schema": {
+    "spec_kind": "relational_structured_action_spec",
+    "row_kind": "relational_structured_action_row",
+    "turn_kind": "relational_structured_action_turn",
+    "field_kind": "relational_structured_action_field",
+    "model_token_origin": "model_sample",
+    "environment_token_origin": "environment"
+  }
+}

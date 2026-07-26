@@ -1,0 +1,301 @@
+# Public result registry for the paper artifact.
+#
+# This file records the eight claims used by the manuscript. It is intentionally not a lab
+# notebook: one claim links to one compact, tracked evidence receipt and its focused test. The
+# receipt contains exact source hashes and the irreducible numeric record; plans, operational
+# history, large banks, and superseded attempts remain outside the public citation closure.
+
+schema_version: 1
+
+study_scope:
+  model: meta-llama/Llama-3.1-8B-Instruct
+  model_count: 1
+  setting: controlled pressure and structured-action development banks
+  generalization: no cross-model, deployment, or universal-deception claim
+  outcomes: >-
+    Structured actions and scenario truth are machine-scored. Natural-pressure commitment and
+    secondary prose channels use blinded LLM judges and have not been human-validated.
+
+paper_scope:
+  primary: [C9, C10, C5]
+  supporting: [C1, C12]
+  negative: [C2, C11, C13]
+
+branches:
+  structured_action_control:
+    role: main
+    abbrev: SAC
+    read_as: >-
+      Conditional action correction in an offline field. The near-ceiling CNG and fixed policies
+      receive the correct target route; the weaker learned context-only ranker jointly selects a
+      target and action. This comparison does not isolate target inference and is not an end-to-end
+      deception controller.
+  natural_prose_control:
+    role: main
+    abbrev: NPC
+    read_as: >-
+      Fresh prospective generation on held-out scenario families, using the pre-action context
+      without oracle true-status routing.
+  natural_pressure:
+    role: main
+    abbrev: NATP
+    read_as: >-
+      Graded conversational-pressure banks used to establish the behavior and its temporal
+      correlates.
+  activation_state_audit:
+    role: main
+    abbrev: ASA
+    read_as: >-
+      Held-out-family comparisons of post-commitment decodability and pre-commitment warning.
+  pilot_steering_decomposition:
+    role: diagnostic
+    abbrev: PSD
+    read_as: >-
+      A small pilot decomposition separating direction choice from gate, dose, and token scope.
+  gauge_control:
+    role: diagnostic
+    abbrev: GGC
+    read_as: >-
+      Retrospective one-step four-layer structured-action replay, generic-transport controls, and
+      a separately gated holonomy instrument.
+
+results:
+  - id: c1_matched_control_audit
+    branch: structured_action_control
+    status: done
+    produced_by: experiments/report_powered150_matched_control_audit.py
+    artifact: paper_artifacts/c1_matched_control_audit.json
+    artifact_state: tracked
+    metric_summary: >-
+      Offline saved-candidate field, 600 deceptive and 600 honest rows: oracle-target CNG fixes 599/600 with
+      1/600 honest harm; a held-out-family context-only action ranker fixes 170/600 with 11/600
+      harms; a retrospective route-matched fixed bidirectional-linear L16 alpha96 reconstruction
+      fixes 600/600 with zero harm. The legacy 539/600 floor pooled counter-target candidates.
+    claim: C1
+
+  - id: c2_dose_control_receipt
+    branch: structured_action_control
+    status: done
+    produced_by: experiments/report_public_steering_receipts.py
+    artifact: paper_artifacts/c2_dose_control_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      Across 1,200 generated structured-action rows, learned dense dose and fixed alpha88/96/128
+      each fix 591/600 deceptive statuses; learned dose adds 5/600 honest status harms versus zero
+      and lowers mean strict reward from 0.2908 to 0.2883.
+    claim: C2
+
+  - id: c5_natural_prose_control_receipt
+    branch: natural_prose_control
+    status: done
+    produced_by: experiments/report_public_natural_prose_control_receipt.py
+    artifact: paper_artifacts/c5_natural_prose_control_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      Prospective L16 residual control on 96 rows over four held-out families: native gating changes
+      deceptive status by 0.0000 CI [0, 0]; the frequently firing policy changes it by -0.0833
+      CI [-0.2083, +0.0417]; the family-matched linear comparator reaches +0.3333
+      CI [+0.1667, +0.4583], comprising 21 deceptive fixes and 5 harms. The frequent policy fires
+      on 47/48 deceptive and 37/48 honest rows, showing poor selectivity.
+    claim: C5
+
+  - id: c9_pressure_commitment_receipt
+    branch: natural_pressure
+    status: done
+    produced_by: experiments/report_public_natpress_receipt.py
+    artifact: paper_artifacts/c9_pressure_commitment_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      Smooth pressure yields deceptive commitment in 26/32 scripted and 45/48 adaptive cases;
+      smooth-minus-late-compressed effects are +0.31 CI [+0.04, +0.55] and +0.21875
+      CI [+0.0545, +0.3961], using conversation-level Newcombe intervals. Current intensity
+      predicts hazard, while the tested cumulative-history term adds no held-out value. The
+      dissociation estimate uses 84/96 conversations after registered exclusions and retains
+      realized intensity/history correlation +0.332. An adequate post-hoc commitment axis
+      (AUC 0.920) finds no registered smooth-versus-step approach-drift difference: -0.020
+      CI [-0.145, +0.108].
+    claim: C9
+
+  - id: c10_postcommitment_detection_receipt
+    branch: activation_state_audit
+    status: done
+    produced_by: experiments/report_public_detection_receipts.py
+    artifact: paper_artifacts/c10_postcommitment_detection_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      On 1,283 post-commitment events, the relational graph has family-macro Brier 0.0205 versus
+      0.0949 for the exact nuisance prior: raw gain 0.07437, compared with nuisance-preserving
+      permutation-null mean 0.04347 and maximum 0.05147 (one-sided p=0.0001), leaving observed
+      excess over the null mean 0.03089. A raw residual linear probe reaches Brier 0.00150 and wins
+      in all 20 families. The eight-family, 242-event deception-versus-knowledge-error secondary
+      contrast reaches AUROC 0.949 versus 0.542 for the nuisance prior.
+    claim: C10
+
+  - id: c11_precommitment_warning_receipt
+    branch: activation_state_audit
+    status: done
+    produced_by: experiments/report_public_detection_receipts.py
+    artifact: paper_artifacts/c11_precommitment_warning_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      The one-state spectral field reaches held-out AUROC 0.4168 and the connection-response field
+      0.3725. The primary geometry-only risk model has log-loss gain -0.0218
+      CI [-0.0733, +0.0233] over nuisance; the secondary sealed-local model loses by -0.0865
+      CI [-0.1400, -0.0384]. Twenty token-identical prefixes produce mixed sampled outcomes.
+    claim: C11
+
+  - id: c12_steering_decomposition_receipt
+    branch: pilot_steering_decomposition
+    status: done
+    produced_by: experiments/report_public_steering_receipts.py
+    artifact: paper_artifacts/c12_steering_decomposition_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      Pilot 4-bit bank, 160 rows with 80 deceptive: tangent steering fixes 48 deceptive reports,
+      but 40 under the strict endpoint, compared with 37 status fixes for random-gated and 40 for
+      each global-gated arm; ungated linear fixes 1. Every arm has 2 honest status harms and 10
+      honest strict harms. A 32-row off-tangent follow-up contains 16 deceptive pairs (9 versus 1
+      fixes), giving a retrospectively recalculated paired difference +0.500 CI [+0.188, +0.812].
+    claim: C12
+
+  - id: c13_gauge_control_receipt
+    branch: gauge_control
+    status: done
+    produced_by: experiments/report_public_gauge_receipt.py
+    artifact: paper_artifacts/c13_gauge_control_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      The retrospective one-step four-layer structured-action replay has 402 roots, but the frozen
+      gauge policy proposes an active supported step on only 21. Gauge-geodesic minus
+      no-intervention is 0.0000 CI [0, 0] on both all-root and active-root estimands, with zero
+      gauge flips. Generic transport explains the raw-logit reach; the deception-specific
+      remainder is +0.0125 CI [-0.0160, +0.0406]. The holonomy instrument clears adequacy in 0/5
+      folds, so curvature is not adjudicated.
+    claim: C13
+
+claims:
+  - id: C1
+    statement: >-
+      In the offline structured-action field, policies supplied the correct target can strongly
+      correct deceptive status, but the evidence does not establish geometry-specific or
+      prospective controller superiority.
+    status: supported
+    registration_tier: retrospective_synthesis
+    boundary: >-
+      CNG fixes 599/600 deceptive rows with 1/600 honest harm and exceeds the held-out-family
+      context-only ranker at 170/600 fixes and 11/600 harms. A separately conceived retrospective,
+      oracle-route-matched fixed L16 alpha96 coordinate reaches 600/600 with zero harm. The legacy
+      539/600 comparator was route-mismatched during training selection. These are saved-candidate
+      field evaluations, not fresh generation. CNG and the fixed reconstruction receive the true
+      target; the learned context-only ranker does not inspect held-out candidate outcomes and
+      selects the wrong target on 233/1,200 rows. Because it also differs in action selection and
+      architecture, the performance gap does not isolate target inference. None is a deployable
+      deception controller.
+    evidence: [c1_matched_control_audit]
+    tests: [tests/test_report_powered150_matched_control_audit.py]
+
+  - id: C2
+    statement: >-
+      A learned dense-dose policy improves generated structured-action correction over the best
+      fixed high-dose policy without additional honest harm.
+    status: refuted
+    registration_tier: retrospective_synthesis
+    boundary: >-
+      Dense and fixed policies tie on deceptive status and strict fixes, while dense dose adds five
+      honest status harms and slightly lowers mean strict reward. This says nothing about dose
+      calibration for natural prose.
+    evidence: [c2_dose_control_receipt]
+    tests: [tests/test_report_public_steering_receipts.py]
+
+  - id: C5
+    statement: >-
+      A prospective L16 residual navigation controller improves held-out-family natural-prose
+      status correctness at least as much as family-matched linear control without honest-row harm.
+    status: refuted
+    registration_tier: prospective
+    boundary: >-
+      The native and frequently firing geometric policies fail the machine-scored behavioral
+      endpoint, while the linear comparator improves it. Judge-rated honesty or coherence cannot
+      rescue the result because perturbation and hedging can move those scores. The frequent policy
+      also fires on 37/48 honest rows and 47/48 deceptive rows. This experiment tested only an L16
+      residual controller. An online natural-prose controller that attaches novel live typed state
+      at L12/L16/L19/L20 and updates its intervention throughout generation was not built within
+      the study's time and compute budget. Its outcome is unknown and cannot rescue C5.
+    evidence: [c5_natural_prose_control_receipt]
+    tests: [tests/test_report_public_natural_prose_control_receipt.py]
+
+  - id: C9
+    statement: >-
+      Under graded conversational pressure, smooth escalation increases deceptive commitment and
+      current intensity predicts commitment, while the tested cumulative-history term and the
+      registered smooth-versus-step approach-geometry contrast add no held-out signal.
+    status: supported
+    registration_tier: retrospective_synthesis
+    boundary: >-
+      One Llama-3.1-8B-Instruct model, development banks, and blinded three-judge labels that have
+      not been human-validated. The P3 commitment axis is adequate for its registered test, but its
+      drift contrast crosses zero. Headline arm intervals are conversation-level Wilson/Newcombe,
+      not family-clustered. The dissociation analysis uses 84/96 source conversations after
+      registered exclusions and retains intensity/history correlation +0.332. Neither general
+      memorylessness nor out-of-distribution transfer is claimed, and failures of scripted-arm
+      realization remain part of the record.
+    evidence: [c9_pressure_commitment_receipt]
+    tests: [tests/test_report_public_natpress_receipt.py]
+
+  - id: C10
+    statement: >-
+      Post-commitment activations decode deceptive versus honest actions beyond exact nuisance
+      controls, but a raw residual linear probe outperforms the relational graph.
+    status: supported
+    registration_tier: post_hoc_registered
+    boundary: >-
+      The graph's raw Brier gain is partly reproduced by the nuisance-preserving permutation null;
+      its observed excess over the null mean is 0.03089. The same-bank linear probe has lower Brier
+      in all 20 families. This is post-action decodability on a single development bank, not early
+      warning, causal control, or evidence that relational geometry is necessary.
+    evidence: [c10_postcommitment_detection_receipt]
+    tests: [tests/test_report_public_detection_receipts.py]
+
+  - id: C11
+    statement: >-
+      The tested pre-commitment spectral, connection-response, and masked geometry-only fields
+      improve risk prediction over matched design or nuisance baselines.
+    status: refuted
+    registration_tier: retrospective_synthesis
+    boundary: >-
+      All three tested fields fail their registered comparator. The 20 mixed-outcome,
+      token-identical prefixes establish an empirical stochastic floor for exact deterministic
+      prediction on those states, not a universal impossibility result for pre-action warning.
+    evidence: [c11_precommitment_warning_receipt]
+    tests: [tests/test_report_public_detection_receipts.py]
+
+  - id: C12
+    statement: >-
+      In the pilot steering bank, gating, adequate dose, and decision-token scope explain most of
+      the correction, with tangent geometry contributing a smaller incremental lift.
+    status: supported
+    registration_tier: retrospective_synthesis
+    boundary: >-
+      The primary bank contains 160 rows, with the /80 correction denominator referring only to
+      deceptive rows; status and strict endpoints differ, and every arm has 10 honest strict harms.
+      The off-tangent effect uses 16 deceptive pairs and is an explicitly retrospective
+      recalculation. This mixed-precision 4-bit, conditional-routing pilot establishes neither
+      end-to-end selectivity nor the behavior of the larger structured-action field.
+    evidence: [c12_steering_decomposition_receipt]
+    tests: [tests/test_report_public_steering_receipts.py]
+
+  - id: C13
+    statement: >-
+      Gauge-geodesic or holonomy geometry yields deception-specific causal control leverage or
+      instrument-resolvable curvature.
+    status: not_found_under_instrument
+    registration_tier: retrospective_synthesis
+    boundary: >-
+      Gauge-geodesic replay is behaviorally null and the transport-specific remainder crosses
+      zero. This was a retrospective one-step four-layer structured-action controller that
+      authenticated live roots against sealed source-bank queries; only 21/402 roots received an
+      active supported step. It was not a prospective end-to-end natural-prose controller with
+      novel online state attachment and updates across generation. The holonomy instrument fails
+      its resolution gate in all five folds, so curvature and flatness are both unevaluable.
+    evidence: [c13_gauge_control_receipt]
+    tests: [tests/test_report_public_gauge_receipt.py]

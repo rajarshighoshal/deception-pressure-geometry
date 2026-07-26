@@ -1,0 +1,2277 @@
+{
+  "analysis": {
+    "bootstrap": 2000,
+    "folds": [
+      [
+        "automotive_safety",
+        "data_privacy",
+        "infrastructure_safety",
+        "pharmaceutical_batch",
+        "software_reliability"
+      ],
+      [
+        "ai_content_safety",
+        "aviation_maintenance",
+        "electrical_grid",
+        "manufacturing_quality",
+        "supply_chain_integrity"
+      ],
+      [
+        "biosafety_lab",
+        "clinical_trial",
+        "environmental_compliance",
+        "food_safety",
+        "medical_device"
+      ],
+      [
+        "cybersecurity",
+        "financial_audit",
+        "research_reproducibility",
+        "structural_welding",
+        "water_treatment"
+      ]
+    ],
+    "n_conversations": 1200,
+    "n_families": 20,
+    "n_rows": 260400,
+    "objective": "reward",
+    "seed": 20260726
+  },
+  "chronology": {
+    "context_only_selector": "heldout-family learned action ranker; no heldout candidate outcomes, but evaluated offline on the completed oracle-routed action-response field",
+    "historical_fixed_route": "whole-grid post-hoc feasibility ceiling; not a registered baseline",
+    "prospective_fresh_generation_controller": "not established by this receipt",
+    "registered_comparison": "CNG versus the declared historical train-fold route floor inside the oracle-routed powered150 sandbox",
+    "route_matched_reconstruction": "retrospective heldout-family-clean robustness analysis; candidate-response-blind at heldout application but oracle-route-conditioned"
+  },
+  "claim_id": "C1",
+  "family_clustered_gaps": {
+    "context_chart_feature_gate_equivariant_neural_context": {
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            -0.005,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.0016666666666666668
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.005119672704996935
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            -0.004156275976724855,
+            0.0
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": -0.0016666666666666668
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            0.044958333333333336,
+            0.165
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.1
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.005119672704996935
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            0.022347457559248142,
+            0.08033379173247641
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": 0.049166666666666664
+        }
+      }
+    },
+    "fixed_route_bidir_linear_L16_a96": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            0.0,
+            0.005
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0016666666666666668
+        },
+        "honest_harm": {
+          "ci95": [
+            -0.005119672704996937,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            0.0,
+            0.004156275976724855
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": 0.0016666666666666668
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            0.045,
+            0.16833333333333333
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.10166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            0.02240617452158296,
+            0.08409448902884303
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": 0.050833333333333335
+        }
+      }
+    },
+    "historical_route_floor": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            -0.165,
+            -0.04495833333333356
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.1
+        },
+        "honest_harm": {
+          "ci95": [
+            -0.005119672704996937,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            -0.08033379173247644,
+            -0.022347457559248187
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": -0.049166666666666664
+        }
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            -0.16833333333333333,
+            -0.045
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.10166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            -0.08409448902884308,
+            -0.02240617452158296
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": -0.050833333333333335
+        }
+      }
+    },
+    "learned_context_ridge_reward": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            -0.7716666666666666,
+            -0.66
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.715
+        },
+        "honest_harm": {
+          "ci95": [
+            0.004813082787744808,
+            0.029605263157894735
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.016666666666666666
+        },
+        "reward": {
+          "ci95": [
+            -0.39900209569140055,
+            -0.3352372910621129
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": -0.36583333333333334
+        }
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            -0.775,
+            -0.6616666666666666
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.7166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.006837606837606838,
+            0.03064639897858147
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.018333333333333333
+        },
+        "reward": {
+          "ci95": [
+            -0.40084754778218534,
+            -0.336625311682783
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": -0.3675
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            -0.695,
+            -0.5249583333333335
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.615
+        },
+        "honest_harm": {
+          "ci95": [
+            0.006837606837606838,
+            0.03064639897858147
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.018333333333333333
+        },
+        "reward": {
+          "ci95": [
+            -0.3613036995620166,
+            -0.26897290535505164
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": -0.31666666666666665
+        }
+      }
+    },
+    "route_matched_fixed_coordinate": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            0.0,
+            0.005
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0016666666666666668
+        },
+        "honest_harm": {
+          "ci95": [
+            -0.005119672704996937,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": -0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            0.0,
+            0.004156275976724855
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": 0.0016666666666666668
+        }
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": 0.0
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            0.045,
+            0.16833333333333333
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.10166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 20,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            0.02240617452158296,
+            0.08409448902884303
+          ],
+          "n": 1200,
+          "n_clusters": 20,
+          "point": 0.050833333333333335
+        }
+      }
+    }
+  },
+  "information_audit": {
+    "policy_information": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "n_conversations": 1200,
+        "n_rows": 1200,
+        "n_rows_with_route_truth": 1200,
+        "route_truth_mismatches": 0,
+        "selected_target_route_mismatches": 0
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "n_conversations": 1200,
+        "n_rows": 1200,
+        "n_rows_with_route_truth": 1200,
+        "route_truth_mismatches": 0,
+        "selected_target_route_mismatches": 0
+      },
+      "historical_route_floor": {
+        "n_conversations": 1200,
+        "n_rows": 1200,
+        "n_rows_with_route_truth": 1200,
+        "route_truth_mismatches": 0,
+        "selected_target_route_mismatches": 0
+      },
+      "learned_context_ridge_reward": {
+        "n_conversations": 1200,
+        "n_rows": 1200,
+        "n_rows_with_route_truth": 1200,
+        "route_truth_mismatches": 0,
+        "selected_target_route_mismatches": 233
+      },
+      "route_matched_fixed_coordinate": {
+        "n_conversations": 1200,
+        "n_rows": 1200,
+        "n_rows_with_route_truth": 1200,
+        "route_truth_mismatches": 0,
+        "selected_target_route_mismatches": 0
+      }
+    },
+    "raw_nonbaseline_candidate_counts": {
+      "counter_target": 86400,
+      "n_nonbaseline": 259200,
+      "route_matched": 172800
+    },
+    "total_conversations": 1200
+  },
+  "interpretation": "CNG strongly exceeds the learned context-only action ranker inside the offline, oracle-routed field. The historical registered floor is not a clean comparator because its train selection pooled counter-target candidates. A separately conceived route-matched fixed-coordinate reconstruction saturates the field, so this audit does not establish geometry-specific or prospective control superiority.",
+  "kind": "powered150_matched_control_public_receipt",
+  "policies": {
+    "context_chart_feature_gate_equivariant_neural_context": {
+      "action_identity_counts": {
+        "alphas": {
+          "24.0": 467,
+          "48.0": 373,
+          "96.0": 360
+        },
+        "layers": {
+          "12": 214,
+          "16": 278,
+          "19": 50,
+          "20": 251,
+          "8": 407
+        },
+        "methods": {
+          "bidir_linear": 651,
+          "global_mean_gated": 469,
+          "global_probe_gated": 80
+        },
+        "targets": {
+          "FAIL": 600,
+          "PASS": 600
+        }
+      },
+      "folds": {
+        "0": {
+          "heldout_families": [
+            "automotive_safety",
+            "data_privacy",
+            "infrastructure_safety",
+            "pharmaceutical_batch",
+            "software_reliability"
+          ]
+        },
+        "1": {
+          "heldout_families": [
+            "ai_content_safety",
+            "aviation_maintenance",
+            "electrical_grid",
+            "manufacturing_quality",
+            "supply_chain_integrity"
+          ]
+        },
+        "2": {
+          "heldout_families": [
+            "biosafety_lab",
+            "clinical_trial",
+            "environmental_compliance",
+            "food_safety",
+            "medical_device"
+          ]
+        },
+        "3": {
+          "heldout_families": [
+            "cybersecurity",
+            "financial_audit",
+            "research_reproducibility",
+            "structural_welding",
+            "water_treatment"
+          ]
+        }
+      },
+      "role": "oracle_route_original_status_pre_response_no_candidate_post_action",
+      "summary": {
+        "chosen_methods": {
+          "bidir_linear": 651,
+          "global_mean_gated": 469,
+          "global_probe_gated": 80
+        },
+        "deceptive_n": 600,
+        "fixes_error": 599,
+        "honest_harms": 1,
+        "honest_n": 600,
+        "mean_aligned_margin": 2.0553325525919597,
+        "mean_reward": 0.49833333333333335,
+        "n": 1200
+      },
+      "type": "cng_pre_response_oracle_route"
+    },
+    "fixed_route_bidir_linear_L16_a96": {
+      "action_identity_counts": {
+        "alphas": {
+          "96.0": 1200
+        },
+        "layers": {
+          "16": 1200
+        },
+        "methods": {
+          "bidir_linear": 1200
+        },
+        "targets": {
+          "FAIL": 600,
+          "PASS": 600
+        }
+      },
+      "folds": {},
+      "role": "posthoc_whole_grid_fixed_route_ceiling",
+      "summary": {
+        "by_status_class": {
+          "false_FAIL": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 300,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.9143229166666667,
+            "mean_reward": 1.0,
+            "n": 300
+          },
+          "false_PASS": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 300,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.6468196614583334,
+            "mean_reward": 1.0,
+            "n": 300
+          },
+          "honest_FAIL": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 0,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.6852669270833334,
+            "mean_reward": 0.0,
+            "n": 300
+          },
+          "honest_PASS": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 0,
+            "harms_honest": 0,
+            "mean_aligned_margin": 1.1940104166666667,
+            "mean_reward": 0.0,
+            "n": 300
+          }
+        },
+        "chosen_methods": {
+          "bidir_linear": 1200
+        },
+        "chosen_targets": {
+          "FAIL": 600,
+          "PASS": 600
+        },
+        "deceptive_n": 600,
+        "fixes_error": 600,
+        "honest_harms": 0,
+        "honest_n": 600,
+        "mean_aligned_delta_margin": 1.0937508138020833,
+        "mean_aligned_margin": 0.86010498046875,
+        "mean_reward": 0.5,
+        "n": 1200
+      },
+      "type": "posthoc_fixed_route_whole_grid"
+    },
+    "historical_route_floor": {
+      "action_identity_counts": {
+        "alphas": {
+          "24.0": 300,
+          "48.0": 900
+        },
+        "layers": {
+          "16": 600,
+          "19": 600
+        },
+        "methods": {
+          "bidir_linear": 300,
+          "global_mean": 300,
+          "global_probe": 600
+        },
+        "targets": {
+          "FAIL": 600,
+          "PASS": 600
+        }
+      },
+      "folds": {
+        "0": {
+          "best_by_target": {
+            "FAIL": [
+              "global_mean",
+              "FAIL",
+              16,
+              24.0
+            ],
+            "PASS": [
+              "global_probe",
+              "PASS",
+              19,
+              48.0
+            ]
+          },
+          "heldout_families": [
+            "automotive_safety",
+            "data_privacy",
+            "infrastructure_safety",
+            "pharmaceutical_batch",
+            "software_reliability"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_probe": 75
+                },
+                "correct_after": 72,
+                "fixes_error": 72,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.1691666666666667,
+                "mean_reward": 0.96,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.0983333333333334,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 4.28,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "global_probe": 73
+                },
+                "correct_after": 73,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 6.981592465753424,
+                "mean_reward": 0.0,
+                "n": 73
+              }
+            },
+            "chosen_methods": {
+              "global_mean": 150,
+              "global_probe": 148
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 148
+            },
+            "deceptive_n": 150,
+            "fixes_error": 147,
+            "honest_harms": 0,
+            "honest_n": 148,
+            "mean_aligned_delta_margin": 3.4642407718120807,
+            "mean_aligned_margin": 3.358116610738255,
+            "mean_reward": 0.49328859060402686,
+            "n": 298
+          }
+        },
+        "1": {
+          "best_by_target": {
+            "FAIL": [
+              "bidir_linear",
+              "FAIL",
+              16,
+              48.0
+            ],
+            "PASS": [
+              "global_probe",
+              "PASS",
+              19,
+              48.0
+            ]
+          },
+          "heldout_families": [
+            "ai_content_safety",
+            "aviation_maintenance",
+            "electrical_grid",
+            "manufacturing_quality",
+            "supply_chain_integrity"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_probe": 75
+                },
+                "correct_after": 71,
+                "fixes_error": 71,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.0945833333333332,
+                "mean_reward": 0.9466666666666667,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 74,
+                "fixes_error": 74,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.7058333333333333,
+                "mean_reward": 0.9866666666666667,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.8083333333333333,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "global_probe": 72
+                },
+                "correct_after": 72,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 6.065104166666667,
+                "mean_reward": 0.0,
+                "n": 72
+              }
+            },
+            "chosen_methods": {
+              "bidir_linear": 150,
+              "global_probe": 147
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 147
+            },
+            "deceptive_n": 150,
+            "fixes_error": 145,
+            "honest_harms": 0,
+            "honest_n": 147,
+            "mean_aligned_delta_margin": 2.789877946127946,
+            "mean_aligned_margin": 2.381628787878788,
+            "mean_reward": 0.4882154882154882,
+            "n": 297
+          }
+        },
+        "2": {
+          "best_by_target": {
+            "FAIL": [
+              "global_mean",
+              "FAIL",
+              16,
+              24.0
+            ],
+            "PASS": [
+              "global_probe",
+              "PASS",
+              19,
+              48.0
+            ]
+          },
+          "heldout_families": [
+            "biosafety_lab",
+            "clinical_trial",
+            "environmental_compliance",
+            "food_safety",
+            "medical_device"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_probe": 75
+                },
+                "correct_after": 65,
+                "fixes_error": 65,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.9204166666666667,
+                "mean_reward": 0.8666666666666667,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 67,
+                "fixes_error": 67,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.97,
+                "mean_reward": 0.8933333333333333,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 3.9,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "global_probe": 78
+                },
+                "correct_after": 78,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 6.10136217948718,
+                "mean_reward": 0.0,
+                "n": 78
+              }
+            },
+            "chosen_methods": {
+              "global_mean": 150,
+              "global_probe": 153
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 153
+            },
+            "deceptive_n": 150,
+            "fixes_error": 132,
+            "honest_harms": 0,
+            "honest_n": 153,
+            "mean_aligned_delta_margin": 3.364892739273927,
+            "mean_aligned_margin": 3.0039191419141913,
+            "mean_reward": 0.43564356435643564,
+            "n": 303
+          }
+        },
+        "3": {
+          "best_by_target": {
+            "FAIL": [
+              "bidir_linear",
+              "FAIL",
+              16,
+              48.0
+            ],
+            "PASS": [
+              "global_probe",
+              "PASS",
+              19,
+              48.0
+            ]
+          },
+          "heldout_families": [
+            "cybersecurity",
+            "financial_audit",
+            "research_reproducibility",
+            "structural_welding",
+            "water_treatment"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_probe": 75
+                },
+                "correct_after": 41,
+                "fixes_error": 41,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.1675,
+                "mean_reward": 0.5466666666666666,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 74,
+                "fixes_error": 74,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.8279166666666666,
+                "mean_reward": 0.9866666666666667,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.9691666666666667,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "global_probe": 77
+                },
+                "correct_after": 77,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 5.9058441558441555,
+                "mean_reward": 0.0,
+                "n": 77
+              }
+            },
+            "chosen_methods": {
+              "bidir_linear": 150,
+              "global_probe": 152
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 152
+            },
+            "deceptive_n": 150,
+            "fixes_error": 115,
+            "honest_harms": 0,
+            "honest_n": 152,
+            "mean_aligned_delta_margin": 2.3020488410596025,
+            "mean_aligned_margin": 2.2420322847682117,
+            "mean_reward": 0.38079470198675497,
+            "n": 302
+          }
+        }
+      },
+      "role": "historical_route_floor",
+      "summary": {
+        "by_status_class": {
+          "false_FAIL": {
+            "chosen_methods": {
+              "global_probe": 300
+            },
+            "correct_after": 249,
+            "fixes_error": 249,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.8379166666666666,
+            "mean_reward": 0.83,
+            "n": 300
+          },
+          "false_PASS": {
+            "chosen_methods": {
+              "bidir_linear": 150,
+              "global_mean": 150
+            },
+            "correct_after": 290,
+            "fixes_error": 290,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.9005208333333333,
+            "mean_reward": 0.9666666666666667,
+            "n": 300
+          },
+          "honest_FAIL": {
+            "chosen_methods": {
+              "bidir_linear": 150,
+              "global_mean": 150
+            },
+            "correct_after": 300,
+            "fixes_error": 0,
+            "harms_honest": 0,
+            "mean_aligned_margin": 2.989375,
+            "mean_reward": 0.0,
+            "n": 300
+          },
+          "honest_PASS": {
+            "chosen_methods": {
+              "global_probe": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 0,
+            "harms_honest": 0,
+            "mean_aligned_margin": 6.256666666666667,
+            "mean_reward": 0.0,
+            "n": 300
+          }
+        },
+        "chosen_methods": {
+          "bidir_linear": 300,
+          "global_mean": 300,
+          "global_probe": 600
+        },
+        "chosen_targets": {
+          "FAIL": 600,
+          "PASS": 600
+        },
+        "deceptive_n": 600,
+        "fixes_error": 539,
+        "honest_harms": 0,
+        "honest_n": 600,
+        "mean_aligned_delta_margin": 2.979765625,
+        "mean_aligned_margin": 2.7461197916666666,
+        "mean_reward": 0.44916666666666666,
+        "n": 1200
+      },
+      "type": "historical_route_floor"
+    },
+    "learned_context_ridge_reward": {
+      "action_identity_counts": {
+        "alphas": {
+          "0.0": 147,
+          "24.0": 1053
+        },
+        "layers": {
+          "12": 29,
+          "16": 74,
+          "19": 59,
+          "20": 91,
+          "24": 97,
+          "28": 193,
+          "32": 495,
+          "8": 15,
+          "None": 147
+        },
+        "methods": {
+          "abstain": 147,
+          "bidir_linear": 16,
+          "bidir_off_tangent": 390,
+          "global_mean": 647
+        },
+        "targets": {
+          "FAIL": 398,
+          "None": 147,
+          "PASS": 655
+        }
+      },
+      "folds": {
+        "0": {
+          "heldout_families": [
+            "automotive_safety",
+            "data_privacy",
+            "infrastructure_safety",
+            "pharmaceutical_batch",
+            "software_reliability"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 1,
+                "fixes_error": 1,
+                "harms_honest": 0,
+                "mean_aligned_margin": -4.77,
+                "mean_reward": 0.013333333333333334,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "abstain": 4,
+                  "bidir_off_tangent": 71
+                },
+                "correct_after": 26,
+                "fixes_error": 26,
+                "harms_honest": 0,
+                "mean_aligned_margin": -1.2966666666666666,
+                "mean_reward": 0.3466666666666667,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "abstain": 20,
+                  "bidir_off_tangent": 4,
+                  "global_mean": 51
+                },
+                "correct_after": 72,
+                "fixes_error": 0,
+                "harms_honest": 2,
+                "mean_aligned_margin": 5.909166666666667,
+                "mean_reward": -0.02666666666666667,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "abstain": 14,
+                  "bidir_off_tangent": 1,
+                  "global_mean": 58
+                },
+                "correct_after": 73,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 5.4541952054794525,
+                "mean_reward": 0.0,
+                "n": 73
+              }
+            },
+            "chosen_methods": {
+              "abstain": 38,
+              "bidir_off_tangent": 76,
+              "global_mean": 184
+            },
+            "chosen_targets": {
+              "FAIL": 76,
+              "None": 38,
+              "PASS": 184
+            },
+            "deceptive_n": 150,
+            "fixes_error": 27,
+            "honest_harms": 2,
+            "honest_n": 148,
+            "mean_aligned_delta_margin": 1.4025796979865772,
+            "mean_aligned_margin": 1.2964555369127517,
+            "mean_reward": 0.08389261744966443,
+            "n": 298
+          }
+        },
+        "1": {
+          "heldout_families": [
+            "ai_content_safety",
+            "aviation_maintenance",
+            "electrical_grid",
+            "manufacturing_quality",
+            "supply_chain_integrity"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 10,
+                "fixes_error": 10,
+                "harms_honest": 0,
+                "mean_aligned_margin": -4.14,
+                "mean_reward": 0.13333333333333333,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "abstain": 2,
+                  "bidir_linear": 6,
+                  "bidir_off_tangent": 67
+                },
+                "correct_after": 32,
+                "fixes_error": 32,
+                "harms_honest": 0,
+                "mean_aligned_margin": -0.39166666666666666,
+                "mean_reward": 0.4266666666666667,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "abstain": 22,
+                  "bidir_off_tangent": 1,
+                  "global_mean": 52
+                },
+                "correct_after": 71,
+                "fixes_error": 0,
+                "harms_honest": 4,
+                "mean_aligned_margin": 5.285833333333334,
+                "mean_reward": -0.05333333333333334,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "abstain": 14,
+                  "bidir_off_tangent": 6,
+                  "global_mean": 52
+                },
+                "correct_after": 69,
+                "fixes_error": 0,
+                "harms_honest": 2,
+                "mean_aligned_margin": 4.827690972222222,
+                "mean_reward": -0.027777777777777776,
+                "n": 72
+              }
+            },
+            "chosen_methods": {
+              "abstain": 38,
+              "bidir_linear": 6,
+              "bidir_off_tangent": 74,
+              "global_mean": 179
+            },
+            "chosen_targets": {
+              "FAIL": 80,
+              "None": 38,
+              "PASS": 179
+            },
+            "deceptive_n": 150,
+            "fixes_error": 42,
+            "honest_harms": 6,
+            "honest_n": 147,
+            "mean_aligned_delta_margin": 1.769044612794613,
+            "mean_aligned_margin": 1.3607954545454546,
+            "mean_reward": 0.12121212121212122,
+            "n": 297
+          }
+        },
+        "2": {
+          "heldout_families": [
+            "biosafety_lab",
+            "clinical_trial",
+            "environmental_compliance",
+            "food_safety",
+            "medical_device"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "global_mean": 75
+                },
+                "correct_after": 11,
+                "fixes_error": 11,
+                "harms_honest": 0,
+                "mean_aligned_margin": -4.0925,
+                "mean_reward": 0.14666666666666667,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "abstain": 2,
+                  "bidir_linear": 1,
+                  "bidir_off_tangent": 72
+                },
+                "correct_after": 40,
+                "fixes_error": 40,
+                "harms_honest": 0,
+                "mean_aligned_margin": -0.5791666666666667,
+                "mean_reward": 0.5333333333333333,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "abstain": 14,
+                  "bidir_off_tangent": 11,
+                  "global_mean": 50
+                },
+                "correct_after": 71,
+                "fixes_error": 0,
+                "harms_honest": 1,
+                "mean_aligned_margin": 5.225833333333333,
+                "mean_reward": -0.013333333333333334,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "abstain": 17,
+                  "bidir_off_tangent": 14,
+                  "global_mean": 47
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 4.653846153846154,
+                "mean_reward": 0.0,
+                "n": 78
+              }
+            },
+            "chosen_methods": {
+              "abstain": 33,
+              "bidir_linear": 1,
+              "bidir_off_tangent": 97,
+              "global_mean": 172
+            },
+            "chosen_targets": {
+              "FAIL": 98,
+              "None": 33,
+              "PASS": 172
+            },
+            "deceptive_n": 150,
+            "fixes_error": 51,
+            "honest_harms": 1,
+            "honest_n": 153,
+            "mean_aligned_delta_margin": 1.6961633663366336,
+            "mean_aligned_margin": 1.3351897689768977,
+            "mean_reward": 0.16501650165016502,
+            "n": 303
+          }
+        },
+        "3": {
+          "heldout_families": [
+            "cybersecurity",
+            "financial_audit",
+            "research_reproducibility",
+            "structural_welding",
+            "water_treatment"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "bidir_off_tangent": 8,
+                  "global_mean": 67
+                },
+                "correct_after": 4,
+                "fixes_error": 4,
+                "harms_honest": 0,
+                "mean_aligned_margin": -5.315416666666667,
+                "mean_reward": 0.05333333333333334,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "abstain": 3,
+                  "bidir_linear": 4,
+                  "bidir_off_tangent": 68
+                },
+                "correct_after": 46,
+                "fixes_error": 46,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.07416666666666667,
+                "mean_reward": 0.6133333333333333,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "abstain": 20,
+                  "bidir_linear": 3,
+                  "bidir_off_tangent": 31,
+                  "global_mean": 21
+                },
+                "correct_after": 74,
+                "fixes_error": 0,
+                "harms_honest": 1,
+                "mean_aligned_margin": 6.64375,
+                "mean_reward": -0.013333333333333334,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "abstain": 15,
+                  "bidir_linear": 2,
+                  "bidir_off_tangent": 36,
+                  "global_mean": 24
+                },
+                "correct_after": 76,
+                "fixes_error": 0,
+                "harms_honest": 1,
+                "mean_aligned_margin": 4.8331980519480515,
+                "mean_reward": -0.012987012987012988,
+                "n": 77
+              }
+            },
+            "chosen_methods": {
+              "abstain": 38,
+              "bidir_linear": 9,
+              "bidir_off_tangent": 143,
+              "global_mean": 112
+            },
+            "chosen_targets": {
+              "FAIL": 144,
+              "None": 38,
+              "PASS": 120
+            },
+            "deceptive_n": 150,
+            "fixes_error": 50,
+            "honest_harms": 2,
+            "honest_n": 152,
+            "mean_aligned_delta_margin": 1.640625,
+            "mean_aligned_margin": 1.5806084437086092,
+            "mean_reward": 0.15894039735099338,
+            "n": 302
+          }
+        }
+      },
+      "role": "heldout_family_context_only_action_ranker_no_candidate_outcomes_at_application",
+      "summary": {
+        "by_status_class": {
+          "false_FAIL": {
+            "chosen_methods": {
+              "bidir_off_tangent": 8,
+              "global_mean": 292
+            },
+            "correct_after": 26,
+            "fixes_error": 26,
+            "harms_honest": 0,
+            "mean_aligned_margin": -4.579479166666666,
+            "mean_reward": 0.08666666666666667,
+            "n": 300
+          },
+          "false_PASS": {
+            "chosen_methods": {
+              "abstain": 11,
+              "bidir_linear": 11,
+              "bidir_off_tangent": 278
+            },
+            "correct_after": 144,
+            "fixes_error": 144,
+            "harms_honest": 0,
+            "mean_aligned_margin": -0.5483333333333333,
+            "mean_reward": 0.48,
+            "n": 300
+          },
+          "honest_FAIL": {
+            "chosen_methods": {
+              "abstain": 76,
+              "bidir_linear": 3,
+              "bidir_off_tangent": 47,
+              "global_mean": 174
+            },
+            "correct_after": 288,
+            "fixes_error": 0,
+            "harms_honest": 8,
+            "mean_aligned_margin": 5.766145833333334,
+            "mean_reward": -0.02666666666666667,
+            "n": 300
+          },
+          "honest_PASS": {
+            "chosen_methods": {
+              "abstain": 60,
+              "bidir_linear": 2,
+              "bidir_off_tangent": 57,
+              "global_mean": 181
+            },
+            "correct_after": 293,
+            "fixes_error": 0,
+            "harms_honest": 3,
+            "mean_aligned_margin": 4.936354166666667,
+            "mean_reward": -0.01,
+            "n": 300
+          }
+        },
+        "chosen_methods": {
+          "abstain": 147,
+          "bidir_linear": 16,
+          "bidir_off_tangent": 390,
+          "global_mean": 647
+        },
+        "chosen_targets": {
+          "FAIL": 398,
+          "None": 147,
+          "PASS": 655
+        },
+        "deceptive_n": 600,
+        "fixes_error": 170,
+        "honest_harms": 11,
+        "honest_n": 600,
+        "mean_aligned_delta_margin": 1.6273177083333332,
+        "mean_aligned_margin": 1.393671875,
+        "mean_reward": 0.1325,
+        "n": 1200
+      },
+      "type": "learned_context_only_selector"
+    },
+    "route_matched_fixed_coordinate": {
+      "action_identity_counts": {
+        "alphas": {
+          "96.0": 1200
+        },
+        "layers": {
+          "16": 1200
+        },
+        "methods": {
+          "bidir_linear": 1200
+        },
+        "targets": {
+          "FAIL": 600,
+          "PASS": 600
+        }
+      },
+      "folds": {
+        "0": {
+          "coordinate": [
+            "bidir_linear",
+            16,
+            96.0
+          ],
+          "heldout_families": [
+            "automotive_safety",
+            "data_privacy",
+            "infrastructure_safety",
+            "pharmaceutical_batch",
+            "software_reliability"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.9533333333333334,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.6149739583333333,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.6520052083333333,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 73
+                },
+                "correct_after": 73,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.2074058219178083,
+                "mean_reward": 0.0,
+                "n": 73
+              }
+            },
+            "chosen_methods": {
+              "bidir_linear": 298
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 148
+            },
+            "deceptive_n": 150,
+            "fixes_error": 150,
+            "honest_harms": 0,
+            "honest_n": 148,
+            "mean_aligned_delta_margin": 0.9607015520134228,
+            "mean_aligned_margin": 0.8545773909395973,
+            "mean_reward": 0.5033557046979866,
+            "n": 298
+          }
+        },
+        "1": {
+          "coordinate": [
+            "bidir_linear",
+            16,
+            96.0
+          ],
+          "heldout_families": [
+            "ai_content_safety",
+            "aviation_maintenance",
+            "electrical_grid",
+            "manufacturing_quality",
+            "supply_chain_integrity"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.870625,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.6676302083333333,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.7108463541666666,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 72
+                },
+                "correct_after": 72,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.1560329861111112,
+                "mean_reward": 0.0,
+                "n": 72
+              }
+            },
+            "chosen_methods": {
+              "bidir_linear": 297
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 147
+            },
+            "deceptive_n": 150,
+            "fixes_error": 150,
+            "honest_harms": 0,
+            "honest_n": 147,
+            "mean_aligned_delta_margin": 1.2564545191498318,
+            "mean_aligned_margin": 0.8482053609006734,
+            "mean_reward": 0.5050505050505051,
+            "n": 297
+          }
+        },
+        "2": {
+          "coordinate": [
+            "bidir_linear",
+            16,
+            96.0
+          ],
+          "heldout_families": [
+            "biosafety_lab",
+            "clinical_trial",
+            "environmental_compliance",
+            "food_safety",
+            "medical_device"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.9577083333333334,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.615859375,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.6576302083333333,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 78
+                },
+                "correct_after": 78,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.2546073717948718,
+                "mean_reward": 0.0,
+                "n": 78
+              }
+            },
+            "chosen_methods": {
+              "bidir_linear": 303
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 153
+            },
+            "deceptive_n": 150,
+            "fixes_error": 150,
+            "honest_harms": 0,
+            "honest_n": 153,
+            "mean_aligned_delta_margin": 1.236218543729373,
+            "mean_aligned_margin": 0.875244946369637,
+            "mean_reward": 0.49504950495049505,
+            "n": 303
+          }
+        },
+        "3": {
+          "coordinate": [
+            "bidir_linear",
+            16,
+            96.0
+          ],
+          "heldout_families": [
+            "cybersecurity",
+            "financial_audit",
+            "research_reproducibility",
+            "structural_welding",
+            "water_treatment"
+          ],
+          "summary": {
+            "by_status_class": {
+              "false_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.875625,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "false_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 75,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.6888151041666667,
+                "mean_reward": 1.0,
+                "n": 75
+              },
+              "honest_FAIL": {
+                "chosen_methods": {
+                  "bidir_linear": 75
+                },
+                "correct_after": 75,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 0.7205859375,
+                "mean_reward": 0.0,
+                "n": 75
+              },
+              "honest_PASS": {
+                "chosen_methods": {
+                  "bidir_linear": 77
+                },
+                "correct_after": 77,
+                "fixes_error": 0,
+                "harms_honest": 0,
+                "mean_aligned_margin": 1.1554383116883118,
+                "mean_reward": 0.0,
+                "n": 77
+              }
+            },
+            "chosen_methods": {
+              "bidir_linear": 302
+            },
+            "chosen_targets": {
+              "FAIL": 150,
+              "PASS": 152
+            },
+            "deceptive_n": 150,
+            "fixes_error": 150,
+            "honest_harms": 0,
+            "honest_n": 152,
+            "mean_aligned_delta_margin": 0.9220884209437086,
+            "mean_aligned_margin": 0.8620718646523179,
+            "mean_reward": 0.4966887417218543,
+            "n": 302
+          }
+        }
+      },
+      "methods_restricted_to": [
+        "bidir_linear"
+      ],
+      "role": "heldout_clean_route_matched_coordinate_retrospective_not_preregistered_pre_action",
+      "summary": {
+        "by_status_class": {
+          "false_FAIL": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 300,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.9143229166666667,
+            "mean_reward": 1.0,
+            "n": 300
+          },
+          "false_PASS": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 300,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.6468196614583334,
+            "mean_reward": 1.0,
+            "n": 300
+          },
+          "honest_FAIL": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 0,
+            "harms_honest": 0,
+            "mean_aligned_margin": 0.6852669270833334,
+            "mean_reward": 0.0,
+            "n": 300
+          },
+          "honest_PASS": {
+            "chosen_methods": {
+              "bidir_linear": 300
+            },
+            "correct_after": 300,
+            "fixes_error": 0,
+            "harms_honest": 0,
+            "mean_aligned_margin": 1.1940104166666667,
+            "mean_reward": 0.0,
+            "n": 300
+          }
+        },
+        "chosen_methods": {
+          "bidir_linear": 1200
+        },
+        "chosen_targets": {
+          "FAIL": 600,
+          "PASS": 600
+        },
+        "deceptive_n": 600,
+        "fixes_error": 600,
+        "honest_harms": 0,
+        "honest_n": 600,
+        "mean_aligned_delta_margin": 1.0937508138020833,
+        "mean_aligned_margin": 0.86010498046875,
+        "mean_reward": 0.5,
+        "n": 1200
+      },
+      "type": "route_matched_fixed_coordinate_retrospective_heldout_clean_oracle_route"
+    }
+  },
+  "policy_order": [
+    "context_chart_feature_gate_equivariant_neural_context",
+    "historical_route_floor",
+    "learned_context_ridge_reward",
+    "fixed_route_bidir_linear_L16_a96",
+    "route_matched_fixed_coordinate"
+  ],
+  "producer": "experiments/report_powered150_matched_control_audit.py",
+  "producer_sha256": "5a4f92d65b4dd5b761227312afbd73c7dd1136bea307640ce78b35868f7b3e84",
+  "scenario_clustered_gaps": {
+    "context_chart_feature_gate_equivariant_neural_context": {
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            -0.005254170891326389,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": -0.0016666666666666668
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.005172413793103448
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            -0.004205214465937763,
+            0.0
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": -0.0016666666666666668
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            0.059588130842165216,
+            0.14725217169136431
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": 0.1
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.005172413793103448
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            0.027755199568676784,
+            0.07442737044900641
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": 0.049166666666666664
+        }
+      }
+    },
+    "fixed_route_bidir_linear_L16_a96": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            0.0,
+            0.005254170891326388
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": 0.0016666666666666668
+        },
+        "honest_harm": {
+          "ci95": [
+            -0.005172413793103448,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": -0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            0.0,
+            0.004205214465937763
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": 0.0016666666666666668
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            0.060357010632513045,
+            0.1493419890478713
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": 0.10166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            0.0286218460252318,
+            0.07647389430376646
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": 0.050833333333333335
+        }
+      }
+    },
+    "historical_route_floor": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            -0.14725217169136434,
+            -0.05958813084216529
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": -0.1
+        },
+        "honest_harm": {
+          "ci95": [
+            -0.005172413793103448,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": -0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            -0.07442737044900642,
+            -0.027755199568676787
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": -0.049166666666666664
+        }
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            -0.1493419890478714,
+            -0.06035701063251305
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": -0.10166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            -0.07647389430376647,
+            -0.028621846025231802
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": -0.050833333333333335
+        }
+      }
+    },
+    "learned_context_ridge_reward": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            -0.7703035108093621,
+            -0.6542624962247054
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": -0.715
+        },
+        "honest_harm": {
+          "ci95": [
+            0.006555780285288482,
+            0.028239936372280852
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.016666666666666666
+        },
+        "reward": {
+          "ci95": [
+            -0.3998495993109362,
+            -0.3300027855892185
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": -0.36583333333333334
+        }
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            -0.7721143536223596,
+            -0.6552212786523061
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": -0.7166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.008403008854548531,
+            0.029361037621820824
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.018333333333333333
+        },
+        "reward": {
+          "ci95": [
+            -0.4019250451907918,
+            -0.3312844196942299
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": -0.3675
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            -0.6720318030749277,
+            -0.5519467147350179
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": -0.615
+        },
+        "honest_harm": {
+          "ci95": [
+            0.008403008854548531,
+            0.029361037621820824
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.018333333333333333
+        },
+        "reward": {
+          "ci95": [
+            -0.3500886974890441,
+            -0.2821980157408686
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": -0.31666666666666665
+        }
+      }
+    },
+    "route_matched_fixed_coordinate": {
+      "context_chart_feature_gate_equivariant_neural_context": {
+        "fixes_error": {
+          "ci95": [
+            0.0,
+            0.005254170891326388
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": 0.0016666666666666668
+        },
+        "honest_harm": {
+          "ci95": [
+            -0.005172413793103448,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": -0.0016666666666666668
+        },
+        "reward": {
+          "ci95": [
+            0.0,
+            0.004205214465937763
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": 0.0016666666666666668
+        }
+      },
+      "fixed_route_bidir_linear_L16_a96": {
+        "fixes_error": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": 0.0
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": 0.0
+        }
+      },
+      "historical_route_floor": {
+        "fixes_error": {
+          "ci95": [
+            0.060357010632513045,
+            0.1493419890478713
+          ],
+          "n": 600,
+          "n_clusters": 140,
+          "point": 0.10166666666666667
+        },
+        "honest_harm": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 600,
+          "n_clusters": 139,
+          "point": 0.0
+        },
+        "reward": {
+          "ci95": [
+            0.0286218460252318,
+            0.07647389430376646
+          ],
+          "n": 1200,
+          "n_clusters": 142,
+          "point": 0.050833333333333335
+        }
+      }
+    }
+  },
+  "schema_version": 1,
+  "source_artifacts": {
+    "action_response_field": {
+      "byte_size": 639890608,
+      "sha256": "272322d80d23a01bf4a2f545f82fb9d0a9612d89cfab93a4af1319f9dccf19ab"
+    },
+    "cng_selector": {
+      "byte_size": 29477088,
+      "sha256": "962d11da8863d2cb2eed023573d9e0219ccb9af7a5c547ca643d9414c52b4a97"
+    },
+    "historical_selector": {
+      "byte_size": 201859554,
+      "sha256": "ae35eb651fca6b27b641d8b780db304c21e84d3f7b652622b8132b0e4ee43542"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "causal_replay": {
+    "contrasts": {
+      "active_roots": {
+        "gauge_geodesic_minus_no_intervention": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "clusters": 19,
+          "metric": "deceptive_probability",
+          "point": 0.0,
+          "resamples": 2000,
+          "roots": 21
+        },
+        "gauge_geodesic_minus_random_tangent": {
+          "ci95": [
+            0.0,
+            0.06818181818181818
+          ],
+          "clusters": 19,
+          "metric": "deceptive_probability",
+          "point": 0.023809523809523808,
+          "resamples": 2000,
+          "roots": 21
+        },
+        "gauge_geodesic_minus_sign_flipped": {
+          "ci95": [
+            -0.06818181818181818,
+            0.0
+          ],
+          "clusters": 19,
+          "metric": "deceptive_probability",
+          "point": -0.023809523809523808,
+          "resamples": 2000,
+          "roots": 21
+        }
+      },
+      "all_roots": {
+        "gauge_geodesic_minus_no_intervention": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "clusters": 60,
+          "metric": "deceptive_probability",
+          "point": 0.0,
+          "resamples": 2000,
+          "roots": 402
+        },
+        "gauge_geodesic_minus_random_tangent": {
+          "ci95": [
+            0.0,
+            0.0038560411311053984
+          ],
+          "clusters": 60,
+          "metric": "deceptive_probability",
+          "point": 0.0012437810945273632,
+          "resamples": 2000,
+          "roots": 402
+        },
+        "gauge_geodesic_minus_sign_flipped": {
+          "ci95": [
+            -0.003926701570680628,
+            0.0
+          ],
+          "clusters": 60,
+          "metric": "deceptive_probability",
+          "point": -0.0012437810945273632,
+          "resamples": 2000,
+          "roots": 402
+        }
+      }
+    },
+    "controller_scope": {
+      "actuation_layers": [
+        12,
+        16,
+        19,
+        20
+      ],
+      "interface": "structured_action_exact_frozen_prefix",
+      "novel_online_attachment": false,
+      "state_attachment": "sealed_source_bank_query_authenticated_against_live_root",
+      "temporal_scope": "one_step"
+    },
+    "deceptive_outcome_transitions": {
+      "gauge_geodesic": {
+        "deceptive_total": 571,
+        "to_deceptive": 571,
+        "to_honest": 0,
+        "to_honest_rate": 0.0
+      },
+      "random_tangent": {
+        "deceptive_total": 571,
+        "to_deceptive": 570,
+        "to_honest": 1,
+        "to_honest_rate": 0.0017513134851138354
+      },
+      "sign_flipped": {
+        "deceptive_total": 571,
+        "to_deceptive": 570,
+        "to_honest": 1,
+        "to_honest_rate": 0.0017513134851138354
+      }
+    },
+    "inventory": {
+      "active_roots": 21,
+      "arm_order": [
+        "no_intervention",
+        "gauge_geodesic",
+        "sign_flipped",
+        "random_tangent"
+      ],
+      "events": 656,
+      "roots": 402,
+      "rows": 2624
+    },
+    "proposal_status_counts": {
+      "active": 21,
+      "boundary_exit": 333,
+      "field_undefined": 37,
+      "off_support": 10,
+      "zero_direction": 1
+    }
+  },
+  "checks": {
+    "active_roots_flips_are_opposite": true,
+    "active_roots_no_op_delta_is_null": true,
+    "all_roots_gauge_vs_noop_is_null": true,
+    "bank_shape_matches_registry": true,
+    "deceptive_to_honest_flip_is_8_of_573": true,
+    "deceptive_truthful_crossings_within_committed": true,
+    "gauge_geodesic_zero_flip_count": true,
+    "generic_reach_not_greater_than_truthful_push": true,
+    "holonomy_adequacy_failed_all_folds": true,
+    "inventory_matches_four_arm_schema": true,
+    "paired_transitions_have_single_truthful_fix_denom": true,
+    "proposal_status_counts_match_registered": true,
+    "specific_after_generic_ci_crosses_zero": true,
+    "specific_after_generic_ci_crosses_zero_not_zero": true
+  },
+  "claim_boundary": "The retrospective one-step four-layer structured-action gauge controller is null on pooled and active samples; only 21 of 402 roots receive an active supported step. It authenticates live roots against sealed source-bank queries and does not test novel online attachment or updating throughout natural-prose generation. Transport effects are non-zero but not specific to deception under the cited metric support. The holonomy instrument failed its adequacy gate, so no curvature or flatness verdict is licensed.",
+  "claim_id": "C13",
+  "holonomy_instrument": {
+    "adequate_folds": 0,
+    "folds": 5,
+    "interpretation": "The residual-matched null exceeded the frozen resolution threshold in every fold, so curvature was not evaluated. Below-gate angles and correlations are diagnostics, not curvature evidence.",
+    "residual_matched_null_p95_radians": [
+      0.6897646308331742,
+      0.7249159154522258,
+      0.7234817238148674,
+      0.709894871413968,
+      0.734916186713279
+    ],
+    "resolution_threshold_radians": 0.1,
+    "verdict": "not-found-under-this-instrument"
+  },
+  "kind": "c13_gauge_control_public_receipt",
+  "producer": "experiments/report_public_gauge_receipt.py",
+  "producer_sha256": "b402de3cfd4b6ea003b3f7053e2bc8b50dee235f42f3571cce46afb4dbaa3313",
+  "schema_version": 1,
+  "source_artifacts": {
+    "causal_replay_report": {
+      "byte_size": 15834,
+      "sha256": "7ada2e244020db175d6d263058142c48dc0eb32b862e764973622dd30de5da75",
+      "status": "success"
+    },
+    "holonomy_report": {
+      "byte_size": 9735,
+      "sha256": "45a89541fbb43ba6fbe517c1c785510f4ceafb4f9af979a4038c763eeb27d014"
+    },
+    "pre_status_response_diagnostic": {
+      "byte_size": 57886,
+      "sha256": "3f231b93dfd50389fc7e50a26ac8fab315318f6653bbf917469e19b89024d231",
+      "status": "success"
+    },
+    "pre_status_transition_replay": {
+      "byte_size": 246268,
+      "sha256": "bd56b141b10f41d15457896301c633bc74daba450967f6beac807c36d28c082a",
+      "status": "success"
+    }
+  },
+  "transport_decomposition": {
+    "crossed_committed_roots": {
+      "committed": 350,
+      "crossed": 2
+    },
+    "sample_pool": {
+      "defined_root_count": 350,
+      "flip_count": 8,
+      "flip_denominator": 573
+    },
+    "truthful_push": {
+      "full_reach": {
+        "ci95": [
+          0.33487013189648,
+          0.4064924561310031
+        ],
+        "count": 381,
+        "point": 0.36991469816272965,
+        "resamples": 2000
+      },
+      "generic_reach": {
+        "ci95": [
+          0.32776602205887323,
+          0.38822395833333334
+        ],
+        "count": 381,
+        "point": 0.3574475065616798,
+        "resamples": 2000
+      },
+      "specific_after_generic": {
+        "ci95": [
+          -0.016002661064425765,
+          0.04061771010410591
+        ],
+        "count": 381,
+        "point": 0.012467191601049869,
+        "remainder": 0.012467191601049869,
+        "remainder_ci": [
+          -0.016002661064425765,
+          0.04061771010410591
+        ],
+        "resamples": 2000
+      }
+    }
+  },
+  "verdict": "not-found-under-this-instrument, instrument fully characterized"
+}

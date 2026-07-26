@@ -1,0 +1,300 @@
+{
+  "schema_version": 2,
+  "registry_path": "docs/results_registry.yaml",
+  "artifacts": [
+    {
+      "artifact_id": "c1-public-receipt",
+      "result_id": "c1_matched_control_audit",
+      "claim_id": "C1",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c1_matched_control_audit.json"
+      },
+      "sha256": "ec63517b637aca341b7678e3f68ef1baeb1410c308eec5f8d20421da5998e91f",
+      "byte_size": 63678,
+      "producer": "experiments/report_powered150_matched_control_audit.py",
+      "producer_command": ".venv/bin/python experiments/report_powered150_matched_control_audit.py --selector SOURCE_SELECTOR.json --cng SOURCE_CNG.json --action-response SOURCE_ACTION_RESPONSE.json --receipt paper_artifacts/c1_matched_control_audit.json --folds 4 --seed 20260726 --bootstrap 2000",
+      "input_hashes": {
+        "action_response_field": "272322d80d23a01bf4a2f545f82fb9d0a9612d89cfab93a4af1319f9dccf19ab",
+        "cng_selector": "962d11da8863d2cb2eed023573d9e0219ccb9af7a5c547ca643d9414c52b4a97",
+        "historical_selector": "ae35eb651fca6b27b641d8b780db304c21e84d3f7b652622b8132b0e4ee43542"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": null,
+        "weights_sha256": null,
+        "config_sha256": null,
+        "tokenizer_sha256": null,
+        "note": "The legacy run did not retain immutable checkpoint-component hashes; the receipt binds the retained source artifact bytes."
+      },
+      "provenance": {
+        "registration_tier": "retrospective_synthesis",
+        "confirmatory": false,
+        "lifecycle_status": "completed_retrospective_saved_field_audit",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c2-public-receipt",
+      "result_id": "c2_dose_control_receipt",
+      "claim_id": "C2",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c2_dose_control_receipt.json"
+      },
+      "sha256": "2084c01f07125b99bdcc1d774756fc7fc5d48f5fcba61b6b43798711be4f732d",
+      "byte_size": 3537,
+      "producer": "experiments/report_public_steering_receipts.py",
+      "producer_command": ".venv/bin/python experiments/report_public_steering_receipts.py --c2-source SOURCE_C2.json --c12-primary SOURCE_C12_PRIMARY.json --c12-followup SOURCE_C12_FOLLOWUP.json --c2-out paper_artifacts/c2_dose_control_receipt.json --c12-out paper_artifacts/c12_steering_decomposition_receipt.json --bootstrap-seed 20260724 --bootstrap-resamples 10000",
+      "input_hashes": {
+        "targeted_generation_audit": "8126657922cc6e665d631b530bd403409d2f69faa56dab4fc446abdb508bab48",
+        "dense_generation": "e87d46578caa310e8bc405f0242837ab9335e62e526371cbcee1aedf10853437",
+        "fixed_88_generation": "ad45dd068646f87eed25b74895a06e8dff42606d8e491680a18821868dc15533",
+        "fixed_96_generation": "c63f9b6cbf3e3e7364a14835873a8ed39a3ed3f7409dfe65785255070a41cd53",
+        "fixed_128_generation": "375a7f2bfec9bfb5e53ed0abb86b8691eaee9abdfc18eb1edcf667db3760b417"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": null,
+        "weights_sha256": null,
+        "config_sha256": null,
+        "tokenizer_sha256": null,
+        "note": "The legacy run did not retain immutable checkpoint-component hashes; the receipt binds the retained source artifact bytes."
+      },
+      "provenance": {
+        "registration_tier": "retrospective_synthesis",
+        "confirmatory": false,
+        "lifecycle_status": "completed_retrospective_generation_audit",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c5-public-receipt",
+      "result_id": "c5_natural_prose_control_receipt",
+      "claim_id": "C5",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c5_natural_prose_control_receipt.json"
+      },
+      "sha256": "7626ee0e10555c319ba46f8adf94b347ca885288cf4d958836304453c8ee4d15",
+      "byte_size": 8251,
+      "producer": "experiments/report_public_natural_prose_control_receipt.py",
+      "producer_command": ".venv/bin/python experiments/report_public_natural_prose_control_receipt.py --primary SOURCE_C5_PRIMARY.json --random SOURCE_C5_RANDOM.json --sign-flip SOURCE_C5_SIGN_FLIP.json --out paper_artifacts/c5_natural_prose_control_receipt.json",
+      "input_hashes": {
+        "prospective_heldout_family_test": "727db19d5c28168831793e342dec6bc2c05417f6bdebdd56d0d1469477d2462d",
+        "matched_random_axis": "03646472c4b539c2f33f0516fa813529d87f7113ca477f2ac7568f3e892a5041",
+        "sign_flipped_axis": "4e125bee11957f89afa474830393fa83346708a7196a0b86199aebed272efcc6"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": null,
+        "weights_sha256": null,
+        "config_sha256": null,
+        "tokenizer_sha256": null,
+        "note": "The legacy run did not retain immutable checkpoint-component hashes; the receipt binds the retained source artifact bytes."
+      },
+      "provenance": {
+        "registration_tier": "prospective",
+        "confirmatory": false,
+        "lifecycle_status": "completed_prospective_evaluation_registration_history_not_in_public_receipt",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c9-public-receipt",
+      "result_id": "c9_pressure_commitment_receipt",
+      "claim_id": "C9",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c9_pressure_commitment_receipt.json"
+      },
+      "sha256": "29bb2d1b288c269a5e6c1eb1bb16600264f5643f06c347c5177c3345856d6675",
+      "byte_size": 12979,
+      "producer": "experiments/report_public_natpress_receipt.py",
+      "producer_command": ".venv/bin/python experiments/report_public_natpress_receipt.py --scripted-outcomes SOURCE_C9_SCRIPTED.json --adaptive-outcomes SOURCE_C9_ADAPTIVE.json --hazard-report SOURCE_C9_HAZARD.json --dissociation-report SOURCE_C9_DISSOCIATION.json --dissociation-bank-rows SOURCE_C9_ROWS.json --p3-report SOURCE_C9_P3.json --out paper_artifacts/c9_pressure_commitment_receipt.json",
+      "input_hashes": {
+        "scripted_outcomes_report": "91d8495c8f0339071c3d6124dd2823bf1ef9e231b003438f1dc6b5ffae73dde2",
+        "adaptive_outcomes_report": "9f815c874ec2f0b4906790152674b5759633d98cc8ba9e6ab60ba3b1e0a5cdd8",
+        "hazard_law_report": "e5ceea133e13cb639e2c94ea466c1ccd93f8e0ba63a6678421d1fd99bd2504ca",
+        "dissociation_hazard_report": "e8855ed29c0997c8b34ff97d0ecd272979998c5fc903483473d8381ac96f9fe3",
+        "dissociation_source_bank_rows": "a3295ca2ec350ff657dfabcfaa77b0e2c065a0bb6377c5e6e39491533089bdd8",
+        "p3_report": "dbcc8fcaa66469b86ae50ecdbbd10d03ddd5f1de8696b484ccc798b0feaabe83",
+        "scripted_protocol": "5821311e4fb6b1280665cf63cc94f9cd86824a7f66fbde051cf0edde01ea8e78",
+        "dissociation_protocol": "55398c271d347c50224dde0ca9761c874206c9dfcd35c8abd7548c21569cfa3b"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": null,
+        "weights_sha256": null,
+        "config_sha256": null,
+        "tokenizer_sha256": null,
+        "note": "The legacy run did not retain immutable checkpoint-component hashes; the receipt binds the retained source artifact bytes."
+      },
+      "provenance": {
+        "registration_tier": "retrospective_synthesis",
+        "confirmatory": false,
+        "lifecycle_status": "completed_development_bank_retrospective_synthesis",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c10-public-receipt",
+      "result_id": "c10_postcommitment_detection_receipt",
+      "claim_id": "C10",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c10_postcommitment_detection_receipt.json"
+      },
+      "sha256": "2eb47880c11bec0c45e91d2b54553abe32d56ba59bdeda93dea2942b1a7a37cb",
+      "byte_size": 5563,
+      "producer": "experiments/report_public_detection_receipts.py",
+      "producer_command": ".venv/bin/python experiments/report_public_detection_receipts.py --c10-outcome-report SOURCE_C10_OUTCOMES.json --c10-comparator-report SOURCE_C10_COMPARATOR.json --structured-action-gate-report SOURCE_STRUCTURED_GATE.json --c11-spectral-score SOURCE_C11_SPECTRAL.json --c11-connection-path-score SOURCE_C11_CONNECTION.json --c11-risk-gate-repair-report SOURCE_C11_RISK.json --c11-stochastic-floor-report SOURCE_C11_FLOOR.json --c11-sealed-risk-report SOURCE_C11_SEALED.json --c10-out paper_artifacts/c10_postcommitment_detection_receipt.json --c11-out paper_artifacts/c11_precommitment_warning_receipt.json",
+      "input_hashes": {
+        "post_commitment_growth_outcomes": "3f7d607131000fd072c42e9234ec3adfedc093e53d8521a895387e580268d572",
+        "post_commitment_linear_probe_comparator": "0bf4107ba6210b64fca0bf847bf328684bc6b0413b04e030d79fcd4a3b912db6",
+        "structured_action_gate": "80806a4084c629e4a75ac3819ec8c4af35aed8650ce57ee12a8204f1f70ea0aa",
+        "structured_action_protocol": "9f928a67f013bfee86d3f985e3cd13a691dc25fb8337a239d815739d1613a531"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+        "weights_sha256": "21c655710fb8e6b4362123cc2a1b9bb0f7395861faeb57c2ba8e401f903c4683",
+        "config_sha256": "05863aa10ee8de2e21e4d768f2abc03053b5e04489c59a5aa97a222db60c8df6",
+        "tokenizer_sha256": "e901ac02d4fd9ca87689c4399c57897d03f261b9671f01808f9127614dc50b4c",
+        "note": "Exact BF16 checkpoint identity retained by the structured-action capture."
+      },
+      "provenance": {
+        "registration_tier": "post_hoc_registered",
+        "confirmatory": false,
+        "lifecycle_status": "development_exploratory_gate_missed_56_of_60",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c11-public-receipt",
+      "result_id": "c11_precommitment_warning_receipt",
+      "claim_id": "C11",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c11_precommitment_warning_receipt.json"
+      },
+      "sha256": "fecc425edbdb19476e36f6edf0b54ce0cb905991a4c3d2a2ef9e241571a4e372",
+      "byte_size": 7195,
+      "producer": "experiments/report_public_detection_receipts.py",
+      "producer_command": ".venv/bin/python experiments/report_public_detection_receipts.py --c10-outcome-report SOURCE_C10_OUTCOMES.json --c10-comparator-report SOURCE_C10_COMPARATOR.json --structured-action-gate-report SOURCE_STRUCTURED_GATE.json --c11-spectral-score SOURCE_C11_SPECTRAL.json --c11-connection-path-score SOURCE_C11_CONNECTION.json --c11-risk-gate-repair-report SOURCE_C11_RISK.json --c11-stochastic-floor-report SOURCE_C11_FLOOR.json --c11-sealed-risk-report SOURCE_C11_SEALED.json --c10-out paper_artifacts/c10_postcommitment_detection_receipt.json --c11-out paper_artifacts/c11_precommitment_warning_receipt.json",
+      "input_hashes": {
+        "connection_path_field_score": "3fdb58719cd20bb81cffb91ce6830770149e5abf7e4a1198d2932f41c094f4ef",
+        "intrinsic_spectral_field_score": "93780a295d8da5ba06387912d038ad7f6c0f0ba4596954a98cf2942c411cd283",
+        "partial_connection_report": "3e2ab2274d2d890491aa94297b8d2b670df524f9c8100ca3ca1562f51f51741a",
+        "pre_status_honestward_field_sealed_report": "af2681460f01e37f4fc76cfa2c55739f2dc258527448585a2e09ff615166a9cb",
+        "pre_status_risk_gate_repair_report": "746fb36298453fa9bf0cabd87ba6186cc4d3f22620f59bcf13911234c3e9de0f",
+        "structured_action_protocol": "9f928a67f013bfee86d3f985e3cd13a691dc25fb8337a239d815739d1613a531"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+        "weights_sha256": "21c655710fb8e6b4362123cc2a1b9bb0f7395861faeb57c2ba8e401f903c4683",
+        "config_sha256": "05863aa10ee8de2e21e4d768f2abc03053b5e04489c59a5aa97a222db60c8df6",
+        "tokenizer_sha256": "e901ac02d4fd9ca87689c4399c57897d03f261b9671f01808f9127614dc50b4c",
+        "note": "Exact BF16 checkpoint identity retained by the structured-action capture."
+      },
+      "provenance": {
+        "registration_tier": "retrospective_synthesis",
+        "confirmatory": false,
+        "lifecycle_status": "completed_retrospective_warning_instrument_audit",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c12-public-receipt",
+      "result_id": "c12_steering_decomposition_receipt",
+      "claim_id": "C12",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c12_steering_decomposition_receipt.json"
+      },
+      "sha256": "8a29a0c1b23491a4ebe7890c332aa7076ea48404440c6b45166e2df6b4c0f916",
+      "byte_size": 3381,
+      "producer": "experiments/report_public_steering_receipts.py",
+      "producer_command": ".venv/bin/python experiments/report_public_steering_receipts.py --c2-source SOURCE_C2.json --c12-primary SOURCE_C12_PRIMARY.json --c12-followup SOURCE_C12_FOLLOWUP.json --c2-out paper_artifacts/c2_dose_control_receipt.json --c12-out paper_artifacts/c12_steering_decomposition_receipt.json --bootstrap-seed 20260724 --bootstrap-resamples 10000",
+      "input_hashes": {
+        "primary_six_arm_audit": "96673b28a22e16a0c95de95cde4c6a28001fe67897f6f000738c5c0dc8948eba",
+        "primary_bound_results": "953f6a447179c4d430777af2fe05184d811e0c546de0d6efa2b5ac3d9d3f3f62",
+        "off_tangent_followup_audit": "32d8fc7c05bdc718b223a26c6f4290d48b5dde584b3499452bdd85a6fd422314",
+        "followup_bound_results": "ff74009e285fdbd9b09d120aa1c8bf9b2473a42bdde4aa1684e9bcb016521d6d"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": null,
+        "weights_sha256": null,
+        "config_sha256": null,
+        "tokenizer_sha256": null,
+        "note": "The legacy run did not retain immutable checkpoint-component hashes; the receipt binds the retained source artifact bytes."
+      },
+      "provenance": {
+        "registration_tier": "retrospective_synthesis",
+        "confirmatory": false,
+        "lifecycle_status": "completed_legacy_mixed_precision_pilot",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    },
+    {
+      "artifact_id": "c13-public-receipt",
+      "result_id": "c13_gauge_control_receipt",
+      "claim_id": "C13",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c13_gauge_control_receipt.json"
+      },
+      "sha256": "51ba440baf595f178c829aa210b3a770539e611cb883a371b8c7a2ba78f9a8e5",
+      "byte_size": 7049,
+      "producer": "experiments/report_public_gauge_receipt.py",
+      "producer_command": ".venv/bin/python experiments/report_public_gauge_receipt.py --causal-report SOURCE_C13_CAUSAL.json --pre-status-transitions SOURCE_C13_TRANSITIONS.json --pre-status-response SOURCE_C13_RESPONSE.json --holonomy-report SOURCE_C13_HOLONOMY.json --out paper_artifacts/c13_gauge_control_receipt.json",
+      "input_hashes": {
+        "causal_replay_report": "7ada2e244020db175d6d263058142c48dc0eb32b862e764973622dd30de5da75",
+        "holonomy_report": "45a89541fbb43ba6fbe517c1c785510f4ceafb4f9af979a4038c763eeb27d014",
+        "pre_status_response_diagnostic": "3f231b93dfd50389fc7e50a26ac8fab315318f6653bbf917469e19b89024d231",
+        "pre_status_transition_replay": "bd56b141b10f41d15457896301c633bc74daba450967f6beac807c36d28c082a",
+        "structured_action_protocol": "9f928a67f013bfee86d3f985e3cd13a691dc25fb8337a239d815739d1613a531"
+      },
+      "model_dependent": true,
+      "model_identity": {
+        "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+        "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+        "weights_sha256": "21c655710fb8e6b4362123cc2a1b9bb0f7395861faeb57c2ba8e401f903c4683",
+        "config_sha256": "05863aa10ee8de2e21e4d768f2abc03053b5e04489c59a5aa97a222db60c8df6",
+        "tokenizer_sha256": "e901ac02d4fd9ca87689c4399c57897d03f261b9671f01808f9127614dc50b4c",
+        "note": "Exact BF16 checkpoint identity retained by the structured-action capture."
+      },
+      "provenance": {
+        "registration_tier": "retrospective_synthesis",
+        "confirmatory": false,
+        "lifecycle_status": "completed_one_step_causal_replay_holonomy_inadequate",
+        "source_commit": null,
+        "source_tree_dirty": null,
+        "note": "The compact public receipt binds retained source bytes; exact source-tree chronology is not fully reconstructed in this public closure."
+      }
+    }
+  ]
+}
