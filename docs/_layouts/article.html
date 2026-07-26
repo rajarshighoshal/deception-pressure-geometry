@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | escape }}</title>
+  <meta name="description" content="{{ page.deck | default: page.title | strip_html | strip_newlines | escape }}">
+  <meta name="author" content="{{ page.byline | default: 'Rajarshi Ghoshal' | escape }}">
+  <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ page.title | escape }}">
+  <meta property="og:description" content="{{ page.deck | default: page.title | strip_html | strip_newlines | escape }}">
+  <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}/">
+  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/figures/structured_action_control_audit.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="{{ '/assets/article.css' | relative_url }}">
+  <link rel="preload" as="style" href="{{ '/assets/article.css' | relative_url }}">
+</head>
+<body>
+  <a class="skip-link" href="#article-body">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header" aria-label="Article page header">
+      <p class="site-kicker">Research Article</p>
+      <a class="site-brand" href="{{ '/' | relative_url }}">Decodability Is Not Control</a>
+      <div class="progress-shell" aria-hidden="true">
+        <div
+          id="reading-progress"
+          class="progress-bar"
+          role="progressbar"
+          aria-label="Reading progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        ></div>
+      </div>
+    </header>
+
+    <main id="article-body" class="article-shell" tabindex="-1">
+      <article class="article-card">
+        <header class="hero">
+          <p class="hero-kicker">Longform artifact</p>
+          <h1>{{ page.title }}</h1>
+          {% if page.byline %}
+          <p class="hero-byline">By {{ page.byline }}</p>
+          {% endif %}
+          {% if page.deck %}
+          <p class="hero-deck">{{ page.deck }}</p>
+          {% endif %}
+          {% if page.nav_links %}
+          <nav class="compact-nav" aria-label="Article resources">
+            {% for item in page.nav_links %}
+            <a href="{{ item.url }}">{{ item.label }}</a>
+            {% endfor %}
+          </nav>
+          {% endif %}
+
+          {% if page.evidence_chips %}
+          <ul class="chip-list" aria-label="Evidence summary">
+            {% for chip in page.evidence_chips %}
+            <li><span>{{ chip }}</span></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </header>
+
+        <section class="prose">
+          {{ content }}
+        </section>
+
+        {% if page.assistance_note %}
+        <p class="assistance-note">{{ page.assistance_note }}</p>
+        {% endif %}
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <a href="https://github.com/rajarshighoshal/deception-pressure-geometry">GitHub repository</a>
+      <a href="https://github.com/rajarshighoshal/deception-pressure-geometry/blob/main/docs/results_registry.yaml">Results registry</a>
+      <a href="#article-body">Back to top</a>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      const bar = document.getElementById('reading-progress');
+      const root = document.documentElement;
+      const clamp = (value) => Math.max(0, Math.min(100, value));
+
+      const update = () => {
+        const scrolled = window.scrollY || root.scrollTop || document.body.scrollTop || 0;
+        const total = Math.max((root.scrollHeight - window.innerHeight) || 0, 1);
+        const percent = clamp((scrolled / total) * 100);
+        bar.style.setProperty('--progress', `${percent.toFixed(2)}%`);
+        bar.setAttribute('aria-valuenow', Math.round(percent).toString());
+      };
+
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+    })();
+  </script>
+</body>
+</html>

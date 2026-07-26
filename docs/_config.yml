@@ -1,0 +1,11 @@
+title: Decodability Is Not Control
+description: "A public longform narrative for the Llama-3.1-8B deception-pressure geometry study."
+url: "https://rajarshighoshal.github.io"
+baseurl: "/deception-pressure-geometry"
+markdown: kramdown
+permalink: /:path/
+theme: null
+plugins: []
+exclude:
+  - "README.md"
+  - ".venv"

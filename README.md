@@ -2,6 +2,8 @@
 
 ## Auditing activation-space geometry for deceptive commitment
 
+[Read the narrative article](https://rajarshighoshal.github.io/deception-pressure-geometry/)
+
 This repository is the public research artifact for a study of pressure-induced false commitment
 in Llama-3.1-8B-Instruct. We ask three questions that are often collapsed into one:
 

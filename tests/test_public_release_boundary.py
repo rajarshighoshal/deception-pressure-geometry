@@ -7,7 +7,19 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_ROOTS = ("README.md", "docs", "configs", "experiments", "src")
-TEXT_SUFFIXES = {"", ".md", ".py", ".yaml", ".yml", ".json", ".toml", ".txt"}
+TEXT_SUFFIXES = {
+    "",
+    ".css",
+    ".html",
+    ".js",
+    ".json",
+    ".md",
+    ".py",
+    ".toml",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
 EXCLUDED = {Path("experiments/verify_paper_artifacts.py")}
 FORBIDDEN = (
     ".private/",
