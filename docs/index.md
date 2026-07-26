@@ -3,16 +3,6 @@ layout: article
 title: I tried to make Llama-8B lie under pressure and most of what I built didn't work
 deck: "A two-month audit of pressure-induced false commitment, activation-space readout, and geometric control in Llama-3.1-8B-Instruct."
 byline: "Rajarshi Ghoshal"
-evidence_chips:
-  - "Pressure schedule reliably induces false commitment (C9)."
-  - "Post-action decode is strong; plain residual linear probe remains strongest (C10)."
-  - "Pre-commitment geometry did not beat matched nuisance controls (C11)."
-  - "Prospective natural-prose geometric controller fails; oracle-supplied correction is conditional (C1/C5)."
-nav_links:
-  - label: GitHub repo
-    url: "https://github.com/rajarshighoshal/deception-pressure-geometry"
-  - label: Results registry
-    url: "https://github.com/rajarshighoshal/deception-pressure-geometry/blob/main/docs/results_registry.yaml"
 assistance_note: >-
   The author wrote the post and owns the research design, methodology, claims, and prose.
   LLMs assisted with experiment code, plots and tables, background lookup, typo correction,

@@ -14,90 +14,44 @@
   <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/figures/structured_action_control_audit.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="{{ '/assets/article.css' | relative_url }}">
-  <link rel="preload" as="style" href="{{ '/assets/article.css' | relative_url }}">
 </head>
 <body>
-  <a class="skip-link" href="#article-body">Skip to content</a>
-  <div class="site-shell">
-    <header class="site-header" aria-label="Article page header">
-      <p class="site-kicker">Research Article</p>
-      <a class="site-brand" href="{{ '/' | relative_url }}">Decodability Is Not Control</a>
-      <div class="progress-shell" aria-hidden="true">
-        <div
-          id="reading-progress"
-          class="progress-bar"
-          role="progressbar"
-          aria-label="Reading progress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-        ></div>
+  <a class="skip-link" href="#article">Skip to article</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ '/' | relative_url }}">Deception Pressure Geometry</a>
+      <nav aria-label="Research resources">
+        <a href="https://github.com/rajarshighoshal/deception-pressure-geometry">Code</a>
+        <a href="https://github.com/rajarshighoshal/deception-pressure-geometry/blob/main/docs/results_registry.yaml">Evidence</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="article">
+    <article>
+      <header class="article-header">
+        <p class="article-meta">Research note · July 2026</p>
+        <h1>{{ page.title }}</h1>
+        {% if page.deck %}<p class="deck">{{ page.deck }}</p>{% endif %}
+        {% if page.byline %}<p class="byline">Rajarshi Ghoshal</p>{% endif %}
+      </header>
+
+      <div class="article-body">
+        {{ content }}
       </div>
-    </header>
 
-    <main id="article-body" class="article-shell" tabindex="-1">
-      <article class="article-card">
-        <header class="hero">
-          <p class="hero-kicker">Longform artifact</p>
-          <h1>{{ page.title }}</h1>
-          {% if page.byline %}
-          <p class="hero-byline">By {{ page.byline }}</p>
-          {% endif %}
-          {% if page.deck %}
-          <p class="hero-deck">{{ page.deck }}</p>
-          {% endif %}
-          {% if page.nav_links %}
-          <nav class="compact-nav" aria-label="Article resources">
-            {% for item in page.nav_links %}
-            <a href="{{ item.url }}">{{ item.label }}</a>
-            {% endfor %}
-          </nav>
-          {% endif %}
+      {% if page.assistance_note %}
+      <aside class="assistance-note" aria-label="Research assistance note">
+        {{ page.assistance_note }}
+      </aside>
+      {% endif %}
+    </article>
+  </main>
 
-          {% if page.evidence_chips %}
-          <ul class="chip-list" aria-label="Evidence summary">
-            {% for chip in page.evidence_chips %}
-            <li><span>{{ chip }}</span></li>
-            {% endfor %}
-          </ul>
-          {% endif %}
-        </header>
-
-        <section class="prose">
-          {{ content }}
-        </section>
-
-        {% if page.assistance_note %}
-        <p class="assistance-note">{{ page.assistance_note }}</p>
-        {% endif %}
-      </article>
-    </main>
-
-    <footer class="site-footer">
-      <a href="https://github.com/rajarshighoshal/deception-pressure-geometry">GitHub repository</a>
-      <a href="https://github.com/rajarshighoshal/deception-pressure-geometry/blob/main/docs/results_registry.yaml">Results registry</a>
-      <a href="#article-body">Back to top</a>
-    </footer>
-  </div>
-
-  <script>
-    (() => {
-      const bar = document.getElementById('reading-progress');
-      const root = document.documentElement;
-      const clamp = (value) => Math.max(0, Math.min(100, value));
-
-      const update = () => {
-        const scrolled = window.scrollY || root.scrollTop || document.body.scrollTop || 0;
-        const total = Math.max((root.scrollHeight - window.innerHeight) || 0, 1);
-        const percent = clamp((scrolled / total) * 100);
-        bar.style.setProperty('--progress', `${percent.toFixed(2)}%`);
-        bar.setAttribute('aria-valuenow', Math.round(percent).toString());
-      };
-
-      update();
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
-    })();
-  </script>
+  <footer>
+    <span>© 2026 Rajarshi Ghoshal</span>
+    <a href="https://github.com/rajarshighoshal/deception-pressure-geometry">Public artifact</a>
+  </footer>
 </body>
 </html>
