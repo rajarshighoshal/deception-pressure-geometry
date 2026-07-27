@@ -13,7 +13,9 @@ I started with a simple picture: deception occupies a structured region of activ
 space, find that structure, push the model out of it without pushing it off the
 language manifold.
 
-That picture survived only in pieces.
+That picture survived only in pieces, and the pieces have an order. Pressure creates
+structure. The landing is readable. Navigation turns out to be a selection problem. And
+the structure stops at the boundary of the task that produced it.
 
 Conversational pressure reliably made the model reverse a fact it had previously stated
 correctly. After it committed, the outcome was extremely easy to decode from activations.
@@ -207,6 +209,29 @@ equally informed fixed linear policy.
 
 ![Structured-action control and information budgets](figures/structured_action_control_audit.png)
 
+## The structure did not travel
+
+The obvious next question was whether any of it survives outside the machine-checkable
+PASS/FAIL world that produced it. I ran the trained detectors zero-shot on a 484-row
+external deception bank with free prose instead of a status slot.
+
+The best transferred detector reached AUROC **0.63**; detectors trained on the target
+bank itself reached **0.82–0.87** on the same rows. Matched architectures told the
+useful version of the story: linear, path, and grid models all sat near chance
+zero-shot, and all were strong when fitted natively — so the failure is the domain,
+not the model class. The source and target honesty directions are nearly orthogonal
+(cosine **0.05**).
+
+Behavioral transfer was worse: zero soft-control successes out of 484, with coherence
+destroyed. The planned full-scale suite crashed on a determinism check and was never
+rerun, so the behavioral record is thinner than the detector record.
+
+My read: the source representation is task-shaped. The source bank's deception is a
+machine-checkable PASS/FAIL field; the target bank has no such field, and the same
+scenarios lose the label entirely in free prose. Whether task shape is the reason
+transfer failed, I cannot prove — representation, dose, policy, and evaluation all
+changed together.
+
 ## The prospective natural-prose controller failed
 
 The closest test to the controller I actually wanted used fresh natural-prose
@@ -258,8 +283,10 @@ structure is absent.
 
 ## What's left after all that
 
-The contribution is not a universal deception controller. It's an evidence ladder that
-keeps several commonly conflated results apart:
+The contribution is not a universal deception controller. It's a map of where the
+geometric hypothesis held and where it stopped: pressure flows, the landing reads
+linearly, navigation is a selection problem, and none of it yet travels. It's also an
+evidence ladder that keeps several commonly conflated results apart:
 
 - a controlled pressure schedule that reliably elicits false operational commitment;
 - a one-token action protocol that separates commitment from prose without constrained
