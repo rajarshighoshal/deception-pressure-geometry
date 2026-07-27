@@ -212,6 +212,18 @@ def _ratio(n: float, d: float, label: str) -> float:
     return float(n) / float(d)
 
 
+def _safe_rate(n: float, d: float) -> float:
+    return 0.0 if d <= 0 else float(n) / float(d)
+
+
+def _to_int(payload: dict[str, Any], field: str, label: str, *, default: int | None = None) -> int | None:
+    if field not in payload:
+        return default
+    value = payload[field]
+    assert_condition(isinstance(value, int), f"{label} {field} must be integer")
+    return int(value)
+
+
 def validate_claim(payload: dict[str, Any], claim_id: str) -> dict[str, Any]:
     for field in ("id", "statement", "status", "registration_tier", "boundary"):
         if field not in payload:
@@ -275,7 +287,7 @@ def parse_c1(payload: dict[str, Any]) -> dict[str, Any]:
         return summary
 
     cng_oracle = _extract("context_chart_feature_gate_equivariant_neural_context")
-    learned_context = _extract("learned_context_ridge_reward")
+    learned_ridge_route_feature = _extract("learned_context_ridge_reward")
     route_matched = _extract("route_matched_fixed_coordinate")
 
     c1 = {
@@ -292,21 +304,21 @@ def parse_c1(payload: dict[str, Any]) -> dict[str, Any]:
                 "deceptive_n": cng_oracle["deceptive_n"],
                 "honest_n": cng_oracle["honest_n"],
             },
-            "learned_context": {
+            "learned_ridge_route_feature": {
                 "fix_rate": _ratio(
-                    learned_context["fixes_error"],
-                    learned_context["deceptive_n"],
-                    "C1 learned context-only fix rate",
+                    learned_ridge_route_feature["fixes_error"],
+                    learned_ridge_route_feature["deceptive_n"],
+                    "C1 learned ranker (route feature) fix rate",
                 ),
                 "harm_rate": _ratio(
-                    learned_context["honest_harms"],
-                    learned_context["honest_n"],
-                    "C1 learned context-only harm rate",
+                    learned_ridge_route_feature["honest_harms"],
+                    learned_ridge_route_feature["honest_n"],
+                    "C1 learned ranker (route feature) harm rate",
                 ),
-                "fixes": learned_context["fixes_error"],
-                "harms": learned_context["honest_harms"],
-                "deceptive_n": learned_context["deceptive_n"],
-                "honest_n": learned_context["honest_n"],
+                "fixes": learned_ridge_route_feature["fixes_error"],
+                "harms": learned_ridge_route_feature["honest_harms"],
+                "deceptive_n": learned_ridge_route_feature["deceptive_n"],
+                "honest_n": learned_ridge_route_feature["honest_n"],
             },
             "route_matched": {
                 "fix_rate": _ratio(
@@ -332,6 +344,12 @@ def parse_c1(payload: dict[str, Any]) -> dict[str, Any]:
         ),
         "cng_selected_mismatches": int(
             info.get("context_chart_feature_gate_equivariant_neural_context", {}).get("selected_target_route_mismatches", 0)
+        ),
+        "learned_ridge_route_feature_truth_mismatches": int(
+            info.get("learned_context_ridge_reward", {}).get("route_truth_mismatches", 0)
+        ),
+        "learned_ridge_route_feature_selected_mismatches": int(
+            info.get("learned_context_ridge_reward", {}).get("selected_target_route_mismatches", 0)
         ),
         "route_matched_truth_mismatches": int(
             info.get("route_matched_fixed_coordinate", {}).get("route_truth_mismatches", 0)
@@ -380,10 +398,54 @@ def parse_c5(payload: dict[str, Any]) -> dict[str, Any]:
     result = {}
     for arm in ("native_gated", "frequent_early_window", "family_matched_linear"):
         arm_payload = arms.get(arm, {})
-        status = arm_payload.get("machine_status", {}).get("deceptive_delta_vs_base", {})
+        machine_status = arm_payload.get("machine_status", {})
+        status = machine_status.get("deceptive_delta_vs_base", {})
+        family_status = arm_payload.get("machine_status_by_family")
+        assert_condition(isinstance(family_status, dict), f"C5 machine_status_by_family missing for {arm}")
+        assert_condition(isinstance(machine_status, dict), f"C5 machine_status missing for {arm}")
         assert_condition(isinstance(status, dict), f"C5 missing machine-status delta for {arm}")
         assert_condition("point" in status, f"C5 missing point for {arm}")
-        result[arm] = status
+        population = arm_payload.get("population", {})
+        assert_condition(isinstance(population, dict), f"C5 population missing for {arm}")
+        telemetry = arm_payload.get("intervention_telemetry", {})
+        intervention = telemetry if isinstance(telemetry, dict) else {}
+        deceptive_telemetry = intervention.get("deceptive", {})
+        honest_telemetry = intervention.get("honest", {})
+        if not isinstance(deceptive_telemetry, dict):
+            deceptive_telemetry = {}
+        if not isinstance(honest_telemetry, dict):
+            honest_telemetry = {}
+
+        result[arm] = {
+            **status,
+            "changed_vs_base": _to_int(arm_payload, "changed_vs_base", f"C5 {arm}", default=0) or 0,
+            "deceptive_fixes": _to_int(machine_status, "deceptive_fixes", f"C5 {arm}", default=0) or 0,
+            "deceptive_harms": _to_int(machine_status, "deceptive_harms", f"C5 {arm}", default=0) or 0,
+            "honest_fixes": _to_int(machine_status, "honest_fixes", f"C5 {arm}", default=0) or 0,
+            "honest_harms": _to_int(machine_status, "honest_harms", f"C5 {arm}", default=0) or 0,
+            "deceptive_population": _to_int(population, "deceptive", f"C5 {arm}", default=0) or 0,
+            "honest_population": _to_int(population, "honest", f"C5 {arm}", default=0) or 0,
+            "deceptive_eligible": _to_int(deceptive_telemetry, "eligible", f"C5 {arm} deceptive intervention", default=0) or 0,
+            "deceptive_fired": _to_int(deceptive_telemetry, "fired", f"C5 {arm} deceptive intervention", default=0) or 0,
+            "honest_eligible": _to_int(honest_telemetry, "eligible", f"C5 {arm} honest intervention", default=0) or 0,
+            "honest_fired": _to_int(honest_telemetry, "fired", f"C5 {arm} honest intervention", default=0) or 0,
+            "machine_status_by_family": [
+                {
+                    "family": family,
+                    "deceptive_delta": _point(
+                        family_payload.get("deceptive_delta_vs_base", {}),
+                        f"C5 {arm} {family} deceptive delta",
+                    ),
+                }
+                for family, family_payload in sorted(family_status.items())
+                if isinstance(family_payload, dict)
+                and isinstance(family_payload.get("deceptive_delta_vs_base"), dict)
+            ],
+        }
+        assert_condition(
+            len(result[arm]["machine_status_by_family"]) == 4,
+            f"C5 {arm} should expose four family deceptive-delta effects",
+        )
     checks = payload.get("checks")
     assert_condition(isinstance(checks, dict), "C5 checks missing")
     heldout = eval_payload.get("heldout_families", [])
@@ -555,6 +617,8 @@ def parse_c12(payload: dict[str, Any]) -> dict[str, Any]:
         return {
             "fix_rate": _ratio(p["deceptive_status_fixes"], deceptive_n, f"C12 {policy} fix rate"),
             "harm_rate": _ratio(p["honest_status_harms"], honest_n, f"C12 {policy} harm rate"),
+            "strict_fix_rate": _ratio(p["deceptive_strict_fixes"], deceptive_n, f"C12 {policy} strict fix rate"),
+            "strict_harm_rate": _ratio(p["honest_strict_harms"], honest_n, f"C12 {policy} strict harm rate"),
             "fixes": p["deceptive_status_fixes"],
             "strict_fixes": p["deceptive_strict_fixes"],
             "harms": p["honest_status_harms"],
@@ -650,18 +714,35 @@ def fig_pressure_behavior_and_hazard(data: dict[str, Any], out_dir: Path) -> tup
         c9["arms"]["adaptive_smooth"],
         c9["arms"]["adaptive_late"],
     ]
-    points = [_point(row, f"C9 {name}") for row, name in zip(rows, labels)]
+    colors = [BAR_COLOR, THRESHOLD if c9["arms"]["scripted_late"]["point"] < 0 else CONTEXT, BAR_COLOR, BAR_COLOR]
+    points = np.array([_point(row, f"C9 {name}") for row, name in zip(rows, labels)], dtype=float)
     err = np.array(
         [_errbar(row, labels=[f"C9 {name}"]) for row, name in zip(rows, labels)],
         dtype=float,
     ).T
     x = np.arange(len(labels))
-    top.bar(x, points, color=BAR_COLOR, alpha=0.85)
-    top.errorbar(x, points, yerr=err, fmt="none", color=INK, capsize=3)
+    top.plot(x[:2], points[:2], color=CONTEXT, lw=1.0, ls="--", alpha=0.8)
+    top.plot(x[2:], points[2:], color=BAR_COLOR, lw=1.0, ls="--", alpha=0.8)
+    top.errorbar(
+        x,
+        points,
+        yerr=err,
+        fmt="o",
+        markersize=6,
+        markerfacecolor=BAR_COLOR,
+        markeredgecolor=INK,
+        ecolor=INK,
+        capsize=3,
+    )
+    top.scatter(x, points, s=68, c=colors, zorder=3)
+    for idx, (value, name) in enumerate(zip(points, labels)):
+        top.text(idx, value + 0.03, f"{value:.3f}", ha="center", va="bottom", fontsize=7.2)
     top.set_title("Pressure behavior", loc="left")
     top.set_xticks(x)
     top.set_xticklabels(labels, rotation=10, ha="right")
     top.set_ylabel("P1b deceptive commitment rate")
+    top.set_ylim(-0.05, 1.0)
+    top.axhline(0.0, color=INK_SOFT, lw=1)
     top.set_ylim(0.0, 1.0)
     p2a_lines: list[str] = []
     for row in c9["contrasts"]["p2a"]:
@@ -702,8 +783,17 @@ def fig_pressure_behavior_and_hazard(data: dict[str, Any], out_dir: Path) -> tup
         dtype=float,
     ).T
     hazard_x = np.arange(len(hazard_labels))
-    bottom.bar(hazard_x, hazard_points, color=CONTEXT, alpha=0.85)
-    bottom.errorbar(hazard_x, hazard_points, yerr=hazard_err, fmt="none", color=INK, capsize=3)
+    bottom.errorbar(
+        hazard_x,
+        hazard_points,
+        yerr=hazard_err,
+        fmt="o",
+        markersize=5,
+        markerfacecolor=BAR_COLOR,
+        markeredgecolor=INK,
+        ecolor=INK,
+        capsize=3,
+    )
     bottom.set_title("Pressure hazard-law coefficients", loc="left")
     bottom.set_xticks(hazard_x)
     bottom.set_xticklabels(hazard_labels, rotation=10, ha="right")
@@ -753,44 +843,107 @@ def fig_decodability_timing_gap(data: dict[str, Any], out_dir: Path) -> tuple[Pa
         c10["probe"]["brier"],
     ]
     dec_x = np.arange(len(dec_labels))
-    dec_ax.bar(dec_x, dec_points, color=BAR_COLOR, alpha=0.9)
+    for idx, value in enumerate(dec_points):
+        dec_ax.scatter([idx], [value], s=44, color=BAR_COLOR, zorder=3)
+        dec_ax.text(idx, value + 0.003, f"{value:.3f}", ha="center", va="bottom", fontsize=7.2)
     dec_ax.set_xticks(dec_x)
     dec_ax.set_xticklabels(["Exact nuisance", "Relational graph", "Linear probe"], rotation=12, ha="right")
     dec_ax.set_ylabel("Family-macro Brier ↓")
     dec_ax.set_title("(a) Post-commitment prediction", loc="left")
-    for x_i, value in zip(dec_x, dec_points):
-        dec_ax.text(x_i, value + 0.003, f"{value:.3f}", ha="center", va="bottom", fontsize=7.2)
 
-    null_labels = ["Observed\ngraph gain", "Permutation\nnull mean", "Excess over\nnull mean"]
-    null_points = [c10["null"]["observed_gain"], c10["null"]["mean"], c10["null"]["excess"]]
+    null_labels = ["Observed\ngraph gain", "Permutation\nnull (mean)", "Excess over\nnull"]
+    null_observed = float(c10["null"]["observed_gain"])
+    null_null_mean = float(c10["null"]["mean"])
+    null_excess = float(c10["null"]["excess"])
+    null_range_min = float(c10["null"]["min"])
+    null_range_max = float(c10["null"]["max"])
+    null_points = [null_observed, null_null_mean, null_excess]
     null_x = np.arange(len(null_labels))
-    null_ax.bar(null_x, null_points, color=[BAR_COLOR, CONTEXT, THRESHOLD], alpha=0.88)
+
+    null_ax.errorbar(
+        null_x,
+        null_points,
+        yerr=np.zeros((2, len(null_x))),
+        fmt=" ",
+        ecolor=INK,
+        capsize=3,
+        zorder=3,
+    )
+
+    null_colors = [BAR_COLOR, CONTEXT, THRESHOLD if null_excess < 0 else BAR_COLOR]
+    null_ax.scatter(
+        null_x,
+        null_points,
+        s=56,
+        c=null_colors,
+        marker="o",
+        edgecolors=INK,
+        linewidths=0.9,
+        zorder=4,
+    )
+
+    null_ax.vlines(1, null_range_min, null_range_max, color=CONTEXT, lw=2.2, alpha=0.85)
+    null_ax.scatter([1, 1], [null_range_min, null_range_max], color=CONTEXT, marker="_")
+
+    for idx, (value, color) in enumerate(zip(null_points, null_colors)):
+        null_ax.text(
+            idx,
+            value + (0.0025 if value >= 0 else -0.0025),
+            f"{value:+.3f}",
+            ha="center",
+            va="bottom" if value >= 0 else "top",
+            fontsize=7.0,
+            color=color,
+        )
+    null_ax.text(
+        1.0,
+        null_range_max + 0.004,
+        (
+            "Permutation null range: "
+            f"[{null_range_min:.3f}, {null_range_max:.3f}]\n"
+            f"mean={null_null_mean:+.3f}"
+        ),
+        ha="center",
+        va="bottom",
+        fontsize=6.2,
+        color=INK_SOFT,
+    )
     null_ax.set_xticks(null_x)
     null_ax.set_xticklabels(null_labels)
     null_ax.set_ylabel("Brier gain over nuisance ↑")
     null_ax.set_title("(b) Nuisance-preserving null", loc="left")
     null_ax.axhline(0.0, color=INK_SOFT, lw=1)
-    for x_i, value in zip(null_x, null_points):
-        null_ax.text(x_i, value + 0.002, f"{value:.3f}", ha="center", va="bottom", fontsize=7.2)
 
-    warn_auroc_labels = ["Spectral AUROC", "Connection AUROC"]
+    warn_auroc_labels = ["Spectral", "Connection"]
     warn_auroc_points = [c11["spectral_auroc"], c11["connection_auroc"]]
-    warn_auroc_x = np.arange(len(warn_auroc_labels) + 1)
-    warn_auroc_points = np.append(warn_auroc_points, 0.5)
-    auroc_ax.bar(
+    warn_auroc_x = np.arange(len(warn_auroc_labels))
+    auroc_ax.scatter(
         warn_auroc_x,
         warn_auroc_points,
-        color=[BAR_COLOR, CONTEXT, INK_SOFT],
-        alpha=0.9,
+        s=57,
+        c=[BAR_COLOR, CONTEXT],
+        marker="o",
+        edgecolors=INK,
+        linewidths=0.9,
+        zorder=3,
     )
     auroc_ax.set_xticks(warn_auroc_x)
-    auroc_ax.set_xticklabels(["Spectral field", "Path connection", "Chance"])
+    auroc_ax.set_xticklabels(["Spectral field", "Path connection"])
     auroc_ax.set_title("(c) Pre-action warning channels", loc="left")
     auroc_ax.set_ylabel("AUROC ↑")
-    auroc_ax.set_ylim(0.25, 0.62)
-    auroc_ax.axhline(0.5, color=INK_SOFT, ls="--", lw=1)
+    auroc_ax.set_ylim(0.28, 0.96)
+    auroc_ax.axhline(0.5, color=INK_SOFT, ls="--", lw=1.1, zorder=0)
+    auroc_ax.text(
+        1.00,
+        0.5 + 0.014,
+        "chance = 0.500",
+        ha="right",
+        va="bottom",
+        fontsize=6.4,
+        color=INK_SOFT,
+    )
     for x_i, value in zip(warn_auroc_x, warn_auroc_points):
-        auroc_ax.text(x_i, value + 0.012, f"{value:.3f}", ha="center", va="bottom", fontsize=7.2)
+        auroc_ax.text(x_i, value + 0.012, f"{value:.3f}", ha="center", va="bottom", fontsize=7.0)
 
     warn_gain_labels = ["Geometry-only", "Sealed-local"]
     warn_gain_points = [c11["risk_gain"], c11["sealed_local_gain"]]
@@ -807,7 +960,19 @@ def fig_decodability_timing_gap(data: dict[str, Any], out_dir: Path) -> tuple[Pa
         dtype=float,
     ).T
     gain_ax.bar(warn_gain_x, warn_gain_points, color=[THRESHOLD, CONTEXT], alpha=0.9)
-    gain_ax.errorbar(warn_gain_x, warn_gain_points, yerr=warn_gain_err, fmt="none", color=INK, capsize=3)
+    gain_colors = [THRESHOLD if point < 0 else BAR_COLOR for point in warn_gain_points]
+    gain_ax.scatter(warn_gain_x, warn_gain_points, s=56, c=gain_colors, zorder=3)
+    gain_ax.errorbar(
+        warn_gain_x,
+        warn_gain_points,
+        yerr=warn_gain_err,
+        fmt="none",
+        color=INK,
+        ecolor=INK,
+        capsize=3,
+    )
+    for x_i, value, label in zip(warn_gain_x, warn_gain_points, warn_gain_labels):
+        gain_ax.text(x_i, value + 0.012, f"{value:.3f}", ha="center", va="bottom", fontsize=7.0)
     gain_ax.set_xticks(warn_gain_x)
     gain_ax.set_xticklabels(warn_gain_labels, rotation=10, ha="right")
     gain_ax.set_title("(d) Pre-action risk prediction", loc="left")
@@ -841,133 +1006,351 @@ def fig_structured_action_control_audit(data: dict[str, Any], out_dir: Path) -> 
     c1 = data["c1"]
     c2 = data["c2"]
     c12 = data["c12"]
-    fig, axes = plt.subplots(1, 3, figsize=(11.0, 3.8), dpi=DPI)
+    c12_deceptive_n = [c12["policies"][name]["deceptive_n"] for name in c12["policies"]]
+    c12_honest_n = [c12["policies"][name]["honest_n"] for name in c12["policies"]]
+    c12_denoms = (
+        f"deceptive={min(c12_deceptive_n)}..{max(c12_deceptive_n)}, "
+        f"honest={min(c12_honest_n)}..{max(c12_honest_n)}"
+        if len(set(c12_deceptive_n)) > 1 or len(set(c12_honest_n)) > 1
+        else f"deceptive={c12_deceptive_n[0]}, honest={c12_honest_n[0]}"
+    )
+    fig, axes = plt.subplots(2, 2, figsize=(7.4, 6.6), dpi=DPI)
     fig.patch.set_facecolor(SURFACE)
     fig.suptitle("Structured-action control audit", fontsize=13, fontweight="bold", y=0.98)
 
-    c1_ax = axes[0]
-    c1_order = ("learned_context", "cng_oracle_route", "route_matched")
+    c1_ax, c2_ax, c12_fix_ax, c12_strict_ax = axes.flat
+    policy_labels = [
+        "None",
+        "Raw\nlinear",
+        "Tangent",
+        "Global\nmean",
+        "Global\nprobe",
+        "Random",
+    ]
+
+    c1_order = ("learned_ridge_route_feature", "cng_oracle_route", "route_matched")
     c1_labels = [
-        "Learned\ncontext-only",
-        "CNG\noracle route",
-        "Fixed L16\noracle route",
+        "Ridge ranker\n(route feature)",
+        "CNG\n(hard route)",
+        "Fixed L16\n(hard route)",
     ]
     c1_x = np.arange(len(c1_order))
     c1_fix = [c1["policies"][name]["fix_rate"] for name in c1_order]
     c1_harm = [c1["policies"][name]["harm_rate"] for name in c1_order]
-    c1_ax.bar(c1_x - 0.16, c1_fix, width=0.32, color=BAR_COLOR, label="deceptive fix")
-    c1_ax.bar(c1_x + 0.16, c1_harm, width=0.32, color=CONTEXT, label="honest harm")
-    c1_ax.set_title("(a) Joint target/action selection unresolved", fontsize=8.6, loc="left")
+    c1_bar_w = 0.34
+    c1_ax.bar(c1_x - 0.17, c1_fix, width=c1_bar_w, color=BAR_COLOR, label="deceptive fix")
+    c1_ax.bar(c1_x + 0.17, c1_harm, width=c1_bar_w, color=THRESHOLD, label="honest harm")
+    c1_ax.set_title("(a) C1 status endpoint by policy", loc="left", fontsize=8.8)
     c1_ax.set_xticks(c1_x)
-    c1_ax.set_xticklabels(c1_labels)
+    c1_ax.set_xticklabels(c1_labels, fontsize=7.2)
     c1_ax.set_ylim(0.0, 1.0)
     c1_ax.set_ylabel("rate")
-    c1_ax.legend(loc="upper right", fontsize=7.0)
-    c1_ax.text(0.02, 0.77, "170/600 fixes\n11/600 harms", transform=c1_ax.transAxes, fontsize=7.0)
-    c1_ax.text(0.51, 0.77, "599/600 fixes\n1/600 harms", transform=c1_ax.transAxes, fontsize=7.0)
-    c1_ax.text(0.74, 0.67, "600/600 fixes\n0/600 harms", transform=c1_ax.transAxes, fontsize=7.0)
+    for i, policy in enumerate(c1_order):
+        c1_ax.text(
+            i - 0.17,
+            max(0.0, c1_fix[i] - 0.06),
+            f"{c1['policies'][policy]['fixes']}/{c1['policies'][policy]['deceptive_n']}",
+            ha="center",
+            fontsize=6.5,
+        )
+        c1_ax.text(
+            i + 0.17,
+            max(0.0, c1_harm[i] - 0.06),
+            f"{c1['policies'][policy]['harms']}/{c1['policies'][policy]['honest_n']}",
+            ha="center",
+            fontsize=6.5,
+        )
+    c1_ax.text(
+        0.0,
+        -0.31,
+        (
+            "Selected counter-route candidates: ridge "
+            f"{c1['route_audit']['learned_ridge_route_feature_selected_mismatches']}/1,200; "
+            "hard-route CNG/fixed: 0."
+        ),
+        transform=c1_ax.transAxes,
+        fontsize=6.2,
+        color=INK_SOFT,
+        ha="left",
+    )
 
-    c2_ax = axes[1]
     c2_x = np.arange(2)
     c2_fix = [c2["rates"]["fixed_fix_rate"], c2["rates"]["dense_fix_rate"]]
     c2_harm = [c2["rates"]["fixed_harm_rate"], c2["rates"]["dense_harm_rate"]]
-    c2_ax.bar(c2_x - 0.16, c2_fix, width=0.32, color=BAR_COLOR, label="deceptive fix")
-    c2_ax.bar(c2_x + 0.16, c2_harm, width=0.32, color=CONTEXT, label="honest harm")
-    c2_ax.set_title("(b) Dense dose adds no benefit", fontsize=9.0, loc="left")
+    c2_bar_w = 0.34
+    c2_ax.bar(c2_x - 0.17, c2_fix, width=c2_bar_w, color=BAR_COLOR, label="deceptive fix")
+    c2_ax.bar(c2_x + 0.17, c2_harm, width=c2_bar_w, color=THRESHOLD, label="honest harm")
+    c2_ax.set_title("(b) C2 dose transfer design", loc="left", fontsize=9.0)
     c2_ax.set_xticks(c2_x)
     c2_ax.set_xticklabels(["Fixed", "Dense"])
     c2_ax.set_ylim(0.0, 1.0)
     c2_ax.set_ylabel("rate")
+    c2_ax.text(
+        0.03,
+        0.78,
+        f"fixed: {c2['rates']['fixed_fix_rate']:.1%} fix · {c2['rates']['fixed_harm_rate']:.1%} harm",
+        transform=c2_ax.transAxes,
+        fontsize=6.7,
+    )
+    c2_ax.text(
+        0.03,
+        0.63,
+        (
+            "dense: "
+            f"{c2['rates']['dense_fix_rate']:.1%} fix · "
+            f"{c2['rates']['dense_harm_rate']:.1%} harm"
+        ),
+        transform=c2_ax.transAxes,
+        fontsize=6.7,
+    )
 
-    c12_ax = axes[2]
-    c12_order = ("baseline", "bidir_linear", "bidir_tangent", "global_mean_gated", "global_probe_gated", "random_gated")
-    c12_fix = [c12["policies"][name]["fix_rate"] for name in c12_order]
+    c12_order = (
+        "baseline",
+        "bidir_linear",
+        "bidir_tangent",
+        "global_mean_gated",
+        "global_probe_gated",
+        "random_gated",
+    )
     c12_x = np.arange(len(c12_order))
-    c12_ax.bar(c12_x, c12_fix, color=BAR_COLOR, alpha=0.9)
-    c12_ax.set_title("(c) Pilot: route and dose carry the effect", fontsize=9.0, loc="left")
-    c12_ax.set_xticks(c12_x)
-    c12_ax.set_xticklabels(
-        ["No control", "Fixed linear", "Tangent", "Global mean", "Global probe", "Random"],
-        rotation=32,
-        ha="right",
+    c12_fix = [c12["policies"][name]["fix_rate"] for name in c12_order]
+    c12_harm = [c12["policies"][name]["harm_rate"] for name in c12_order]
+    c12_strict_fix = [c12["policies"][name]["strict_fix_rate"] for name in c12_order]
+    c12_strict_harm = [c12["policies"][name]["strict_harm_rate"] for name in c12_order]
+    c12_fix_ax.bar(c12_x - 0.18, c12_fix, width=0.35, color=BAR_COLOR, label="deceptive fix")
+    c12_fix_ax.bar(
+        c12_x + 0.18,
+        c12_strict_fix,
+        width=0.35,
+        color="#1b6ec2",
+        label="deceptive strict fix",
     )
-    c12_ax.set_ylim(0.0, 1.0)
-    c12_ax.set_ylabel("rate")
-    c12_ax.text(
-        0.02,
-        0.89,
-        "Honest status harms: 2/80 all arms\nHonest strict harms: 10/80 all arms",
-        transform=c12_ax.transAxes,
-        fontsize=6.8,
-    )
+    c12_fix_ax.set_title("(c) C12 status endpoint", loc="left", fontsize=8.6)
+    c12_fix_ax.set_xticks(c12_x)
+    c12_fix_ax.set_xticklabels(policy_labels, fontsize=6.6)
+    c12_fix_ax.set_ylim(0.0, 1.0)
+    c12_fix_ax.set_ylabel("rate")
+    for idx, policy in enumerate(c12_order):
+        c12_fix_ax.text(
+            idx - 0.18,
+            max(0.0, c12_fix[idx] - 0.06),
+            f"{c12['policies'][policy]['fixes']}/{c12['policies'][policy]['deceptive_n']}",
+            ha="center",
+            fontsize=5.9,
+        )
+        c12_fix_ax.text(
+            idx + 0.18,
+            max(0.0, c12_strict_fix[idx] - 0.06),
+            f"{c12['policies'][policy]['strict_fixes']}/{c12['policies'][policy]['deceptive_n']}",
+            ha="center",
+            fontsize=5.9,
+        )
 
-    for ax in axes:
+    c12_strict_ax.bar(c12_x - 0.18, c12_harm, width=0.35, color=THRESHOLD, label="honest harm")
+    c12_strict_ax.bar(
+        c12_x + 0.18,
+        c12_strict_harm,
+        width=0.35,
+        color="#b03a36",
+        label="honest strict harm",
+    )
+    c12_strict_ax.set_title("(d) C12 strict endpoint", loc="left", fontsize=8.6)
+    c12_strict_ax.set_xticks(c12_x)
+    c12_strict_ax.set_xticklabels(policy_labels, fontsize=6.6)
+    c12_strict_ax.set_ylim(0.0, 1.0)
+    c12_strict_ax.set_ylabel("rate")
+    for idx, policy in enumerate(c12_order):
+        c12_strict_ax.text(
+            idx - 0.18,
+            max(0.0, c12_harm[idx] - 0.06),
+            f"{c12['policies'][policy]['harms']}/{c12['policies'][policy]['honest_n']}",
+            ha="center",
+            fontsize=5.9,
+        )
+        c12_strict_ax.text(
+            idx + 0.18,
+            max(0.0, c12_strict_harm[idx] - 0.06),
+            f"{c12['policies'][policy]['strict_harms']}/{c12['policies'][policy]['honest_n']}",
+            ha="center",
+            fontsize=5.9,
+        )
+    c12_strict_ax.text(
+        0.01,
+        0.76,
+        f"Arm denominators: {c12_denoms}.\n"
+        "Strict = status and caveat criteria both satisfied.",
+        transform=c12_strict_ax.transAxes,
+        fontsize=6.2,
+        color=INK_SOFT,
+        ha="left",
+    )
+    c12_fix_ax.legend(loc="upper right", fontsize=6.6, ncol=1, frameon=False)
+    c12_strict_ax.legend(loc="upper right", fontsize=6.6, ncol=1, frameon=False)
+
+    for ax in axes.flat:
         ax.set_axisbelow(True)
         ax.grid(color=GRID_COLOR)
         ax.tick_params(color=INK_SOFT)
+        for spine_key in ("top", "right"):
+            ax.spines[spine_key].set_visible(False)
 
+    c1_ax.legend(loc="upper right", fontsize=6.6, frameon=False)
+    c2_ax.legend(loc="upper right", fontsize=6.6, frameon=False)
     path = out_dir / FIGURE_NAMES[2]
-    handles, labels = c1_ax.get_legend_handles_labels()
-    c1_ax.get_legend().remove()
-    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.91), ncol=2, frameon=False)
     fig.text(
         0.5,
         0.02,
         (
-            "C1/C2 use 600 deceptive and 600 honest rows. C12 is an 80+80-row mixed-precision pilot.\n"
+            "C1/C2 use 600 deceptive and 600 honest rows. "
+            "C12 is a pilot; all nonbaseline arms are gate-routed and raw linear is unprojected.\n"
             f"Its off-tangent follow-up uses 16 deceptive pairs (9 vs 1): difference "
             f"{c12['followup']['paired_difference']:.3f} "
             f"[{c12['followup']['paired_ci'][0]:.3f}, {c12['followup']['paired_ci'][1]:.3f}]."
         ),
         ha="center",
-        fontsize=7.1,
+        fontsize=6.9,
         color=INK_SOFT,
     )
-    fig.subplots_adjust(left=0.06, right=0.99, top=0.78, bottom=0.31, wspace=0.32)
+    fig.subplots_adjust(
+        left=0.10, right=0.99, top=0.90, bottom=0.15, hspace=0.70, wspace=0.30
+    )
     return path, _save(fig, path)
 
 
 def fig_natural_prose_control_failure(data: dict[str, Any], out_dir: Path) -> tuple[Path, int]:
     c5 = data["c5"]
     claim5 = data["claims"]["C5"]
-    fig, ax = plt.subplots(figsize=(FIG_W, 4.8), dpi=DPI)
+    fig, (effect_ax, transition_ax) = plt.subplots(2, 1, figsize=(FIG_W, 6.6), dpi=DPI)
     fig.patch.set_facecolor(SURFACE)
 
-    labels = ["native gated", "frequent early window", "family-matched linear"]
-    points = [_point(c5["arms"]["native_gated"], "C5 native"), _point(c5["arms"]["frequent_early_window"], "C5 frequent"), _point(c5["arms"]["family_matched_linear"], "C5 linear")]
-    ci = [_interval(c5["arms"]["native_gated"], "C5 native"), _interval(c5["arms"]["frequent_early_window"], "C5 frequent"), _interval(c5["arms"]["family_matched_linear"], "C5 linear")]
-    los = [i[0] for i in ci]
-    his = [i[1] for i in ci]
-    errs = np.array([np.array(points) - np.array(los), np.array(his) - np.array(points)])
+    labels = ["native", "early\nwindow", "linear\ncomparator"]
+    arm_order = [
+        c5["arms"]["native_gated"],
+        c5["arms"]["frequent_early_window"],
+        c5["arms"]["family_matched_linear"],
+    ]
     x = np.arange(len(labels))
-
-    ax.bar(x, points, color=BAR_COLOR, alpha=0.85)
-    ax.errorbar(x, points, yerr=errs, fmt="none", color=INK, capsize=3.5)
-    ax.axhline(0.0, color=INK_SOFT, lw=1.0, ls="--")
-    ax.set_title(f"C5 status: {claim5['status']} · {claim5['registration_tier']}")
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels, rotation=12, ha="right")
-    ax.set_ylabel("Δ deceptive status correction (machine score)")
-    ax.set_title("C5: natural-prose prospective controller failure")
-    ax.text(
-        0.0,
-        -0.34,
-        (
-            f"{_short_scope(c5['meta']['activation_scope'])}; "
-            f"{c5['meta']['native_gated']['deceptive_population']} deceptive rows; "
-            f"{c5['meta']['heldout_family_count']} held-out families; "
-            "95% family-cluster CI"
-        ),
-        transform=ax.transAxes,
-        fontsize=7.0,
-        color=INK_SOFT,
-        ha="left",
+    points = [_point(arm, name) for arm, name in zip(arm_order, labels)]
+    intervals = [_interval(arm, name) for arm, name in zip(arm_order, labels)]
+    family_effects = [arm.get("machine_status_by_family", []) for arm in arm_order]
+    errs = np.array(
+        [
+            np.array(points) - np.array([lo for lo, _hi in intervals]),
+            np.array([hi for _lo, hi in intervals]) - np.array(points),
+        ]
     )
 
-    ax.grid(color=GRID_COLOR)
-    ax.set_axisbelow(True)
+    effect_ax.errorbar(x, points, yerr=errs, fmt="o", color=INK, ecolor=INK, capsize=3.5)
+    effect_ax.scatter(x, points, s=58, color=BAR_COLOR, zorder=3)
+    for idx, (pt, arm, family_deltas) in enumerate(zip(points, arm_order, family_effects)):
+        if family_deltas:
+            family_x = np.full(len(family_deltas), x[idx], dtype=float) + np.linspace(
+                -0.20, 0.20, len(family_deltas)
+            )
+            family_y = np.array([entry["deceptive_delta"] for entry in family_deltas], dtype=float)
+            effect_ax.scatter(
+                family_x,
+                family_y,
+                s=20,
+                color=INK_SOFT,
+                alpha=0.3,
+                zorder=2,
+            )
+        effect_ax.text(idx, pt + 0.03, f"{pt:.3f}", ha="center", va="bottom", fontsize=6.8)
+        net = arm.get("deceptive_fixes", 0) - arm.get("deceptive_harms", 0)
+        effect_ax.text(idx, -0.265, f"net {net:+d}/48", ha="center", fontsize=6.3)
+    effect_ax.set_title(
+        f"C5 natural-prose development controller: {claim5['status']}",
+        loc="left",
+    )
+    effect_ax.set_xticks(x)
+    effect_ax.set_xticklabels(labels, fontsize=7.2)
+    effect_ax.set_ylabel("Δ deceptive status correction\n(machine score)")
+    effect_ax.axhline(0.0, color=INK_SOFT, ls="--", lw=1)
+    effect_ax.set_xlim(-0.35, len(labels) - 0.65)
+    effect_ax.set_ylim(-0.30, 0.55)
+    effect_ax.grid(color=GRID_COLOR)
+    effect_ax.set_axisbelow(True)
+
+    deceptive_fix = [
+        _safe_rate(arm.get("deceptive_fixes", 0), arm.get("deceptive_population", 0))
+        for arm in arm_order
+    ]
+    deceptive_harm = [
+        _safe_rate(arm.get("deceptive_harms", 0), arm.get("deceptive_population", 0))
+        for arm in arm_order
+    ]
+    honest_fix = [
+        _safe_rate(arm.get("honest_fixes", 0), arm.get("honest_population", 0))
+        for arm in arm_order
+    ]
+    honest_harm = [
+        _safe_rate(arm.get("honest_harms", 0), arm.get("honest_population", 0))
+        for arm in arm_order
+    ]
+
+    bar_w = 0.20
+    transition_ax.bar(x - 0.3, deceptive_fix, width=bar_w, color=BAR_COLOR, label="deceptive fixed")
+    transition_ax.bar(x - 0.1, deceptive_harm, width=bar_w, color="#a13f2e", label="deceptive harmed")
+    transition_ax.bar(x + 0.1, honest_fix, width=bar_w, color="#2f7f48", label="honest fixed")
+    transition_ax.bar(x + 0.3, honest_harm, width=bar_w, color=THRESHOLD, label="honest harmed")
+    for idx, arm in enumerate(arm_order):
+        transition_ax.text(
+            idx - 0.30,
+            max(0.0, deceptive_fix[idx] - 0.06),
+            f"{arm.get('deceptive_fixes', 0)}/{arm.get('deceptive_population', 0)}",
+            ha="center",
+            fontsize=5.8,
+        )
+        transition_ax.text(
+            idx - 0.1,
+            max(0.0, deceptive_harm[idx] - 0.06),
+            f"{arm.get('deceptive_harms', 0)}/{arm.get('deceptive_population', 0)}",
+            ha="center",
+            fontsize=5.8,
+        )
+        transition_ax.text(
+            idx + 0.1,
+            max(0.0, honest_fix[idx] - 0.06),
+            f"{arm.get('honest_fixes', 0)}/{arm.get('honest_population', 0)}",
+            ha="center",
+            fontsize=5.8,
+        )
+        transition_ax.text(
+            idx + 0.3,
+            max(0.0, honest_harm[idx] - 0.06),
+            f"{arm.get('honest_harms', 0)}/{arm.get('honest_population', 0)}",
+            ha="center",
+            fontsize=5.8,
+        )
+    transition_ax.set_title("(b) Transition outcomes per arm", loc="left")
+    transition_ax.set_xticks(x)
+    transition_ax.set_xticklabels(labels, fontsize=7.2)
+    transition_ax.set_ylabel("rate")
+    transition_ax.set_ylim(0.0, 1.0)
+    transition_ax.legend(loc="upper right", ncol=2, fontsize=6.2, frameon=False)
+    transition_ax.set_xlim(-0.35, len(labels) - 0.65)
+    transition_ax.grid(color=GRID_COLOR)
+    transition_ax.set_axisbelow(True)
+
+    fig.text(
+        0.5,
+        0.012,
+        (
+            f"{_short_scope(c5['meta']['activation_scope'])}; "
+            f"{c5['meta']['native_gated']['deceptive_population']} deceptive rows in native arm; "
+            f"{c5['meta']['heldout_family_count']} held-out families; prospectively specified, "
+            "nonconfirmatory.\nFour family effects shown; aggregate family-resampling interval "
+            "is descriptive. Native fires on 2/48 D; early window on 47/48 D and 37/48 H."
+        ),
+        transform=fig.transFigure,
+        fontsize=6.4,
+        color=INK_SOFT,
+        ha="center",
+    )
+
     path = out_dir / FIGURE_NAMES[3]
-    fig.tight_layout()
+    fig.subplots_adjust(left=0.13, right=0.98, top=0.94, bottom=0.17, hspace=0.50)
     return path, _save(fig, path)
 
 
@@ -1029,45 +1412,77 @@ def fig_gauge_control_null(data: dict[str, Any], out_dir: Path) -> tuple[Path, i
     )
 
     trans_rows = c13["transport"]
-    trans_labels = ["Full truthful push", "Generic reach", "Specific remainder"]
-    trans_points = [
-        trans_rows["full_reach"]["point"],
-        trans_rows["generic_reach"]["point"],
-        trans_rows["specific_after_generic"]["remainder"],
-    ]
-    trans_ci = [
-        trans_rows["full_reach"]["ci95"],
-        trans_rows["generic_reach"]["ci95"],
-        trans_rows["specific_after_generic"]["remainder_ci"],
-    ]
-    trans_x = np.arange(len(trans_labels))
-    trans_err = np.array(
-        [
-            _errbar({"ci95": ci}, labels=[name], point=point)
-            for ci, point, name in zip(trans_ci, trans_points, trans_labels)
-        ],
-        dtype=float,
-    ).T
-    trans_ax.set_title("(b) Generic reach explains the transport", loc="left")
-    trans_ax.bar(trans_x, trans_points, color=CONTEXT, alpha=0.9)
-    trans_ax.errorbar(trans_x, trans_points, yerr=trans_err, fmt="none", color=INK, capsize=3.5)
-    trans_ax.set_xticks(trans_x)
-    trans_ax.set_xticklabels(trans_labels, rotation=12, ha="right")
-    trans_ax.set_ylabel("push / remainder")
+    generic_point = trans_rows["generic_reach"]["point"]
+    generic_ci = trans_rows["generic_reach"]["ci95"]
+    specific_point = trans_rows["specific_after_generic"]["remainder"]
+    specific_ci = trans_rows["specific_after_generic"]["remainder_ci"]
+    full_point = trans_rows["full_reach"]["point"]
+    full_ci = trans_rows["full_reach"]["ci95"]
+
+    full_err = _errbar({"ci95": full_ci}, labels=["C13 full truthful push"], point=full_point)
+    generic_err = _errbar({"ci95": generic_ci}, labels=["C13 generic reach"], point=generic_point)
+    specific_err = _errbar({"ci95": specific_ci}, labels=["C13 specific remainder"], point=specific_point)
+
+    generic_color = "#2f7f95"
+    specific_color = "#7f4da4"
+    trans_ax.set_title("(b) Transport decomposes into generic + specific remainder", loc="left")
+    trans_ax.set_ylabel("deceptive-probability difference")
+    trans_ax.set_xticks([0, 0.2])
+    trans_ax.set_xticklabels(["generic+specific decomposition", "observed full"], ha="center")
+
+    trans_ax.bar(0, generic_point, width=0.32, color=generic_color, label="generic reach")
+    trans_ax.bar(0, specific_point, width=0.32, bottom=generic_point, color=specific_color, label="specific remainder")
+    trans_ax.errorbar(0, generic_point, yerr=generic_err.reshape(2, 1), fmt="none", color=INK, capsize=3.5, lw=1)
+    trans_ax.errorbar(
+        0.2,
+        generic_point + specific_point,
+        yerr=specific_err.reshape(2, 1),
+        fmt="none",
+        color=INK,
+        capsize=3.5,
+        lw=1,
+    )
+    trans_ax.scatter([0.2], [full_point], s=60, color=INK, zorder=4, label="observed full reach")
+    trans_ax.errorbar(
+        [0.2],
+        [full_point],
+        yerr=full_err.reshape(2, 1),
+        fmt="none",
+        color=INK,
+        capsize=3.5,
+        lw=1.1,
+    )
     trans_ax.axhline(0.0, color=INK_SOFT, lw=1.0)
     trans_ax.text(
-        0.0,
+        0.02,
+        0.96,
+        "Stacked decomposition: full = generic reach + specific remainder",
+        transform=trans_ax.transAxes,
+        fontsize=7.0,
+        color=INK_SOFT,
+        ha="left",
+    )
+    trans_ax.legend(loc="upper right", fontsize=6.6, frameon=False)
+    trans_ax.text(
+        0.02,
         -0.35,
         (
+            f"generic={generic_point:.3f}, specific={specific_point:.3f} => full target {generic_point + specific_point:.3f}; "
+            f"observed full {full_point:.3f}\n"
             f"crossed committed roots: {c13['crossed']['crossed']} / {c13['crossed']['committed']} · "
             f"sample pool: {c13['sample_pool']['flip_count']}/{c13['sample_pool']['flip_denominator']} "
             f"(defined roots {c13['sample_pool']['defined_root_count']})"
         ),
         transform=trans_ax.transAxes,
-        fontsize=6.8,
+        fontsize=6.6,
         color=INK_SOFT,
         ha="left",
     )
+    trans_ax.set_ylim(
+        min(-0.08, generic_point + specific_point - 0.08),
+        max(0.08, generic_point + specific_point + 0.08, full_point + 0.08),
+    )
+    trans_ax.set_xlim(-0.52, 0.62)
 
     for axis in (null_ax, trans_ax):
         axis.set_axisbelow(True)

@@ -259,7 +259,17 @@ def test_matched_control_payload_keeps_context_floor_and_fixed_route_roles(tmp_p
         "not established by this receipt"
     )
     assert receipt["policies"]["learned_context_ridge_reward"]["type"] == (
-        "learned_context_only_selector"
+        "learned_oracle_route_feature_candidate_ranker"
+    )
+    assert receipt["chronology"]["context_only_selector"] == (
+        "heldout-family ridge candidate ranker; receives the oracle route as a feature, "
+        "scores both target signs, and never inspects heldout candidate outcomes"
+    )
+    assert (
+        receipt["information_audit"]["policy_information"]["learned_context_ridge_reward"][
+            "selected_target_route_mismatches"
+        ]
+        == 0
     )
     assert receipt["policies"]["route_matched_fixed_coordinate"]["folds"]
     encoded = json.dumps(receipt).lower()
@@ -332,6 +342,18 @@ def test_markdown_flags_fixed_route_ceiling_and_matched_route_basis(tmp_path: Pa
     assert "post-hoc whole-grid fixed-route ceiling (`fixed_route_bidir_linear_L16_a96`)" in text
     assert "heldout-family route-matched fixed-coordinate reconstruction" in text
     assert "`fixed_route_bidir_linear_L16_a96` is a post-hoc whole-grid feasibility ceiling" in text
+
+
+def test_c1_public_receipt_records_learned_context_route_mismatch_contract() -> None:
+    receipt = json.loads(
+        Path("paper_artifacts/c1_matched_control_audit.json").read_text()
+    )
+    assert (
+        receipt["information_audit"]["policy_information"]["learned_context_ridge_reward"][
+            "selected_target_route_mismatches"
+        ]
+        == 233
+    )
 
 
 def test_regression_no_aligned_margin_metrics_for_compact_cng_payload(tmp_path: Path) -> None:

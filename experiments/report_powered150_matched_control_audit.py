@@ -375,9 +375,9 @@ def build_payload(
             source="selector_eval",
             source_path=str(selector_path),
             role=(
-                "heldout_family_context_only_action_ranker_no_candidate_outcomes_at_application"
+                "heldout_family_candidate_ranker_oracle_route_feature_both_target_signs"
             ),
-            policy_type="learned_context_only_selector",
+            policy_type="learned_oracle_route_feature_candidate_ranker",
         )
         policy_order.append(DEFAULT_CONTEXT_ONLY_POLICY)
     else:
@@ -527,8 +527,8 @@ def build_public_receipt(payload: dict[str, Any]) -> dict[str, Any]:
                 "whole-grid post-hoc feasibility ceiling; not a registered baseline"
             ),
             "context_only_selector": (
-                "heldout-family learned action ranker; no heldout candidate outcomes, but evaluated "
-                "offline on the completed oracle-routed action-response field"
+                "heldout-family ridge candidate ranker; receives the oracle route as a feature, "
+                "scores both target signs, and never inspects heldout candidate outcomes"
             ),
             "route_matched_reconstruction": (
                 "retrospective heldout-family-clean robustness analysis; candidate-response-blind "
@@ -552,11 +552,20 @@ def build_public_receipt(payload: dict[str, Any]) -> dict[str, Any]:
         "scenario_clustered_gaps": payload["paired_gaps"],
         "family_clustered_gaps": payload["family_clustered_gaps"],
         "interpretation": (
-            "CNG strongly exceeds the learned context-only action ranker inside the offline, "
-            "oracle-routed field. The historical registered floor is not a clean comparator because "
-            "its train selection pooled counter-target candidates. A separately conceived "
-            "route-matched fixed-coordinate reconstruction saturates the field, so this audit does "
-            "not establish geometry-specific or prospective control superiority."
+            "CNG strongly exceeds the learned route-feature candidate ranker inside the offline "
+            "oracle-routed field. The field itself is route-constrained on deceptive rows: it "
+            "exposes only corrective-target candidates there, so every policy is equally "
+            "route-constrained and none can pick a counter-target on those 600 rows. CNG adds no "
+            "selector-side route mask; it takes an unconstrained argmax over the candidates the "
+            "field exposes and matches the supplied route on honest rows only because corrective "
+            "candidates score higher. The learned ridge receives the same route as a feature yet "
+            "selects 233 counter-target candidates, all on honest rows, and corrects far fewer "
+            "deceptive rows. The historical registered floor is not a clean comparator because its "
+            "train selection pooled counter-target candidates. A separately conceived "
+            "fixed-coordinate policy that maps the route to its corrective target saturates the "
+            "field and ties CNG, so the gap reflects corrective-coordinate selection and reward "
+            "estimation, not route access or a geometric actuation primitive; this audit does not "
+            "establish prospective control superiority."
         ),
     }
 

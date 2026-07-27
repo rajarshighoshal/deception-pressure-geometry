@@ -65,6 +65,13 @@ FORBIDDEN_COMMAND_MARKERS = (
     "credentials",
     "approval.json",
 )
+ARCHIVE_EXCLUDED_PARTS = {
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+}
 MUTABLE_MODEL_REVISIONS = {"", "main", "master", "head", "latest", "default"}
 MUTABLE_URL_PARTS = {"latest", "main", "master", "head", "current"}
 
@@ -131,6 +138,22 @@ def _git_tracked_paths(repo_root: Path) -> tuple[set[str], str | None]:
         for item in completed.stdout.split(b"\0")
         if item
     }, None
+
+
+def _archive_regular_paths(repo_root: Path) -> set[str]:
+    """Return regular, non-symlink files available in an extracted archive.
+
+    This is only an archive-membership view. It deliberately does not claim that the files have
+    Git provenance; the manifest's byte, producer, path-safety, and provenance checks still run.
+    """
+    paths: set[str] = set()
+    for path in repo_root.rglob("*"):
+        relative = path.relative_to(repo_root)
+        if any(part in ARCHIVE_EXCLUDED_PARTS for part in relative.parts):
+            continue
+        if path.is_file() and not path.is_symlink():
+            paths.add(relative.as_posix())
+    return paths
 
 
 def _safe_relative_path(value: object, *, prefix: str | None = None) -> tuple[str | None, str | None]:
@@ -582,13 +605,27 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
+    parser.add_argument(
+        "--archive-mode",
+        action="store_true",
+        help=(
+            "verify an extracted archive without requiring a .git directory; this checks "
+            "present regular files but does not assert Git provenance"
+        ),
+    )
     args = parser.parse_args(argv)
     try:
         manifest = _load_json(args.manifest)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"paper artifact manifest INVALID: {exc}", file=sys.stderr)
         return 1
-    errors = validate_manifest(manifest, repo_root=args.repo_root.resolve())
+    repo_root = args.repo_root.resolve()
+    tracked_paths = _archive_regular_paths(repo_root) if args.archive_mode else None
+    errors = validate_manifest(
+        manifest,
+        repo_root=repo_root,
+        tracked_paths=tracked_paths,
+    )
     if errors:
         print(f"paper artifact manifest INVALID ({args.manifest}):", file=sys.stderr)
         for error in errors:
@@ -600,6 +637,11 @@ def main(argv: list[str] | None = None) -> int:
         f"{len(locations)} entries "
         f"({locations.count('tracked_path')} tracked, {locations.count('immutable_url')} remote)."
     )
+    if args.archive_mode:
+        print(
+            "archive mode: verified membership in present regular files; "
+            "Git provenance was not asserted."
+        )
     return 0
 
 

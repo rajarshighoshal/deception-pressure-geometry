@@ -215,9 +215,21 @@ def build_c12_receipt(
                 "honest_rows": 80,
             },
             "policies": primary_policies,
+            "routing_contract": {
+                "shared_gate_scope": (
+                    "all nonbaseline bidirectional and explicitly gated global arms use the "
+                    "same heldout-family pre-action gate-file route"
+                ),
+                "gate_action": "steer toward the gate-predicted true status, or abstain",
+                "bidir_linear_projection": "raw_unprojected",
+                "bidir_linear_route_policy": "same gate route and abstention as bidir_tangent",
+                "baseline_intervention": "none",
+            },
             "interpretation": (
-                "Gate, dose, and first-decision-token scope carry most of the observed effect; "
-                "tangent geometry is an incremental top-up on this pilot bank."
+                "Tangent steering has the largest point correction, while matched gate-routed "
+                "random and global directions recover much of it. Because direction, gate, dose, "
+                "and token scope are not crossed factorially, this pilot does not identify a "
+                "separate tangent-geometry contribution."
             ),
         },
         "off_tangent_followup": {

@@ -79,12 +79,13 @@
     }
   },
   "checks": {
+    "family_effects_reconcile_aggregate": true,
     "family_matched_linear_ci_excludes_zero": true,
     "frequent_arm_ci_includes_zero": true,
     "frequent_arm_point_is_not_positive": true,
     "native_primary_delta_is_zero": true
   },
-  "claim_boundary": "The prospective layer-16 natural-prose controller failed. This experiment did not test an online controller that attaches novel live typed token-residual-attention states at layers 12, 16, 19, and 20 and updates intervention, local direction, and dose throughout fresh generation. Building and prospectively evaluating that richer state-dependent controller was outside the completed study's available time and compute budget and remains concrete future work; its outcome is unknown, and its absence cannot rescue the failed controller.",
+  "claim_boundary": "The prospectively specified development test of the layer-16 natural-prose controller failed. The public receipt does not include the timestamped registration history and the artifact manifest marks the result nonconfirmatory. This experiment did not test an online controller that attaches novel live typed token-residual-attention states at layers 12, 16, 19, and 20 and updates intervention, local direction, and dose throughout fresh generation. Building and prospectively evaluating that richer state-dependent controller was outside the completed study's available time and compute budget and remains concrete future work; its outcome is unknown, and its absence cannot rescue the failed controller.",
   "claim_id": "C5",
   "evaluation": {
     "activation_scope": "layer-16 residual stream",
@@ -114,6 +115,84 @@
           },
           "honest_fixes": 26,
           "honest_harms": 6
+        },
+        "machine_status_by_family": {
+          "cybersecurity": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.4167
+            },
+            "deceptive_fixes": 6,
+            "deceptive_harms": 1,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.5833
+            },
+            "honest_fixes": 7,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "electrical_grid": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.5
+            },
+            "deceptive_fixes": 6,
+            "deceptive_harms": 0,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.25
+            },
+            "honest_fixes": 6,
+            "honest_harms": 3,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "structural_welding": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.0833
+            },
+            "deceptive_fixes": 4,
+            "deceptive_harms": 3,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0833
+            },
+            "honest_fixes": 4,
+            "honest_harms": 3,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "water_treatment": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.3333
+            },
+            "deceptive_fixes": 5,
+            "deceptive_harms": 1,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.75
+            },
+            "honest_fixes": 9,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          }
         },
         "population": {
           "deceptive": 48,
@@ -182,6 +261,84 @@
           "honest_fixes": 5,
           "honest_harms": 5
         },
+        "machine_status_by_family": {
+          "cybersecurity": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": -0.0833
+            },
+            "deceptive_fixes": 1,
+            "deceptive_harms": 2,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.1667
+            },
+            "honest_fixes": 2,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "electrical_grid": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.0833
+            },
+            "deceptive_fixes": 2,
+            "deceptive_harms": 1,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0833
+            },
+            "honest_fixes": 3,
+            "honest_harms": 2,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "structural_welding": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": -0.25
+            },
+            "deceptive_fixes": 0,
+            "deceptive_harms": 3,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": -0.25
+            },
+            "honest_fixes": 0,
+            "honest_harms": 3,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "water_treatment": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": -0.0833
+            },
+            "deceptive_fixes": 0,
+            "deceptive_harms": 1,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "honest_fixes": 0,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          }
+        },
         "population": {
           "deceptive": 48,
           "honest": 48,
@@ -249,6 +406,84 @@
           "honest_fixes": 0,
           "honest_harms": 0
         },
+        "machine_status_by_family": {
+          "cybersecurity": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "deceptive_fixes": 0,
+            "deceptive_harms": 0,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "honest_fixes": 0,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "electrical_grid": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "deceptive_fixes": 0,
+            "deceptive_harms": 0,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "honest_fixes": 0,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "structural_welding": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "deceptive_fixes": 0,
+            "deceptive_harms": 0,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "honest_fixes": 0,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          },
+          "water_treatment": {
+            "deceptive_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "deceptive_fixes": 0,
+            "deceptive_harms": 0,
+            "honest_delta_vs_base": {
+              "n": 12,
+              "point": 0.0
+            },
+            "honest_fixes": 0,
+            "honest_harms": 0,
+            "population": {
+              "deceptive": 12,
+              "honest": 12,
+              "total": 24
+            }
+          }
+        },
         "population": {
           "deceptive": 48,
           "honest": 48,
@@ -284,17 +519,38 @@
       "water_treatment"
     ],
     "model": "Llama-3.1-8B-Instruct",
-    "response_protocol": "natural prose"
+    "response_protocol": "natural prose",
+    "uncertainty_note": "The family cells are the independent descriptive units. Aggregate percentile intervals resample only four families and are not precise tail-probability estimates; single-family cells do not report confidence intervals."
   },
   "kind": "c5_natural_prose_control_public_receipt",
   "producer": "experiments/report_public_natural_prose_control_receipt.py",
-  "producer_sha256": "c2c26e333314cd0b939880f0fd4bac4939640f1dff40f03cd2da75788e658bc6",
+  "producer_sha256": "52155bf5bf3498c05d8ad55df56479c77beeeb76ace51a7296c8fb1b964da9a0",
   "schema_version": 1,
   "source_artifacts": {
+    "holdout_base_generations": {
+      "byte_size": 58491,
+      "sha256": "c457e431cc737a398285b9b0cc4d518ca23eb4775cef37ed9ed86e8bf4a98b32"
+    },
+    "holdout_family_matched_linear_arm": {
+      "byte_size": 55666,
+      "sha256": "10dfb6297c034b7bf7c7ad3349b57aaaf3e850a12ffa27af5af4bdd8bbc049a7"
+    },
+    "holdout_frequent_early_window_arm": {
+      "byte_size": 64232,
+      "sha256": "f0d8ff942e63a1ef30ec74f53d7d620191a786553c489734e1f078ddfe06d1b7"
+    },
+    "holdout_native_gated_arm": {
+      "byte_size": 60621,
+      "sha256": "c504fb320683ad7e5a8dba4bf59c4f49391f2f2f9dc477a7f473a64ce2c12ad6"
+    },
+    "holdout_source_rows": {
+      "byte_size": 208682,
+      "sha256": "0693b04444a47436091a21f4a1d88cd32938e11aa4b61d2c4692b34b9d501838"
+    },
     "prospective_heldout_family_test": {
       "byte_size": 23106,
       "sha256": "727db19d5c28168831793e342dec6bc2c05417f6bdebdd56d0d1469477d2462d"
     }
   },
-  "verdict": "refuted_under_registered_natural_prose_residual_instrument"
+  "verdict": "refuted_under_prospectively_specified_development_instrument"
 }

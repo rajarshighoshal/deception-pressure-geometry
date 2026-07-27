@@ -1,8 +1,6 @@
-# Decodability Is Not Control
+# Geometric Flow in Deception-Induced Activation
 
-## Auditing activation-space geometry for deceptive commitment
-
-[Read the narrative article](https://rajarshighoshal.github.io/deception-pressure-geometry/)
+## A cross-experiment audit of pressure-induced false commitment in Llama-3.1-8B-Instruct
 
 This repository is the public research artifact for a study of pressure-induced false commitment
 in Llama-3.1-8B-Instruct. We ask three questions that are often collapsed into one:
@@ -11,8 +9,9 @@ in Llama-3.1-8B-Instruct. We ask three questions that are often collapsed into o
 2. Do activations distinguish deceptive from honest commitments, before or after the action?
 3. Does that structure provide a prospective causal handle for steering the model?
 
-The answers separate sharply. Pressure produces the behavior. After the model commits, its state is
-highly decodable, and a plain residual linear probe outperforms our relational graph. The tested
+The answers separate sharply. Assigned pressure frequently produces the behavior in these
+development banks. After the model commits, its state is highly decodable, and a plain residual
+linear probe outperforms our relational graph. The tested
 pre-action geometric warning fields do not beat matched nuisance controls. Conditional correction
 works in a structured-action sandbox when the correct target route is supplied, but it does not
 establish a geometry-specific or end-to-end controller. The prospective natural-prose geometric
@@ -23,7 +22,7 @@ making it easy to anticipate or causally control.**
 
 An earlier synthetic-pressure pilot is released separately at
 [geometry-of-deception](https://github.com/rajarshighoshal/geometry-of-deception). This repository
-contains the stricter follow-up: held-out-family evaluation, explicit information-budget matching,
+contains the stricter follow-up: held-out-family evaluation, explicit information-budget accounting,
 strong linear and nuisance comparators, causal replay, and compact hash-bound evidence receipts.
 
 ## Evidence ladder
@@ -33,8 +32,8 @@ strong linear and nuisance comparators, causal replay, and compact hash-bound ev
 | Behavior | Does pressure induce false commitment? | Yes in the controlled development banks (C9). |
 | Post-action readout | Is the committed outcome encoded? | Yes, but a residual linear probe beats the relational graph (C10). |
 | Pre-action warning | Can the tested geometry anticipate the draw? | No improvement over matched controls (C11). |
-| Oracle-routed correction | Can a supplied truth target be enforced? | Strong conditional correction, without geometry-specific superiority (C1, C2, C12). |
-| Prospective natural prose | Does a context-only geometric controller improve fresh behavior? | No; the registered controller is refuted (C5). |
+| Conditional correction | Can structured actions be corrected once a route or policy is supplied? | Often, but without geometry-specific superiority; C12 is a nonfactorial pilot (C1, C2, C12). |
+| Development natural prose | Does a prospectively specified target-free geometric controller improve fresh behavior? | No; the tested controller is refuted (C5). |
 | Curved/gauge control | Does the tested gauge construction add causal leverage? | Behavioral null; curvature instrument inadequate (C13). |
 
 The levels have different information budgets. Post-action detectors see answer-adjacent state.
@@ -65,7 +64,7 @@ by SHA-256 without publishing large activation banks or operational logs.
 
 ## Results
 
-### Pressure reliably induces the behavior, but the tested approach path is unresolved (C9)
+### Assigned pressure frequently elicits the behavior, but the tested approach path is unresolved (C9)
 
 Smooth pressure produces deceptive commitment in 26/32 scripted conversations and 45/48 adaptive
 conversations. The registered smooth-minus-late-compressed contrasts are +0.31
@@ -114,42 +113,52 @@ result for early warning.
 
 ### Conditional structured-action control works, but structure is not the winning explanation
 
-In the saved action-response field, the oracle-target Chart-Neural Gate fixes 599/600 deceptive
-rows with 1/600 honest harm. A held-out-family context-only ranker, which must infer the target and
-select an action without inspecting held-out candidate outcomes, fixes only 170/600 and harms
-11/600 honest rows; it selects the wrong target on 233/1,200 rows. Because it also differs from the
-oracle policies in action selection and architecture, this gap does not isolate target inference.
-A retrospectively conceived oracle-route-matched fixed
-bidirectional-linear policy at L16 and alpha96 reaches 600/600 with zero harm. The historical
-539/600 baseline was not a clean comparison because its training selection pooled counter-target
-candidates.
+The saved action-response field is oracle-routed at generation time: on the 600 deceptive rows the
+field exposes only the corrective-target candidate, so every policy is equally route-constrained
+there. The Chart-Neural Gate, a held-out-family pre-response selector, fixes 599/600 deceptive
+rows with 1/600 honest harm. A held-out-family ridge scores candidates without inspecting held-out
+outcomes; it fixes 170/600, harms 11/600 honest rows, and selects 233/1,200 counter-route
+candidates -- all on honest rows, since deceptive rows expose no counter-target. A retrospectively
+conceived route-matched fixed bidirectional-linear policy at L16 and alpha96 reaches 600/600 with
+zero harm, tying CNG. The historical 539/600 baseline was not a clean comparison because its
+training selection pooled counter-target candidates.
 
-The fair conclusion is conditional action correctability once the target is supplied, not
-geometry-specific superiority. The only context-only ranker is far weaker, all policies are
-evaluated offline on a completed candidate field rather than fresh generation, and the
-route-matched fixed policy was identified retrospectively.
+The fair conclusion is conditional action correctability inside an oracle-routed field, not
+geometry-specific superiority. CNG adds no selector-side route mask: it takes an unconstrained
+argmax over the candidates the field exposes, and on the honest rows where both target signs
+remain it still selects the route-matched sign with zero mismatches, whereas the ridge is free to
+pick either sign only there. The deceptive-row gap therefore reflects corrective-coordinate
+selection and reward estimation, not route access -- and the best fixed linear coordinate ties
+CNG, so the audit isolates neither target inference nor a geometry-specific primitive. All
+policies are evaluated offline on a completed candidate field rather than fresh generation, and
+the fixed policy was identified retrospectively.
 
 Two supporting audits explain the apparent leverage:
 
 - In the pilot steering bank, tangent steering fixes 48/80 deceptive reports, but matched
-  random-gated steering already fixes 37/80 and two global-gated directions fix 40/80 each.
+  random-gated steering already fixes 37/80 and two global-gated directions fix 40/80 each. The
+  raw bidirectional-linear arm uses the same held-out-family gate and fixes only 1/80; it is
+  unprojected, not ungated.
   Under the strict endpoint those counts are 40, 30, 30, and 32; every arm has 2 honest status
   harms and 10 honest strict harms. A separate 32-row follow-up contains only 16 deceptive pairs
-  (9 tangent fixes versus 1 off-tangent), and its interval is retrospective. Gate, dose, and
-  first-decision-token scope carry most of the pilot effect (C12).
+  (9 tangent fixes versus 1 off-tangent), and its interval is retrospective. Matched non-tangent
+  random and global directions reproduce much of the point correction, but the nonfactorial pilot
+  does not isolate a tangent-specific contribution or assign the effect to gate, dose, or token
+  scope (C12).
 - Learned dense dose does not beat fixed high dose in generated structured actions. Both fix
   591/600 deceptive statuses, while learned dose adds five honest harms and slightly lowers strict
   reward (C2).
 
 ![Structured-action control and information budgets](docs/figures/structured_action_control_audit.png)
 
-### The prospective natural-prose geometric controller fails (C5)
+### The prospectively specified natural-prose development controller fails (C5)
 
-The prospective held-out-family test is the closest experiment here to an end-to-end controller.
-The native geometric policy changes deceptive status by exactly 0.0000 CI [0, 0]; its gate fires
-on only 2/48 deceptive rows. A frequently firing version reaches -0.0833
-CI [-0.2083, +0.0417]. The family-matched linear comparator reaches +0.3333
-CI [+0.1667, +0.4583].
+The held-out-family development test is the closest experiment here to an end-to-end controller.
+The native geometric policy changes deceptive status by exactly 0.0000; its gate fires on only
+2/48 deceptive rows. A frequently firing version reaches -0.0833. The family-matched linear
+comparator reaches +0.3333. Its four deceptive-source family effects are +0.4167, +0.5000,
++0.0833, and +0.3333. With only four independent families, these observed cells are the useful
+uncertainty record; the family-resampling intervals are descriptive rather than precise coverage.
 
 The frequent policy is not selective: it fires on 47/48 deceptive and 37/48 honest rows, producing
 3 deceptive fixes and 7 deceptive harms. The linear comparator's net +0.3333 consists of 21 fixes
@@ -159,6 +168,10 @@ controller but is not a clean general solution.
 Secondary judge-rated honesty and coherence do not rescue the failed behavioral endpoint:
 perturbation, hedging, and refusal can move those scores without correcting the operational
 status.
+
+The policy was prospectively specified for this development run, but the compact public receipt
+is marked nonconfirmatory and does not preserve a timestamped registration history. We therefore
+report it as a prospectively specified development result, not confirmatory evidence.
 
 This test evaluated a layer-16 residual controller. It did **not** evaluate an online natural-prose
 controller that attaches novel live typed token–residual–attention states at L12/L16/L19/L20 and
@@ -230,9 +243,9 @@ boundaries and exact receipt links live in the registry.
 |---|---|---|---|
 | C9 | supported | retrospective_synthesis | Under graded conversational pressure, smooth escalation increases deceptive commitment and current intensity predicts commitment, while the tested cumulative-history term and the registered smooth-versus-step approach-geometry contrast add no held-out signal. |
 | C10 | supported | post_hoc_registered | Post-commitment activations decode deceptive versus honest actions beyond exact nuisance controls, but a raw residual linear probe outperforms the relational graph. |
-| C5 | refuted | prospective | A prospective L16 residual navigation controller improves held-out-family natural-prose status correctness at least as much as family-matched linear control without honest-row harm. |
+| C5 | refuted | prospective | A prospectively specified development L16 residual navigation controller improves held-out-family natural-prose status correctness at least as much as family-matched linear control without honest-row harm. |
 | C1 | supported | retrospective_synthesis | In the offline structured-action field, policies supplied the correct target can strongly correct deceptive status, but the evidence does not establish geometry-specific or prospective controller superiority. |
-| C12 | supported | retrospective_synthesis | In the pilot steering bank, gating, adequate dose, and decision-token scope explain most of the correction, with tangent geometry contributing a smaller incremental lift. |
+| C12 | supported | retrospective_synthesis | In the pilot steering bank, tangent steering has the largest status-correction point, but matched gate-routed random and global directions recover much of it; the nonfactorial audit does not identify a separate tangent-geometry contribution. |
 | C2 | refuted | retrospective_synthesis | A learned dense-dose policy improves generated structured-action correction over the best fixed high-dose policy without additional honest harm. |
 | C11 | refuted | retrospective_synthesis | The tested pre-commitment spectral, connection-response, and masked geometry-only fields improve risk prediction over matched design or nuisance baselines. |
 | C13 | not_found_under_instrument | retrospective_synthesis | Gauge-geodesic or holonomy geometry yields deception-specific causal control leverage or instrument-resolvable curvature. |

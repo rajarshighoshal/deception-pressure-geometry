@@ -21,7 +21,7 @@
     "tangent_fixes": 9
   },
   "primary_six_arm_evaluation": {
-    "interpretation": "Gate, dose, and first-decision-token scope carry most of the observed effect; tangent geometry is an incremental top-up on this pilot bank.",
+    "interpretation": "Tangent steering has the largest point correction, while matched gate-routed random and global directions recover much of it. Because direction, gate, dose, and token scope are not crossed factorially, this pilot does not identify a separate tangent-geometry contribution.",
     "policies": {
       "baseline": {
         "deceptive_status_fixes": 2,
@@ -82,10 +82,17 @@
       "deceptive_rows": 80,
       "honest_rows": 80,
       "total_rows": 160
+    },
+    "routing_contract": {
+      "baseline_intervention": "none",
+      "bidir_linear_projection": "raw_unprojected",
+      "bidir_linear_route_policy": "same gate route and abstention as bidir_tangent",
+      "gate_action": "steer toward the gate-predicted true status, or abstain",
+      "shared_gate_scope": "all nonbaseline bidirectional and explicitly gated global arms use the same heldout-family pre-action gate-file route"
     }
   },
   "producer": "experiments/report_public_steering_receipts.py",
-  "producer_sha256": "ec7e4b5b65c46dd088e0e88994ed0909dd79e2f9d1dd59c0430b8b8893a23e09",
+  "producer_sha256": "76e9e9a026242489600b55f6771ebee5213216856ab3a04d28bf5bd05aa0d8ba",
   "schema_version": 1,
   "scope": "Pilot 4-bit bank; 160 total rows in the primary comparison and 32 total rows in the follow-up. Counts such as 48/80 use the deceptive-row denominator.",
   "source_artifacts": {

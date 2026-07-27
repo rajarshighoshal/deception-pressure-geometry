@@ -11,6 +11,8 @@ import pytest
 from experiments.verify_paper_artifacts import (
     EXACT_IDENTITY_REQUIRED_CLAIMS,
     REGISTRATION_TIERS,
+    _archive_regular_paths,
+    main,
     validate_manifest,
 )
 
@@ -291,6 +293,45 @@ def test_untracked_artifact_and_producer_fail(tmp_path):
     errors = _errors(tmp_path, manifest, registry, set())
     assert any("artifact is not Git-tracked" in error for error in errors)
     assert any("producer is not Git-tracked" in error for error in errors)
+
+
+def test_archive_mode_uses_present_regular_files_without_changing_default(
+    tmp_path, capsys
+):
+    manifest, registry, _ = _fixture(tmp_path)
+    manifest_path = tmp_path / "paper_artifacts" / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest))
+    registry_path = tmp_path / "docs" / "results_registry.yaml"
+    registry_path.parent.mkdir(parents=True)
+    registry_path.write_text(json.dumps(registry))
+
+    assert main([
+        "--manifest",
+        str(manifest_path),
+        "--repo-root",
+        str(tmp_path),
+    ]) == 1
+    assert "could not enumerate Git-tracked files" in capsys.readouterr().err
+
+    assert main([
+        "--manifest",
+        str(manifest_path),
+        "--repo-root",
+        str(tmp_path),
+        "--archive-mode",
+    ]) == 0
+    output = capsys.readouterr().out
+    assert "Git provenance was not asserted" in output
+
+
+def test_archive_regular_paths_exclude_symlinks_and_cache_directories(tmp_path):
+    (tmp_path / "kept.txt").write_text("kept")
+    cache = tmp_path / "__pycache__"
+    cache.mkdir()
+    (cache / "ignored.pyc").write_bytes(b"cache")
+    (tmp_path / "link.txt").symlink_to(tmp_path / "kept.txt")
+
+    assert _archive_regular_paths(tmp_path) == {"kept.txt"}
 
 
 @pytest.mark.parametrize(

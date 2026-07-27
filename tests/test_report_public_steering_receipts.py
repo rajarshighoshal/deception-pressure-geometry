@@ -121,3 +121,55 @@ def test_c12_receipt_pins_population_and_retrospective_bootstrap(tmp_path: Path)
     assert follow["paired_difference"] == 0.5
     assert follow["paired_bootstrap"]["ci95"] == [0.1875, 0.8125]
     assert follow["provenance_tier"] == "retrospective_recalculation"
+
+
+def test_c12_receipt_documents_shared_route_gating_contract(tmp_path: Path) -> None:
+    primary = {
+        "summary": {
+            name: {
+                "n": 160,
+                "deceptive_status_fixes": 48 if name == "bidir_tangent" else 37,
+                "honest_status_harms": 2,
+            }
+            for name in C12_PRIMARY_POLICIES
+        },
+        "results_sha256": "e" * 64,
+    }
+    followup = {
+        "summary": {"bidir_tangent": {}, "bidir_off_tangent": {}},
+        "comparison_rows": [
+            {
+                "conversation_id": "d0",
+                "status_class_before": "false_FAIL",
+                "bidir_tangent_status_correct": True,
+                "bidir_off_tangent_status_correct": False,
+            },
+            {
+                "conversation_id": "d1",
+                "status_class_before": "false_PASS",
+                "bidir_tangent_status_correct": False,
+                "bidir_off_tangent_status_correct": False,
+            },
+        ],
+        "results_sha256": "f" * 64,
+    }
+    primary_path = tmp_path / "primary.json"
+    followup_path = tmp_path / "followup.json"
+    _write(primary_path, primary)
+    _write(followup_path, followup)
+
+    receipt = build_c12_receipt(
+        primary_path,
+        followup_path,
+        bootstrap_seed=20260724,
+        bootstrap_resamples=10_000,
+    )
+
+    contract = receipt["primary_six_arm_evaluation"]["routing_contract"]
+    assert "all nonbaseline bidirectional" in contract["shared_gate_scope"]
+    assert contract["gate_action"] == "steer toward the gate-predicted true status, or abstain"
+    assert contract["bidir_linear_projection"] == "raw_unprojected"
+    assert contract["bidir_linear_route_policy"] == (
+        "same gate route and abstention as bidir_tangent"
+    )
+    assert contract["baseline_intervention"] == "none"

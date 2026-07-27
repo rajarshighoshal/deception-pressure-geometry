@@ -27,6 +27,53 @@ We use three outcome states for completed tests: **supported**, **refuted**, and
 resolution or adequacy condition; it is not a softened null result. Unregistered exploratory
 quantities may explain a result but cannot replace its declared endpoint.
 
+### 2026-07-27 registration: C10 truth-aware nuisance re-score
+
+Registered before any truth-aware numbers were computed; implemented by
+`experiments/rescore_c10_truth_aware_nuisance.py` over the sealed C10 event bank.
+
+The C10 exact nuisance prior is truth-blind: its cell key is (sampled status token, turn,
+intervention history, pressure exposure), while the deceptive label is defined relative to
+scenario truth. The C11 comparators, by contrast, key on true and desired status. The two
+"nuisance prior" baselines are therefore not the same instrument, and the post- versus
+pre-commitment contrast in C10/C11 mixes a timing difference with a comparator-strength
+difference. This re-score adjudicates the post-commitment residual under a matched truth-aware
+comparator.
+
+- **Population and folds**: the same 1,283 pressure-exposed honest/deceptive events and the
+  same 5 outer family folds as C10; training pools are fold-safe.
+- **Comparator**: an exact nuisance prior keyed on (sampled status token, turn, intervention
+  history, pressure exposure, true status, desired status), with coarse fallback (sampled
+  token, turn, pressure, true status, desired status) and a family-balanced base-rate final
+  fallback, replicating the family-balanced Jeffreys-0.5 semantics of the original prior.
+- **Fidelity gate**: recomputation with the original truth-blind key must reproduce the
+  published 0.0205183 / 0.0948840 / 0.0743657 within 1e-6 before any new numbers are read.
+- **Decision rule**: the graph's residual over a truth-aware nuisance prior is *retained* if
+  the family-macro Brier gain is positive and its 10,000-replicate family-cluster bootstrap
+  95% CI excludes zero; secondary support requires the nuisance-preserving permutation excess
+  over the null mean to be positive at one-sided p < 0.05. Verdict language: **found** /
+  **refuted-under-adequate-instrument** / **not-found-under-this-instrument**.
+
+**Outcome (2026-07-27, `post_commitment_truth_aware_nuisance_rescore_v1_20260727`)**: the
+fidelity gate passed (published numbers reproduced bit-exact). The truth-aware prior reaches
+family-macro Brier 0.02748 against the truth-blind prior's 0.09488, so most of the graph's
+raw gain is explained by truth-aware design metadata. The graph's gain over the truth-aware
+prior is +0.00696 (16/20 families positive; 1,281 exact-cell hits, 2 coarse fallbacks), with
+bootstrap fraction positive 0.9678, so the 95% CI does not exclude zero and the primary
+criterion is not met. The nuisance-preserving permutation still rejects (observed excess
++0.0309 over the null mean, one-sided p=1e-4), so the graph carries some real within-cell
+signal, but not a family-robust gain. The registered linear probe beats the truth-aware prior
+by +0.02598. Verdict: **refuted-under-adequate-instrument**.
+
+Instrument limits logged with the verdict: (i) the truth-aware key contains the label's
+defining arguments (sampled token, true status), so the comparator is a near-oracle for every
+model — the probe's margin over it (+0.02598) is likewise compressed, and the re-score
+adjudicates utility over the design cell, not the existence of information beyond metadata;
+(ii) the family bootstrap has only 20 clusters — the sign test on 16/20 positive families
+gives p≈0.006 and the bootstrap one-sided tail is ≈0.032, so the result sits at the
+instrument's power limit and cannot distinguish "negligible" from "small but real".
+
+
 ## Experimental units and banks
 
 ### Natural conversational pressure (C9)
@@ -108,20 +155,26 @@ honest conversations over 20 families. It permits matched evaluation of many int
 new generation, but that convenience creates a strict interpretation boundary: an action selector
 evaluated on this field is not automatically a prospective controller.
 
-C1 compares three information budgets:
+C1 compares three information budgets. The field is oracle-routed at generation, so on the 600
+deceptive rows the candidate menu already exposes only the corrective target; every policy is
+therefore equally route-constrained there, and the route is also available to the learned ranker
+as an input feature. The budgets differ in whether the *corrective target* is handed to the policy
+or must be selected:
 
-| Policy | Held-out candidate outcomes at application | True target supplied | Result |
-|---|---|---|---|
-| learned context-only ranker | no | no; it jointly selects target and action | 170/600 fixes, 11/600 honest harms |
-| Chart-Neural Gate | no | yes | 599/600 fixes, 1/600 harm |
-| route-matched fixed L16, alpha 96 | no | yes; conceived retrospectively | 600/600 fixes, 0 harm |
+| Policy | Held-out candidate outcomes at application | Corrective target supplied | Route available | Result |
+|---|---|---|---|---|
+| learned route-feature ranker | no | no; selects target and action itself | yes, as a feature | 170/600 fixes, 11/600 honest harms |
+| Chart-Neural Gate | no | no explicit mask; argmax over the route-constrained menu | yes, via the menu | 599/600 fixes, 1/600 harm |
+| route-matched fixed L16, alpha 96 | no | yes; conceived retrospectively | yes | 600/600 fixes, 0 harm |
 
-The learned context-only ranker selects a target inconsistent with scenario truth on 233/1,200
-rows. The near-ceiling policies do not establish route inference because they receive the correct
-route. Because the ranker also differs in action selection and architecture, the observed gap does
-not isolate target inference. The historical 539/600 floor is retained only as a mis-specified
-comparison: its training selection pooled counter-target candidates. C2 separately compares
-generated behavior under a learned dense dose and fixed high-dose policies.
+The learned route-feature ranker receives the route as a feature yet selects a target inconsistent
+with scenario truth on 233/1,200 rows, all on honest rows where both targets remain available. The
+near-ceiling policies do not establish route inference: they receive the correct route, and so does
+the ranker. Because the ranker also differs in action selection and architecture, the observed gap
+reflects corrective-coordinate selection and reward estimation, not route access or a geometric
+actuation primitive. The historical 539/600 floor is retained only as a mis-specified comparison:
+its training selection pooled counter-target candidates. C2 separately compares generated behavior
+under a learned dense dose and fixed high-dose policies.
 
 ### Prospective natural-prose control (C5)
 

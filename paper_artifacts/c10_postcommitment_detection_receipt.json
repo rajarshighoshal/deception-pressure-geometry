@@ -37,7 +37,7 @@
     "public_status": "development_exploratory_bank; the frozen 57-of-60 baseline-knowledge gate missed by one scenario (56-of-60)"
   },
   "checks": {
-    "all_primary_pairs_favor_exact_nuisance_prior_over_graph": true,
+    "all_primary_families_favor_graph_over_exact_nuisance_prior": true,
     "comparator_favors_linear_probe": true,
     "knowledge_error_separation_exceeds_nuisance": true,
     "nuisance_permutation_observed_exceeds_null": true,
@@ -157,7 +157,7 @@
     }
   },
   "producer": "experiments/report_public_detection_receipts.py",
-  "producer_sha256": "ef96ede23abd488ab35c04916c6f0b3537bf424a141fc9ffcdaa0380c109680d",
+  "producer_sha256": "c1cde2b939aa6b5e464f8e10b9d8fcc57d77d2aefccd20db0c504b37c4dc6e30",
   "schema_version": 1,
   "source_artifacts": {
     "post_commitment_growth_outcomes": {

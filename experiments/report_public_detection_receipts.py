@@ -395,7 +395,7 @@ def build_c10_receipt(
             "pair_inventory_is_31": len(pair_inventory) == 31,
             "strict_pair_count_is_30": int(strict_overall["pair_count"]) == 30,
             "comparator_favors_linear_probe": number_value(cmp_decision["observed"], "comparator.observed") < 0,
-            "all_primary_pairs_favor_exact_nuisance_prior_over_graph": int(per_family_positive)
+            "all_primary_families_favor_graph_over_exact_nuisance_prior": int(per_family_positive)
             == len(exact_brier_per_family),
             "nuisance_permutation_observed_exceeds_null": number_value(
                 nuisance_preserving["observed_family_macro_brier_gain"],

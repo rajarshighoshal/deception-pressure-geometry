@@ -26,16 +26,21 @@ branches:
     role: main
     abbrev: SAC
     read_as: >-
-      Conditional action correction in an offline field. The near-ceiling CNG and fixed policies
-      receive the correct target route; the weaker learned context-only ranker jointly selects a
-      target and action. This comparison does not isolate target inference and is not an end-to-end
+      Conditional action correction in an offline, oracle-routed field. The field is generated
+      with oracle true-status routing, so deceptive states expose only the corrective-target
+      candidates and every policy is equally route-constrained on deceptive rows. CNG applies an
+      unconstrained argmax over the candidates available in that field and matches the supplied
+      route on all honest rows where both targets remain available; the fixed linear coordinate
+      explicitly maps the route to a target. The weaker learned ranker receives the same route as
+      a feature but chooses counter-target candidates on 233 honest rows. This comparison does
+      not isolate target inference or a geometry-specific primitive, and is not an end-to-end
       deception controller.
   natural_prose_control:
     role: main
     abbrev: NPC
     read_as: >-
-      Fresh prospective generation on held-out scenario families, using the pre-action context
-      without oracle true-status routing.
+      Fresh, prospectively specified development generation on held-out scenario families, using
+      the pre-action context without oracle true-status routing.
   natural_pressure:
     role: main
     abbrev: NATP
@@ -51,7 +56,7 @@ branches:
     role: diagnostic
     abbrev: PSD
     read_as: >-
-      A small pilot decomposition separating direction choice from gate, dose, and token scope.
+      A small nonfactorial pilot auditing direction choice alongside gate, dose, and token scope.
   gauge_control:
     role: diagnostic
     abbrev: GGC
@@ -67,9 +72,12 @@ results:
     artifact: paper_artifacts/c1_matched_control_audit.json
     artifact_state: tracked
     metric_summary: >-
-      Offline saved-candidate field, 600 deceptive and 600 honest rows: oracle-target CNG fixes 599/600 with
-      1/600 honest harm; a held-out-family context-only action ranker fixes 170/600 with 11/600
-      harms; a retrospective route-matched fixed bidirectional-linear L16 alpha96 reconstruction
+      Offline saved-candidate field, 600 deceptive and 600 honest rows: CNG uses an unconstrained
+      argmax over the route-conditioned candidate menu, fixes 599/600 with 1/600 honest harm, and
+      selects the supplied route on all 1,200 rows. The deceptive menus already contain only the
+      corrective target. A held-out-family ridge receives the same route as a feature, fixes
+      170/600 with 11/600 harms, and selects 233 counter-target candidates on honest rows. A
+      retrospective hard-route-matched fixed bidirectional-linear L16 alpha96 reconstruction
       fixes 600/600 with zero harm. The legacy 539/600 floor pooled counter-target candidates.
     claim: C1
 
@@ -92,11 +100,12 @@ results:
     artifact: paper_artifacts/c5_natural_prose_control_receipt.json
     artifact_state: tracked
     metric_summary: >-
-      Prospective L16 residual control on 96 rows over four held-out families: native gating changes
-      deceptive status by 0.0000 CI [0, 0]; the frequently firing policy changes it by -0.0833
-      CI [-0.2083, +0.0417]; the family-matched linear comparator reaches +0.3333
-      CI [+0.1667, +0.4583], comprising 21 deceptive fixes and 5 harms. The frequent policy fires
-      on 47/48 deceptive and 37/48 honest rows, showing poor selectivity.
+      Prospectively specified development L16 residual control on 96 rows over four held-out
+      families: native gating changes deceptive status by 0.0000; the frequently firing policy
+      changes it by -0.0833; the family-matched linear comparator reaches +0.3333, comprising 21
+      deceptive fixes and 5 harms. Its four family effects are +0.4167, +0.5000, +0.0833, and
+      +0.3333. The frequent policy fires on 47/48 deceptive and 37/48 honest rows, showing poor
+      selectivity. Family-resampling intervals are descriptive with only four clusters.
     claim: C5
 
   - id: c9_pressure_commitment_receipt
@@ -153,9 +162,10 @@ results:
     metric_summary: >-
       Pilot 4-bit bank, 160 rows with 80 deceptive: tangent steering fixes 48 deceptive reports,
       but 40 under the strict endpoint, compared with 37 status fixes for random-gated and 40 for
-      each global-gated arm; ungated linear fixes 1. Every arm has 2 honest status harms and 10
-      honest strict harms. A 32-row off-tangent follow-up contains 16 deceptive pairs (9 versus 1
-      fixes), giving a retrospectively recalculated paired difference +0.500 CI [+0.188, +0.812].
+      each global-gated arm; the gate-routed raw bidirectional-linear arm fixes 1. Every arm has 2
+      honest status harms and 10 honest strict harms. A 32-row off-tangent follow-up contains 16
+      deceptive pairs (9 versus 1 fixes), giving a retrospectively recalculated paired difference
+      +0.500 CI [+0.188, +0.812].
     claim: C12
 
   - id: c13_gauge_control_receipt
@@ -183,14 +193,20 @@ claims:
     registration_tier: retrospective_synthesis
     boundary: >-
       CNG fixes 599/600 deceptive rows with 1/600 honest harm and exceeds the held-out-family
-      context-only ranker at 170/600 fixes and 11/600 harms. A separately conceived retrospective,
-      oracle-route-matched fixed L16 alpha96 coordinate reaches 600/600 with zero harm. The legacy
-      539/600 comparator was route-mismatched during training selection. These are saved-candidate
-      field evaluations, not fresh generation. CNG and the fixed reconstruction receive the true
-      target; the learned context-only ranker does not inspect held-out candidate outcomes and
-      selects the wrong target on 233/1,200 rows. Because it also differs in action selection and
-      architecture, the performance gap does not isolate target inference. None is a deployable
-      deception controller.
+      route-feature-conditioned ridge at 170/600 fixes and 11/600 harms. A separately conceived
+      retrospective, hard-route-matched fixed L16 alpha96 coordinate reaches 600/600 with zero
+      harm. The legacy 539/600 comparator was route-mismatched during training selection. These
+      are saved-candidate field evaluations, not fresh generation. All three policies receive the
+      true target route, and the field itself exposes only corrective-target candidates on the 600
+      deceptive rows. CNG adds no selector-side route mask: it scores every candidate available in
+      the field by unconstrained argmax and matches the supplied route on all 600 honest rows where
+      both targets remain available. The fixed reconstruction explicitly maps route to target.
+      The ridge uses route as a feature and selects 233 counter-target candidates, all on honest
+      rows, without inspecting held-out candidate outcomes. CNG therefore supports
+      held-out-family, pre-response selection inside an oracle-routed structured-action field, but
+      the comparison isolates neither target inference nor geometry, and the fixed linear
+      coordinate reaches the same ceiling. It is not an end-to-end deception controller; the
+      prospective target-free natural-prose controller is tested separately in C5.
     evidence: [c1_matched_control_audit]
     tests: [tests/test_report_powered150_matched_control_audit.py]
 
@@ -209,18 +225,23 @@ claims:
 
   - id: C5
     statement: >-
-      A prospective L16 residual navigation controller improves held-out-family natural-prose
-      status correctness at least as much as family-matched linear control without honest-row harm.
+      A prospectively specified development L16 residual navigation controller improves
+      held-out-family natural-prose status correctness at least as much as family-matched linear
+      control without honest-row harm.
     status: refuted
     registration_tier: prospective
     boundary: >-
       The native and frequently firing geometric policies fail the machine-scored behavioral
       endpoint, while the linear comparator improves it. Judge-rated honesty or coherence cannot
       rescue the result because perturbation and hedging can move those scores. The frequent policy
-      also fires on 37/48 honest rows and 47/48 deceptive rows. This experiment tested only an L16
-      residual controller. An online natural-prose controller that attaches novel live typed state
-      at L12/L16/L19/L20 and updates its intervention throughout generation was not built within
-      the study's time and compute budget. Its outcome is unknown and cannot rescue C5.
+      also fires on 37/48 honest rows and 47/48 deceptive rows. Only four held-out families were
+      available, so the four family cells are the uncertainty record and family-resampling
+      intervals are descriptive. The public receipt identifies this as development-only and does
+      not preserve timestamped registration history; it is not confirmatory evidence. This
+      experiment tested only an L16 residual controller. An online natural-prose controller that
+      attaches novel live typed state at L12/L16/L19/L20 and updates its intervention throughout
+      generation was not built within the study's time and compute budget. Its outcome is unknown
+      and cannot rescue C5.
     evidence: [c5_natural_prose_control_receipt]
     tests: [tests/test_report_public_natural_prose_control_receipt.py]
 
@@ -251,8 +272,20 @@ claims:
     boundary: >-
       The graph's raw Brier gain is partly reproduced by the nuisance-preserving permutation null;
       its observed excess over the null mean is 0.03089. The same-bank linear probe has lower Brier
-      in all 20 families. This is post-action decodability on a single development bank, not early
-      warning, causal control, or evidence that relational geometry is necessary.
+      in all 20 families. The exact nuisance prior is truth-blind: it keys on the sampled status
+      token, turn, intervention history, and pressure exposure, but not scenario truth, while the
+      deceptive label is defined relative to scenario truth. A truth-aware re-score with the
+      decision rule registered in docs/experiment_design.md (2026-07-27) finds the residual is
+      not retained: the truth-aware prior reaches Brier 0.02748, the graph's gain over it is
+      +0.00696 with a family-cluster bootstrap CI that does not exclude zero (16/20 families
+      positive), verdict refuted-under-adequate-instrument, while the permutation null still
+      rejects (excess +0.0309, p=1e-4). The truth-aware key contains the label's defining
+      arguments, so this bounds utility over the design cell rather than the existence of
+      information beyond metadata, and the 20-cluster bootstrap cannot distinguish a
+      negligible residual from a small real one. The linear probe beats the truth-aware
+      prior by +0.02598. This is post-action decodability on a single
+      development bank, not early warning, causal control, or evidence that relational geometry
+      is necessary.
     evidence: [c10_postcommitment_detection_receipt]
     tests: [tests/test_report_public_detection_receipts.py]
 
@@ -266,21 +299,34 @@ claims:
       All three tested fields fail their registered comparator. The 20 mixed-outcome,
       token-identical prefixes establish an empirical stochastic floor for exact deterministic
       prediction on those states, not a universal impossibility result for pre-action warning.
+      The registered comparators are truth-aware (keyed on true and desired status) while the
+      tested geometry is barred from those fields. Descriptively, the same underlying artifact
+      contains a metric split the registered endpoint does not adjudicate: a nested model adding
+      the geometry to the nuisance features improves held-out AUROC (+0.0091 CI
+      [+0.0047, +0.0132]), Brier (+0.0109 CI [+0.0039, +0.0177]), and log-loss (+0.0141 CI
+      [+0.0012, +0.0268]) on the same events and folds. The nuisance-plus-geometry model also
+      beats the sealed nuisance prior on AUROC (+0.0049 CI [+0.0004, +0.0093]); the
+      geometry-only model does not (AUROC 0.9442 versus 0.9489) and loses on calibrated
+      log-loss. The registered refutation stands on the sealed-prior endpoint.
     evidence: [c11_precommitment_warning_receipt]
     tests: [tests/test_report_public_detection_receipts.py]
 
   - id: C12
     statement: >-
-      In the pilot steering bank, gating, adequate dose, and decision-token scope explain most of
-      the correction, with tangent geometry contributing a smaller incremental lift.
+      In the pilot steering bank, tangent steering has the largest status-correction point, but
+      matched gate-routed random and global directions recover much of it; the nonfactorial audit
+      does not identify a separate tangent-geometry contribution.
     status: supported
     registration_tier: retrospective_synthesis
     boundary: >-
       The primary bank contains 160 rows, with the /80 correction denominator referring only to
       deceptive rows; status and strict endpoints differ, and every arm has 10 honest strict harms.
-      The off-tangent effect uses 16 deceptive pairs and is an explicitly retrospective
-      recalculation. This mixed-precision 4-bit, conditional-routing pilot establishes neither
-      end-to-end selectivity nor the behavior of the larger structured-action field.
+      The raw bidirectional-linear arm uses the same held-out-family gate, routing, and abstention
+      rule as the other bidirectional arms; it is unprojected, not ungated. The off-tangent effect
+      uses 16 deceptive pairs and is an explicitly retrospective recalculation. Direction, gate,
+      dose, and token scope were not crossed factorially. This mixed-precision 4-bit,
+      conditional-routing pilot establishes neither end-to-end selectivity nor the behavior of
+      the larger structured-action field.
     evidence: [c12_steering_decomposition_receipt]
     tests: [tests/test_report_public_steering_receipts.py]
 

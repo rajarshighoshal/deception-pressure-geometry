@@ -6,13 +6,13 @@
       "artifact_id": "c1-public-receipt",
       "result_id": "c1_matched_control_audit",
       "claim_id": "C1",
-      "location": {
-        "kind": "tracked_path",
-        "path": "paper_artifacts/c1_matched_control_audit.json"
-      },
-      "sha256": "ec63517b637aca341b7678e3f68ef1baeb1410c308eec5f8d20421da5998e91f",
-      "byte_size": 63678,
-      "producer": "experiments/report_powered150_matched_control_audit.py",
+ "location": {
+  "kind": "tracked_path",
+  "path": "paper_artifacts/c1_matched_control_audit.json"
+ },
+ "sha256": "2cc08d14b13bf778721d75891cebea7c6236b499013f76228352ca806f1bcfe7",
+ "byte_size": 64405,
+ "producer": "experiments/report_powered150_matched_control_audit.py",
       "producer_command": ".venv/bin/python experiments/report_powered150_matched_control_audit.py --selector SOURCE_SELECTOR.json --cng SOURCE_CNG.json --action-response SOURCE_ACTION_RESPONSE.json --receipt paper_artifacts/c1_matched_control_audit.json --folds 4 --seed 20260726 --bootstrap 2000",
       "input_hashes": {
         "action_response_field": "272322d80d23a01bf4a2f545f82fb9d0a9612d89cfab93a4af1319f9dccf19ab",
@@ -45,7 +45,7 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c2_dose_control_receipt.json"
       },
-      "sha256": "2084c01f07125b99bdcc1d774756fc7fc5d48f5fcba61b6b43798711be4f732d",
+      "sha256": "64fd539f3b9b73caa35f19c02ae3e5faa3a3449e0582a76ac8c6dcf70e4cf1f2",
       "byte_size": 3537,
       "producer": "experiments/report_public_steering_receipts.py",
       "producer_command": ".venv/bin/python experiments/report_public_steering_receipts.py --c2-source SOURCE_C2.json --c12-primary SOURCE_C12_PRIMARY.json --c12-followup SOURCE_C12_FOLLOWUP.json --c2-out paper_artifacts/c2_dose_control_receipt.json --c12-out paper_artifacts/c12_steering_decomposition_receipt.json --bootstrap-seed 20260724 --bootstrap-resamples 10000",
@@ -82,14 +82,19 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c5_natural_prose_control_receipt.json"
       },
-      "sha256": "7626ee0e10555c319ba46f8adf94b347ca885288cf4d958836304453c8ee4d15",
-      "byte_size": 8251,
+      "sha256": "45c36349b19ec475da577603089e975b1e357f756cbe1adf3a3a2a0654d9c129",
+      "byte_size": 15785,
       "producer": "experiments/report_public_natural_prose_control_receipt.py",
-      "producer_command": ".venv/bin/python experiments/report_public_natural_prose_control_receipt.py --primary SOURCE_C5_PRIMARY.json --random SOURCE_C5_RANDOM.json --sign-flip SOURCE_C5_SIGN_FLIP.json --out paper_artifacts/c5_natural_prose_control_receipt.json",
+      "producer_command": ".venv/bin/python experiments/report_public_natural_prose_control_receipt.py --primary SOURCE_C5_PRIMARY.json --random SOURCE_C5_RANDOM.json --sign-flip SOURCE_C5_SIGN_FLIP.json --holdout-source-rows results/baselines/g1_source_freeprose/holdout_wheel3_4fam/g1_rows.jsonl --holdout-base-generations results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/base_generations.jsonl --holdout-native-gated-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/sdf_controller_gated/steered_generations.jsonl --holdout-frequent-early-window-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/sdf_controller_early_window/steered_generations.jsonl --holdout-family-matched-linear-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/bundle_repe_probe_a8/steered_generations.jsonl --out paper_artifacts/c5_natural_prose_control_receipt.json",
       "input_hashes": {
         "prospective_heldout_family_test": "727db19d5c28168831793e342dec6bc2c05417f6bdebdd56d0d1469477d2462d",
         "matched_random_axis": "03646472c4b539c2f33f0516fa813529d87f7113ca477f2ac7568f3e892a5041",
-        "sign_flipped_axis": "4e125bee11957f89afa474830393fa83346708a7196a0b86199aebed272efcc6"
+        "sign_flipped_axis": "4e125bee11957f89afa474830393fa83346708a7196a0b86199aebed272efcc6",
+        "holdout_source_rows": "0693b04444a47436091a21f4a1d88cd32938e11aa4b61d2c4692b34b9d501838",
+        "holdout_base_generations": "c457e431cc737a398285b9b0cc4d518ca23eb4775cef37ed9ed86e8bf4a98b32",
+        "holdout_native_gated_arm": "c504fb320683ad7e5a8dba4bf59c4f49391f2f2f9dc477a7f473a64ce2c12ad6",
+        "holdout_frequent_early_window_arm": "f0d8ff942e63a1ef30ec74f53d7d620191a786553c489734e1f078ddfe06d1b7",
+        "holdout_family_matched_linear_arm": "10dfb6297c034b7bf7c7ad3349b57aaaf3e850a12ffa27af5af4bdd8bbc049a7"
       },
       "model_dependent": true,
       "model_identity": {
@@ -157,8 +162,8 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c10_postcommitment_detection_receipt.json"
       },
-      "sha256": "2eb47880c11bec0c45e91d2b54553abe32d56ba59bdeda93dea2942b1a7a37cb",
-      "byte_size": 5563,
+      "sha256": "52cd9b3eee8954b131b6eaabba6d8d26bc780e614bb0cf040250f41f3ee118eb",
+      "byte_size": 5566,
       "producer": "experiments/report_public_detection_receipts.py",
       "producer_command": ".venv/bin/python experiments/report_public_detection_receipts.py --c10-outcome-report SOURCE_C10_OUTCOMES.json --c10-comparator-report SOURCE_C10_COMPARATOR.json --structured-action-gate-report SOURCE_STRUCTURED_GATE.json --c11-spectral-score SOURCE_C11_SPECTRAL.json --c11-connection-path-score SOURCE_C11_CONNECTION.json --c11-risk-gate-repair-report SOURCE_C11_RISK.json --c11-stochastic-floor-report SOURCE_C11_FLOOR.json --c11-sealed-risk-report SOURCE_C11_SEALED.json --c10-out paper_artifacts/c10_postcommitment_detection_receipt.json --c11-out paper_artifacts/c11_precommitment_warning_receipt.json",
       "input_hashes": {
@@ -193,7 +198,7 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c11_precommitment_warning_receipt.json"
       },
-      "sha256": "fecc425edbdb19476e36f6edf0b54ce0cb905991a4c3d2a2ef9e241571a4e372",
+      "sha256": "135564ef39bd4721ba9dc7049fff2e486f04d8a06200743b31c11a1f1b4a0965",
       "byte_size": 7195,
       "producer": "experiments/report_public_detection_receipts.py",
       "producer_command": ".venv/bin/python experiments/report_public_detection_receipts.py --c10-outcome-report SOURCE_C10_OUTCOMES.json --c10-comparator-report SOURCE_C10_COMPARATOR.json --structured-action-gate-report SOURCE_STRUCTURED_GATE.json --c11-spectral-score SOURCE_C11_SPECTRAL.json --c11-connection-path-score SOURCE_C11_CONNECTION.json --c11-risk-gate-repair-report SOURCE_C11_RISK.json --c11-stochastic-floor-report SOURCE_C11_FLOOR.json --c11-sealed-risk-report SOURCE_C11_SEALED.json --c10-out paper_artifacts/c10_postcommitment_detection_receipt.json --c11-out paper_artifacts/c11_precommitment_warning_receipt.json",
@@ -231,8 +236,8 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c12_steering_decomposition_receipt.json"
       },
-      "sha256": "8a29a0c1b23491a4ebe7890c332aa7076ea48404440c6b45166e2df6b4c0f916",
-      "byte_size": 3381,
+      "sha256": "fc6f20679108153eac420d8f083a590c3b8630be20469de28dcd7dd548bfbe79",
+      "byte_size": 3951,
       "producer": "experiments/report_public_steering_receipts.py",
       "producer_command": ".venv/bin/python experiments/report_public_steering_receipts.py --c2-source SOURCE_C2.json --c12-primary SOURCE_C12_PRIMARY.json --c12-followup SOURCE_C12_FOLLOWUP.json --c2-out paper_artifacts/c2_dose_control_receipt.json --c12-out paper_artifacts/c12_steering_decomposition_receipt.json --bootstrap-seed 20260724 --bootstrap-resamples 10000",
       "input_hashes": {

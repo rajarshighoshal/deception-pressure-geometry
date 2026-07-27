@@ -78,6 +78,15 @@ the registered smooth-versus-step approach-drift contrast was **−0.020 CI [−
 So the behavioral schedule effect replicated, but this activation statistic did not
 show that smooth and abrupt pressure travel along different routes.
 
+One descriptive result I still like: the mounting pressure itself has shape. Across
+1,800 pseudo-orbits spanning the seven assigned pressure levels, the turn-3
+pre-response states deepen monotonically (median Spearman 0.714 on two different depth
+measures), and consecutive-level displacements share a common field that is nearly
+identical across scenario families (median cosine 0.907). It does not transfer across
+constructions, the orbits are pseudo-orbits with offset RNG seeds, and I never tested
+reversibility — so it is a monotone one-parameter flow, not a group action. Pressure
+mounts along a field; it does not just accumulate as a scalar.
+
 The arm intervals are conversation-level Wilson/Newcombe intervals, not family-clustered
 resampling. The dissociation hazard analysis retains 84/96 conversations across 14/16
 families after its registered exclusions, and current versus accumulated pressure
@@ -107,6 +116,19 @@ excess of **0.03089**; the observed gain exceeded the maximum of 10,000 null dra
 But the geometry was not necessary for that readout. A same-bank raw-residual linear
 probe reached Brier **0.00150** and beat the graph in all 20 held-out families.
 
+One more check on that comparison, registered after the first writeup. The exact nuisance
+prior is blind to scenario truth: it conditions on the sampled token, turn, intervention
+history, and pressure, but the label is defined against scenario truth. I re-registered
+the test with a truth-aware cell (sampled token, turn, history, pressure, true and
+desired status) and reran it on the same events and folds. The truth-aware prior is much
+stronger — Brier **0.0275** versus 0.0949 — and the graph's gain over it shrank to
+**+0.00696**, positive in 16 of 20 families but not reliably above zero under the
+registered bootstrap criterion. Verdict: refuted under an adequate instrument. A
+permutation test still says the graph carries some within-cell signal (p=0.0001), and
+the linear probe beat the truth-aware prior by **+0.026** anyway. The honest summary:
+most of the post-action readout is the design cell plus the emitted token, and a linear
+probe reads what is left.
+
 Two controls make the post-action signal harder to dismiss as merely reading pressure
 or the emitted token:
 
@@ -130,6 +152,16 @@ Three attempts tried to read the walk rather than the landing:
 These are separate instruments and populations, not three scores on one common test
 set: the spectral result uses 106 honest/deceptive events, the connection result 52,
 and the masked-risk analysis 1,680 total events (1,568 honest/deceptive).
+
+One nuance I owe the record: the registered endpoints are calibrated log-loss endpoints.
+On discrimination, the same instrument reads differently. On the 1,568 honest/deceptive
+events the geometry-only model reached AUROC **0.9442**, the nuisance-only model
+**0.9446**, and the two combined **0.9537** — the best of any scored arm, above the
+sealed prior's 0.9489. Adding the geometry to the nuisance features improves AUROC,
+Brier, and log-loss with scenario-clustered intervals that exclude zero (**+0.0091**,
+**+0.0109**, **+0.0141** respectively). That is a fitted secondary comparison, not the
+registered endpoint, so the refutation stands — but "no pre-action signal" would be the
+wrong summary.
 
 An earlier comparison in the same risk-gate family reported −0.0865. I originally
 called that an "improvement." That was a sign error: under the registered convention
@@ -273,9 +305,9 @@ detector.
 
 ---
 
-[Frozen public artifact](https://github.com/rajarshighoshal/deception-pressure-geometry/tree/eb38e7fd03b907e0cb00793cfb1a1089d8d96467),
-[results registry](https://github.com/rajarshighoshal/deception-pressure-geometry/blob/eb38e7fd03b907e0cb00793cfb1a1089d8d96467/docs/results_registry.yaml), and
-[evidence-receipt manifest](https://github.com/rajarshighoshal/deception-pressure-geometry/blob/eb38e7fd03b907e0cb00793cfb1a1089d8d96467/paper_artifacts/manifest.json).
+[Frozen public artifact](https://github.com/rajarshighoshal/lie-geometry-probes/tree/e9c9e34d793e86f9d7985171caf358a095ae3496),
+[results registry](https://github.com/rajarshighoshal/lie-geometry-probes/blob/e9c9e34d793e86f9d7985171caf358a095ae3496/docs/results_registry.yaml), and
+[evidence-receipt manifest](https://github.com/rajarshighoshal/lie-geometry-probes/blob/e9c9e34d793e86f9d7985171caf358a095ae3496/paper_artifacts/manifest.json).
 
 If you think I got something wrong, I'd like to hear it.
 

@@ -88,7 +88,7 @@
     }
   },
   "producer": "experiments/report_public_steering_receipts.py",
-  "producer_sha256": "ec7e4b5b65c46dd088e0e88994ed0909dd79e2f9d1dd59c0430b8b8893a23e09",
+  "producer_sha256": "76e9e9a026242489600b55f6771ebee5213216856ab3a04d28bf5bd05aa0d8ba",
   "schema_version": 1,
   "source_artifact": {
     "byte_size": 21720731,

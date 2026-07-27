@@ -23,7 +23,7 @@
   },
   "kind": "c11_precommitment_warning_public_receipt",
   "producer": "experiments/report_public_detection_receipts.py",
-  "producer_sha256": "ef96ede23abd488ab35c04916c6f0b3537bf424a141fc9ffcdaa0380c109680d",
+  "producer_sha256": "c1cde2b939aa6b5e464f8e10b9d8fcc57d77d2aefccd20db0c504b37c4dc6e30",
   "risk_gate_repair": {
     "conclusion": "risk_gate_remains_unsolved_geometry_only_loses_to_design_prior",
     "interpretation": {

@@ -38,7 +38,7 @@
     "seed": 20260726
   },
   "chronology": {
-    "context_only_selector": "heldout-family learned action ranker; no heldout candidate outcomes, but evaluated offline on the completed oracle-routed action-response field",
+    "context_only_selector": "heldout-family ridge candidate ranker; receives the oracle route as a feature, scores both target signs, and never inspects heldout candidate outcomes",
     "historical_fixed_route": "whole-grid post-hoc feasibility ceiling; not a registered baseline",
     "prospective_fresh_generation_controller": "not established by this receipt",
     "registered_comparison": "CNG versus the declared historical train-fold route floor inside the oracle-routed powered150 sandbox",
@@ -450,7 +450,7 @@
     },
     "total_conversations": 1200
   },
-  "interpretation": "CNG strongly exceeds the learned context-only action ranker inside the offline, oracle-routed field. The historical registered floor is not a clean comparator because its train selection pooled counter-target candidates. A separately conceived route-matched fixed-coordinate reconstruction saturates the field, so this audit does not establish geometry-specific or prospective control superiority.",
+  "interpretation": "CNG strongly exceeds the learned route-feature candidate ranker inside the offline oracle-routed field. The field itself is route-constrained on deceptive rows: it exposes only corrective-target candidates there, so every policy is equally route-constrained and none can pick a counter-target on those 600 rows. CNG adds no selector-side route mask; it takes an unconstrained argmax over the candidates the field exposes and matches the supplied route on honest rows only because corrective candidates score higher. The learned ridge receives the same route as a feature yet selects 233 counter-target candidates, all on honest rows, and corrects far fewer deceptive rows. The historical registered floor is not a clean comparator because its train selection pooled counter-target candidates. A separately conceived fixed-coordinate policy that maps the route to its corrective target saturates the field and ties CNG, so the gap reflects corrective-coordinate selection and reward estimation, not route access or a geometric actuation primitive; this audit does not establish prospective control superiority.",
   "kind": "powered150_matched_control_public_receipt",
   "policies": {
     "context_chart_feature_gate_equivariant_neural_context": {
@@ -1415,7 +1415,7 @@
           }
         }
       },
-      "role": "heldout_family_context_only_action_ranker_no_candidate_outcomes_at_application",
+      "role": "heldout_family_candidate_ranker_oracle_route_feature_both_target_signs",
       "summary": {
         "by_status_class": {
           "false_FAIL": {
@@ -1492,7 +1492,7 @@
         "mean_reward": 0.1325,
         "n": 1200
       },
-      "type": "learned_context_only_selector"
+      "type": "learned_oracle_route_feature_candidate_ranker"
     },
     "route_matched_fixed_coordinate": {
       "action_identity_counts": {
@@ -1898,7 +1898,7 @@
     "route_matched_fixed_coordinate"
   ],
   "producer": "experiments/report_powered150_matched_control_audit.py",
-  "producer_sha256": "5a4f92d65b4dd5b761227312afbd73c7dd1136bea307640ce78b35868f7b3e84",
+  "producer_sha256": "bdacf7aa9f373bcd6aeaf39b07dd60ff9c6e3ed8c7dd2d1819e1269dab762a88",
   "scenario_clustered_gaps": {
     "context_chart_feature_gate_equivariant_neural_context": {
       "fixed_route_bidir_linear_L16_a96": {
