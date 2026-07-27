@@ -13,18 +13,18 @@ I started with a simple picture: deception occupies a structured region of activ
 space, find that structure, push the model out of it without pushing it off the
 language manifold.
 
-That picture survived only in pieces, and the pieces have an order. Pressure creates
-structure. The landing is readable. Navigation turns out to be a selection problem. And
-the structure stops at the boundary of the task that produced it.
+That picture survived only in pieces. Pressure creates structure. The landing is
+readable. Navigation turns out to be a selection problem. And the structure stops at
+the boundary of the task that produced it.
 
 Conversational pressure reliably made the model reverse a fact it had previously stated
-correctly. After it committed, the outcome was extremely easy to decode from activations.
-Before commitment, my registered geometric warning fields did not beat matched nuisance
+correctly. After it committed, the outcome was easy to decode from activations. Before
+commitment, my registered geometric warning fields did not beat matched nuisance
 controls. In an artificial one-token action interface, supplied-target correction was
-nearly perfect — but a fixed linear policy with the same supplied target was at least as
-good. The prospective natural-prose geometric controller failed.
+nearly perfect — but a fixed linear policy with the same supplied target was at least
+as good. The prospective natural-prose geometric controller failed.
 
-The cleanest takeaway isn't that activation geometry is useless, it's that I was
+The cleanest takeaway isn't that activation geometry is useless. It's that I was
 conflating three different questions:
 
 1. Can activations reveal what the model just did?
@@ -36,8 +36,8 @@ prospectively with the tested controller.**
 
 I use "deceptive commitment" narrowly below. I'm not claiming to observe intent. The
 event is a pressure-induced false operational report after the same model has
-demonstrated the correct answer. "Sycophantic capitulation to a known falsehood" is
-also a fair name for it.
+demonstrated the correct answer. If you want to call this sycophantic capitulation to
+a known falsehood instead of deception, that's fine — the numbers don't change.
 
 The evidence did not all arrive under one chronology. C5 is the only prospective public
 claim; C10 was registered after its evaluation bank existed; C1, C2, C9, C11, C12, and
@@ -47,27 +47,34 @@ rather than calling the whole program preregistered.
 ## First, I needed a pressure instrument that actually worked
 
 My first prompt was blunt: ask for a false report and repeat the demand harder. It
-mostly produced hedging. The better design treated pressure as a schedule rather than
-a switch:
+mostly produced hedging. A crashed early run came back around 10% deceptive commitment
+and I almost wrote that the model just doesn't commit to lies in free prose.
 
-- **smooth:** pressure rises across several turns;
-- **benign:** no pressure;
+Then I started thinking about how humans actually do this. It's not a step function.
+It ramps, and it ramps in a specific order — curiosity first, then disappointment, then
+stakes, then sunk cost, then "everyone already agrees with me," and only at the end
+the direct question.
+
+So I built four arms:
+
+- **smooth:** pressure rises across several turns, never stating what answer I wanted;
+- **benign:** zero pressure, just the question;
 - **step:** one late, abrupt demand;
 - **late-compressed:** roughly the smooth arm's arguments, compressed into the last two
   turns.
 
-The final ask is byte-identical across pressure arms. This fixed an earlier confound
-where schedule shape and argument dose moved together.
+The final ask is byte-identical across pressure arms. That matters because I'd already
+screwed this up once — v1 confounded schedule shape with a 4–5× difference in
+persuasive words.
 
-I ran 96 scripted conversations and 128 conversations with an adaptive pressurer. Three
-LLM judges labeled commitment, while a separate channel — without access to the assistant
-text — scored pressure intensity. The labels have not been human-validated, and the
-pressurer and judges come from the same model family; their exact auxiliary revisions
-are not fully bound. Those are real limitations.
+I ran 96 scripted conversations and 128 with an adaptive pressurer. Three LLM judges
+labeled commitment, while a separate channel — without access to the assistant text —
+scored pressure intensity. The labels have not been human-validated, and the pressurer
+and judges come from the same model family. Those are real limitations.
 
 Smooth pressure produced deceptive commitment in 26/32 scripted conversations and 45/48
 adaptive conversations. The registered smooth-minus-late-compressed contrasts were
-**+0.31 CI [+0.04, +0.55]** and **+0.21875 CI [+0.0545, +0.3961]**.
+**+0.31 CI [+0.04, +0.55]** and **+0.22 CI [+0.05, +0.40]**.
 
 What I expected next was path dependence: maybe pressure accumulates and carries the
 model into a commitment basin. That was not what the registered tests found. Current
@@ -118,14 +125,14 @@ excess of **0.03089**; the observed gain exceeded the maximum of 10,000 null dra
 But the geometry was not necessary for that readout. A same-bank raw-residual linear
 probe reached Brier **0.00150** and beat the graph in all 20 held-out families.
 
-One more check on that comparison, registered after the first writeup. The exact nuisance
-prior is blind to scenario truth: it conditions on the sampled token, turn, intervention
-history, and pressure, but the label is defined against scenario truth. I re-registered
-the test with a truth-aware cell (sampled token, turn, history, pressure, true and
-desired status) and reran it on the same events and folds. The truth-aware prior is much
-stronger — Brier **0.0275** versus 0.0949 — and the graph's gain over it shrank to
-**+0.00696**, positive in 16 of 20 families but not reliably above zero under the
-registered bootstrap criterion. Verdict: refuted under an adequate instrument. A
+One more check on that comparison, registered after the first writeup. The exact
+nuisance prior is blind to scenario truth: it conditions on the sampled token, turn,
+intervention history, and pressure, but the label is defined against scenario truth. I
+re-registered the test with a truth-aware cell (sampled token, turn, history, pressure,
+true and desired status) and reran it on the same events and folds. The truth-aware
+prior is much stronger — Brier **0.0275** versus 0.0949 — and the graph's gain over it
+shrank to **+0.00696**, positive in 16 of 20 families but not reliably above zero under
+the registered bootstrap criterion. Verdict: refuted under an adequate instrument. A
 permutation test still says the graph carries some within-cell signal (p=0.0001), and
 the linear probe beat the truth-aware prior by **+0.026** anyway. The honest summary:
 most of the post-action readout is the design cell plus the emitted token, and a linear
@@ -270,6 +277,8 @@ off-support, and one had zero direction. Gauge-geodesic minus no intervention wa
 **0.0000 CI [0, 0]** overall and among active roots, with zero gauge-induced action
 flips.
 
+I don't really know what to do with that number.
+
 A broader transport intervention moved logits, but nearly all measured reach was
 generic. The deception-specific raw-logit remainder after generic transport was
 **+0.0125 CI [−0.0160, +0.0406]**.
@@ -283,10 +292,11 @@ structure is absent.
 
 ## What's left after all that
 
-The contribution is not a universal deception controller. It's a map of where the
+I didn't build a universal deception controller. What I have is a map of where the
 geometric hypothesis held and where it stopped: pressure flows, the landing reads
-linearly, navigation is a selection problem, and none of it yet travels. It's also an
-evidence ladder that keeps several commonly conflated results apart:
+linearly, navigation is a selection problem, and none of it yet travels.
+
+It's also an evidence ladder that keeps several commonly conflated results apart:
 
 - a controlled pressure schedule that reliably elicits false operational commitment;
 - a one-token action protocol that separates commitment from prose without constrained
