@@ -1,6 +1,6 @@
 ---
 layout: article
-title: The geometry worked—until I tried to make it universal
+title: "In search of universal structure: local geometric success and universal failure"
 deck: "Pressure traces a flow. Local geometric selection works inside the task. The controller stops being universal when the geometry is assumed too early."
 byline: "Rajarshi Ghoshal"
 assistance_note: >-
