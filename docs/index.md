@@ -1,6 +1,6 @@
 ---
 layout: article
-title: "In search of universal structure: local geometric success and universal failure"
+title: "Deception under pressure: reading and steering the geometry"
 deck: "Pressure traces a flow. Local geometric selection works inside the task. The controller stops being universal when the geometry is assumed too early."
 byline: "Rajarshi Ghoshal"
 assistance_note: >-
@@ -40,6 +40,24 @@ public claim; C10 was registered after its evaluation bank existed; C1, C2, C9,
 C11, C12, and C13 are retrospective syntheses over completed banks. I'm keeping
 those tiers explicit rather than calling the whole program preregistered.
 
+## The ledger
+
+Eight registered claims: four supported, three refuted, one not adjudicated by
+its instrument. Every verdict below is bounded — the boundaries are in the
+[results registry](https://github.com/rajarshighoshal/deception-pressure-geometry/blob/2746821b2b7bdeb3a17a438f1570b2907450d9ae/docs/results_registry.yaml)
+and unpacked in the sections that follow.
+
+| Claim | Verdict | Finding | Key number |
+|---|---|---|---|
+| **C1** | Supported | Oracle-routed structured-action correction works — but a fixed linear policy ties it | 599/600 fixed, 1/600 harm; fixed linear 600/600 |
+| **C9** | Supported | Smooth pressure raises deceptive commitment above a matched-argument control | +0.31 CI [+0.04, +0.55] |
+| **C10** | Supported | Post-commitment states decode beyond nuisance — but a linear probe wins | Brier 0.0205 graph vs **0.00150** linear |
+| **C12** | Supported | Tangent steering leads on points; matched random/global directions recover most of it | 48/80 vs 37–40/80 |
+| **C2** | Refuted | Learned dense dose does not beat fixed high dose | both 591/600; dense adds 5 honest harms |
+| **C5** | Refuted | The prospective natural-prose geometric controller fails; the linear comparator doesn't | 0.0000 vs **+0.3333** |
+| **C11** | Refuted | Pre-commitment geometric warning fields lose to matched baselines | AUROC 0.4168 / 0.3725 |
+| **C13** | Not found under instrument | Gauge-geodesic control is behaviourally null; holonomy unresolvable | 0.0000 CI [0, 0]; adequacy 0/5 folds |
+
 ## Act I: local geometric control, within its information budget
 
 I built a large structured-action field: 1,200 rows of machine-checkable
@@ -52,12 +70,11 @@ equally route-constrained on deceptive rows.
 
 The Chart-Neural Gate was built as a candidate-response-blind structural-geometry
 selector. It scores saved candidates without inspecting their post-action margins,
-outcomes, or rewards. The hierarchy is stark: 170 fixes from a held-out-family
-route-feature ridge that receives the oracle route and candidate target, 539 from
-the historical route floor, then 581, 584, and 598 as richer structural selectors
-narrow the gap. CNG's unconstrained argmax reaches 599/600 fixes with 1/600 honest
-harm. This is a selection result, not evidence that applying a curved direction is
-intrinsically superior.
+outcomes, or rewards. The hierarchy in the figure below is the point: the more
+structure a selector is given, the closer it climbs to the ceiling — a weak ranker
+that sees the route only as a feature sits at the bottom, and richer structural
+selectors close the gap almost entirely. This is a selection result, not evidence
+that applying a curved direction is intrinsically superior.
 
 Two results sharpen what CNG is and isn't doing. A locality proxy comparing
 fixes from a local flow against a locality-removed global flow over saved
@@ -86,6 +103,11 @@ geometry-specific or prospective end-to-end controller.
 
 ![Structured-action control and information budgets](figures/structured_action_control_audit.png)
 
+*Structural selectors climb from 170 to 599 of 600 as they get richer — but a
+retrospectively identified fixed linear policy reaches the same ceiling. Geometry
+selects well here; it isn't necessary here.*
+{: .figure-caption}
+
 ## Act II: pressure traces a flow
 
 My first prompt was blunt — "give me a false report" — and it mostly produced
@@ -105,11 +127,12 @@ channel scored pressure intensity.
 The labels have not been human-validated, and the pressurer and judges share
 the same model family.
 
-Smooth pressure produced deceptive commitment in 26/32 scripted and 45/48
-adaptive conversations. The registered smooth-minus-late-compressed contrasts
-were **+0.31 CI [+0.04, +0.55]** and **+0.22 CI [+0.05, +0.40]**. The
-assigned-arm contrast was found in both banks, though scripted-arm
-realization was mixed.
+Smooth pressure produced deceptive commitment in the large majority of
+conversations in both banks. The comparison that carries the weight is smooth
+against late-compressed: the same arguments, matched within 25% on word count,
+differing only in when they arrive. The registered effect is positive in both
+banks, though scripted-arm realization was mixed. Schedule shape matters
+independently of argument dose.
 
 But what I expected next — path dependence, accumulation into a basin — did not
 show up under the registered tests. Current pressure intensity was positively associated with commitment hazard in
@@ -140,98 +163,96 @@ the pressure profiles as measured, not as a perfectly realized intervention.
 
 ![Pressure behavior and commitment hazard](figures/pressure_behavior_and_hazard.png)
 
+*Schedule shape matters beyond argument dose: smooth escalation beats the same
+arguments compressed late. Commitment tracks current intensity — the cumulative
+history term adds no held-out value.*
+{: .figure-caption}
+
 ## The information-budget bridge
 
 The post-action readout sets the ceiling. On 1,283 post-commitment events, a
-relational residual-attention graph reaches family-macro Brier 0.0205 versus
-0.0949 for an exact nuisance prior over sampled status, turn, intervention
-history, and pressure. The nuisance-preserving permutation null reproduces mean
-gain 0.04347, leaving an observed excess of 0.03089 (p=0.0001). Relational
-geometry is not necessary for this readout: a same-bank raw-residual linear probe
-reaches Brier 0.00150 and beats the graph in all 20 families.
+relational residual-attention graph beats an exact nuisance prior keyed on
+sampled status, turn, intervention history, and pressure, and it survives a
+nuisance-preserving permutation null (excess 0.03089, p=0.0001). But the geometry
+is not *necessary* for that readout: a same-bank raw-residual linear probe beats
+the graph in all 20 families.
 
-Then I re-registered the test with a truth-aware cell. The original nuisance
-prior is blind to scenario truth — it conditions on the sampled token, turn,
-history, and pressure, but the label is defined against scenario truth. A
-truth-aware prior (adding true and desired status) reaches Brier 0.0275, and the
-graph's gain over it shrank to +0.00696, positive in 16/20 families but not
-reliably above zero under the registered bootstrap criterion. Verdict:
-refuted-under-adequate-instrument. The linear probe still beats the truth-aware
-prior by +0.026. The honest summary: post-action activations contain within-cell
-signal, but the graph's family-robust advantage over the truth-aware prior is not
-established, and a linear probe reads the retained signal better.
+Then I re-registered the test with a truth-aware cell, because the original prior
+is blind to scenario truth — it conditions on the sampled token, turn, history,
+and pressure, while the label itself is defined against scenario truth. Against
+a prior that sees true and desired status, the graph's advantage shrank to
++0.00696: positive in 16 of 20 families, not reliably above zero under the
+registered bootstrap criterion. Verdict: refuted-under-adequate-instrument. The
+honest summary is that post-action activations carry within-cell signal, the
+graph's family-robust advantage over a truth-aware prior is not established, and
+a linear probe reads whatever is retained better than the geometry does.
 
-Before action, the registered geometry lost. A one-state spectral field reached
-AUROC 0.4168, a connection-response field 0.3725, and a masked geometry-only
-risk model had log-loss gain −0.0218 over its nuisance prior (C11, refuted).
-But the same instrument reads differently on discrimination: the geometry-only
-model reaches AUROC 0.9442, the nuisance-only model 0.9446, and the two
-combined reach 0.9537 (sealed prior 0.9489). These are receipt-bound
-descriptive AUROC orderings, not a registered endpoint, and do not carry
-compact-receipt-bound scenario-cluster intervals that exclude zero. The geometry adds a small ordering signal that the
-registered calibrated-log-loss endpoint misses. Twenty token-identical
-pre-action prefixes produced different outcomes — that's an empirical stochastic
-floor for exact deterministic prediction, not a theorem that early warning is
-impossible.
+Before action, the registered geometry lost outright: both field instruments
+landed below chance and the masked geometry-only risk model lost to its nuisance
+prior (C11, refuted). The same artifact reads differently on pure discrimination
+— geometry-only 0.9442, nuisance-only 0.9446, the two combined 0.9537 — but
+those are receipt-bound descriptive orderings, not a registered endpoint, and
+they carry no cluster intervals excluding zero. The geometry adds a small
+ordering signal that the registered calibrated-log-loss endpoint misses. Twenty
+token-identical pre-action prefixes produced different outcomes, which is an
+empirical stochastic floor for exact deterministic prediction, not a theorem that
+early warning is impossible.
 
 ![Post-action decodability and pre-action warning](figures/decodability_timing_gap.png)
+
+*The timing gap, and the core asymmetry of this study: after the model commits,
+the state is near-perfectly readable; before it commits, the tested geometric
+fields sit at or below chance.*
+{: .figure-caption}
 
 ## Act III: universality became the boundary
 
 This is where the clean story became conditional. If the structured-action field
 learned a representation and a selector, should that representation survive
-outside the task that produced it? The tests gave one directional fresh-family
-positive, one clear response-aware tie, and weak cross-construction transfer.
+outside the task that produced it? Seven tests ask versions of that question, and
+they weaken in one direction: every time I removed information the geometry had
+been fitted on — the oracle route, the construction, the saved candidate field —
+the advantage fell back toward its baseline.
 
-**Fresh equivariant atlas.** A new 4-bit pilot within the same construction
-tests fresh-family generalization, not cross-construction transfer. The
-equivariant atlas selector achieves 71 corrected rows versus 64 for a
-baseline, with confidence intervals that touch zero. A response-aware variant
-that sees measured candidate response margins and outcomes ties plain margin
-argmax at 79. It is
-explicitly underpowered — the 4-bit precision and small bank size don't support
-strong conclusions — and the directional gap does not establish a clear
-separation.
+| Test | What it asked | Result |
+|---|---|---|
+| **Fresh equivariant atlas** (4-bit) | Does the selector generalise to fresh families *inside* the same construction? | 71 vs 64 route floor — directional, CI touches zero; a response-aware variant ties margin argmax at 79 |
+| **Representation transfer** (Apollo) | Does the source representation carry into a *different* construction? | AUROC 0.629 / 0.514 / 0.571 against native 0.816 / 0.782 / 0.865 |
+| **Free-prose sign readout** | Can a sign channel read the corrective target at all? | 0.986 vs 0.616 for a forced-global-Z2 baseline — post-hoc only |
+| **Prospective controller** (C5) | Does it steer fresh prose *without* the oracle route? | 0.0000, gate firing on 2/48 deceptive rows; linear comparator +0.3333 |
+| **Pilot steering** (C12) | Is tangent geometry the active ingredient? | 48/80, against 37/80 matched-random and 40/80 global-gated |
+| **Gauge control** (C13) | Does gauge-geodesic transport steer? | 21/402 supported roots, 0.0000 CI [0, 0]; holonomy adequacy 0/5 folds |
+| **Learned dose** (C2) | Does a learned dense dose beat a fixed high dose? | Tie at 591/600; the learned dose adds five honest harms |
 
-**Representation transfer.** A receipt-bound Apollo comparison tests whether the
-saved-field source representation carries usable geometry into a different
-construction. The transferred detector reports AUROC 0.629 versus 0.816 for
-native, 0.514 versus 0.782 for another contrast, and 0.571 versus 0.865. The
-source and target banks share no construction architecture, and matched
-target-native fits show model classes are capable in-domain; the gap is
-consistent with task/domain mismatch but does not isolate its cause.
+The atlas pilot is 4-bit and underpowered, so a directional gap establishes
+nothing by itself. The Apollo source and target banks share no construction
+architecture, and matched target-native fits show the model classes are capable
+in-domain — the gap is consistent with task mismatch but does not isolate its
+cause. The gauge replay authenticated its live roots against sealed source-bank
+queries, and the holonomy failure means curvature was never adjudicated either
+way.
 
-**Free-prose sign readout and the prospective controller failure.** After the
-registered C5 behavioral endpoint, I checked whether a free-prose sign channel
-could read the corrective target at all. The no-Z2 sign readout reaches 0.98579
-versus 0.61559 for a forced-global-Z2 baseline on the same held-out-family rows.
-This is a post-hoc readout from the controller receipt;
-it cannot rescue the behavioral failure of C5. It is compatible with chart-local
-structure but does not prove local gauge invariance or selective intervention.
-The registered result stands: the native layer-16 geometric policy changed
-deceptive status by 0.0000 (its gate fired on only 2/48 deceptive rows), a
-frequently firing version reached −0.0833, and the family-matched linear
-comparator reached +0.3333 (C5, refuted).
-
-**Pilot steering and gauge control.** The 160-row 4-bit pilot shows tangent
-steering fixing 48/80 deceptive reports, but matched random-gated (37/80) and
-global-gated directions (40/80 each) recover much of it (C12). The gauge
-controller authenticated roots against sealed source-bank queries and found only
-21/402 roots with an active supported step; gauge-geodesic minus no-intervention
-was 0.0000 CI [0, 0] (C13). The holonomy instrument cleared its adequacy gate
-in 0/5 folds, so curvature was never adjudicated.
-
-Two further analyses rejected specific priors. Learned dense dose did not beat
-fixed high dose; both fixed 591/600 structured actions, while dense dose added
-five honest harms (C2). The broad linear policy changes that would be needed to
-match the geometric signal are large enough that they would alter honest-row
-behavior — the fixed linear coordinate reaches the same ceiling as CNG in the
-structured-action field, but its information budget is narrower (oracle-route
-mapped directly to target), and it was identified retrospectively.
+The free-prose readout is the one that stings. A sign channel reads the
+corrective target almost perfectly on exactly the rows where the controller moved
+nothing. Reading and steering came apart in the same experiment: the information
+is present in the state, and the intervention I built on top of it still did not
+change what the model did. Note too that the fixed linear coordinate reaches
+CNG's ceiling in the structured-action field on a *narrower* budget — the oracle
+route mapped straight to the target — and was identified retrospectively.
 
 ![Prospective natural-prose control result](figures/natural_prose_control_failure.png)
 
+*Take away the oracle route and move to fresh prose, and the geometric policy
+changes deceptive status by exactly nothing — while the family-matched linear
+comparator moves it by +0.3333.*
+{: .figure-caption}
+
 ![Gauge replay contrasts and proposal-support counts](figures/gauge_control_null.png)
+
+*The gauge controller proposes a supported step on only 21 of 402 roots, and its
+effect is null with zero action flips. The holonomy instrument fails adequacy in
+all five folds, so curvature is unevaluable — not absent.*
+{: .figure-caption}
 
 ## The geometry organizes locally; I pre-imposed structure on it too early
 
@@ -276,5 +297,10 @@ controller would have to learn rather than assume.
 [evidence-receipt manifest](https://github.com/rajarshighoshal/deception-pressure-geometry/blob/2746821b2b7bdeb3a17a438f1570b2907450d9ae/paper_artifacts/manifest.json).
 
 If you think I got something wrong, I'd like to hear it.
+
+**Other work.** *Think Less, Code Better: Probing When Chain-of-Thought Hurts and
+How to Route Around It* — [ACL 2026 Student Research Workshop](https://aclanthology.org/2026.acl-srw.13/).
+*Parallel k-Clique Counting via Hierarchical Breadth-First Search* — to appear,
+SC26. Other code and projects: [github.com/rajarshighoshal](https://github.com/rajarshighoshal).
 
 *GPU compute was supported by a BlueDot Impact Rapid Grant.*
