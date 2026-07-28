@@ -45,6 +45,278 @@
     "route_matched_reconstruction": "retrospective heldout-family-clean robustness analysis; candidate-response-blind at heldout application but oracle-route-conditioned"
   },
   "claim_id": "C1",
+  "descriptive_structural_evidence": {
+    "boundaries": {
+      "fresh_equivariant_atlas": "separate fresh-family development bank; out-of-the-box atlas selection (no held-out tuning): context-only k=21 atlas 71/100, response-aware k=5 atlas 79/100 (ties margin argmax), route floor 64/100; gap over floor +0.07 with CI [0.0, +0.149]",
+      "gate_l20": "routing-only, 12-family leave-one-family-out same-distribution CV, not true OOD and not end-to-end control",
+      "local_control_flow": "CPU proxy over saved candidates, not generated intervention",
+      "saved_field_response_free_selectors": "retrospective, oracle-route-conditioned, candidate-response-blind at held-out application"
+    },
+    "confirmatory": false,
+    "fresh_equivariant_atlas": {
+      "paired_gaps": {
+        "context_k21_vs_route_floor": {
+          "ci95": [
+            0.0,
+            0.1485148514851485
+          ],
+          "n": 100,
+          "n_clusters": 68,
+          "point": 0.07
+        },
+        "response_k5_vs_margin_argmax": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n": 100,
+          "n_clusters": 68,
+          "point": 0.0
+        }
+      },
+      "policy_summaries": {
+        "atlas_context_local_k21_strict": {
+          "deceptive_n": 100,
+          "deceptive_strict_fixes": 71
+        },
+        "atlas_response_local_k5_strict": {
+          "deceptive_n": 100,
+          "deceptive_strict_fixes": 79
+        },
+        "margin_argmax_all": {
+          "deceptive_n": 100,
+          "deceptive_strict_fixes": 79
+        },
+        "route_hybrid_mean_probe": {
+          "deceptive_n": 100,
+          "deceptive_strict_fixes": 64
+        }
+      }
+    },
+    "gate_l20_routing_diagnostic": {
+      "n": 1680,
+      "routing_correct_rate": 1.0,
+      "target_status_accuracy": 1.0
+    },
+    "locality_proxy": {
+      "paired_gaps": {
+        "global_control_flow_context": {
+          "local_control_flow_context": {
+            "aligned_margin": {
+              "ci95": [
+                -2.7398691488397993,
+                -2.3820435108749534
+              ],
+              "n": 1200,
+              "n_clusters": 142,
+              "point": -2.5629872767130535
+            },
+            "fixes_error": {
+              "ci95": [
+                -0.4436907954308003,
+                -0.3064043290953032
+              ],
+              "n": 600,
+              "n_clusters": 140,
+              "point": -0.37166666666666665
+            },
+            "honest_harm": {
+              "ci95": [
+                -0.025296646293391203,
+                0.013449379751900758
+              ],
+              "n": 600,
+              "n_clusters": 139,
+              "point": -0.006666666666666667
+            },
+            "reward": {
+              "ci95": [
+                -0.22034521435692922,
+                -0.14636967416311464
+              ],
+              "n": 1200,
+              "n_clusters": 142,
+              "point": -0.1825
+            }
+          }
+        },
+        "local_control_flow_context": {
+          "global_control_flow_context": {
+            "aligned_margin": {
+              "ci95": [
+                2.3820435108749534,
+                2.7398691488397993
+              ],
+              "n": 1200,
+              "n_clusters": 142,
+              "point": 2.5629872767130535
+            },
+            "fixes_error": {
+              "ci95": [
+                0.30640432909530313,
+                0.4436907954308003
+              ],
+              "n": 600,
+              "n_clusters": 140,
+              "point": 0.37166666666666665
+            },
+            "honest_harm": {
+              "ci95": [
+                -0.013449379751900761,
+                0.0252966462933912
+              ],
+              "n": 600,
+              "n_clusters": 139,
+              "point": 0.006666666666666667
+            },
+            "reward": {
+              "ci95": [
+                0.1463696741631146,
+                0.2203452143569292
+              ],
+              "n": 1200,
+              "n_clusters": 142,
+              "point": 0.1825
+            }
+          }
+        }
+      },
+      "policy_summaries": {
+        "global_control_flow_context": {
+          "deceptive_n": 600,
+          "fixes_error": 52,
+          "honest_harms": 7,
+          "honest_n": 600
+        },
+        "local_control_flow_context": {
+          "deceptive_n": 600,
+          "fixes_error": 275,
+          "honest_harms": 11,
+          "honest_n": 600
+        }
+      }
+    },
+    "registration_status": "unregistered_descriptive",
+    "saved_field": {
+      "chart_distilled_context_rf": {
+        "deceptive_n": 600,
+        "fixes_error": 584,
+        "honest_harms": 0,
+        "honest_n": 600
+      },
+      "chart_mean_context_cauto_d12_strict": {
+        "deceptive_n": 600,
+        "fixes_error": 596,
+        "honest_harms": 1,
+        "honest_n": 600
+      },
+      "graph_mean_context_cauto_gauto_d12_strict": {
+        "deceptive_n": 600,
+        "fixes_error": 598,
+        "honest_harms": 5,
+        "honest_n": 600
+      },
+      "product_z2_context_rf": {
+        "deceptive_n": 600,
+        "fixes_error": 581,
+        "honest_harms": 0,
+        "honest_n": 600
+      },
+      "train_best_route_full_reward": {
+        "deceptive_n": 600,
+        "fixes_error": 539,
+        "honest_harms": 0,
+        "honest_n": 600
+      },
+      "typed_graph_context_reward": {
+        "deceptive_n": 600,
+        "fixes_error": 572,
+        "honest_harms": 20,
+        "honest_n": 600
+      }
+    },
+    "section": "descriptive_structural_evidence",
+    "sources": {
+      "fresh_equivariant_atlas": {
+        "byte_size": 3743578,
+        "path": "results/eval/fresh_overnight/geometric_atlas_equivariant.json",
+        "sha256": "fab839020eb3d4af2ebc249922569414598a9e47683c440293694ee426426ec7"
+      },
+      "gate_l20": {
+        "byte_size": 926652,
+        "path": "results/eval/fresh_overnight/gate_l20.json",
+        "sha256": "b0ef432abda2bd4fd306f680d301ccacb16bfcc07c1de58d578cfd45e514a2de"
+      },
+      "learned_geometry_map": {
+        "byte_size": 18565783,
+        "path": "runpod_results/powered150/run_20260629_142532/learned_geometry_map_selector_powered150.json",
+        "sha256": "7f322d67ef88efe7a7566bf798835ab49ca9ef5de17077881d2bfa82f935f193"
+      },
+      "local_control_flow": {
+        "byte_size": 4412414,
+        "path": "runpod_results/powered150/run_20260629_142532/local_control_flow_option3.json",
+        "sha256": "ca23459f9b090c9f00690d2bb46052f14b5998ad25d00b48b0ab0c8929dae646"
+      }
+    },
+    "transfer_boundary": {
+      "boundaries": {
+        "causal_attribution": "no causal attribution",
+        "control_target": "target bank lacks machine-checkable control target",
+        "controller_status": "not a controller result",
+        "representation": "representation transfer only",
+        "task_instrument": "different task/instrument"
+      },
+      "confirmatory": false,
+      "path": {
+        "apollo_native_grid_gcn_train_eval": {
+          "auroc": 0.8649896978021978,
+          "n": 484,
+          "orientation_corrected_auroc": 0.8649896978021978
+        },
+        "apollo_native_linear_path_train_eval": {
+          "auroc": 0.7819024725274725,
+          "n": 484,
+          "orientation_corrected_auroc": 0.7819024725274725
+        },
+        "powered150_grid_gcn_zero_shot": {
+          "auroc": 0.5710164835164835,
+          "n": 484,
+          "orientation_corrected_auroc": 0.5710164835164835
+        },
+        "powered150_linear_path_zero_shot": {
+          "auroc": 0.5136160714285715,
+          "n": 484,
+          "orientation_corrected_auroc": 0.5136160714285715
+        }
+      },
+      "registration_status": "unregistered_descriptive",
+      "residual": {
+        "apollo_native_linear_pca64_train_eval": {
+          "auroc": 0.8164835164835165,
+          "n": 484,
+          "orientation_corrected_auroc": 0.8164835164835165
+        },
+        "powered150_linear_pca64_zero_shot": {
+          "auroc": 0.6286916208791209,
+          "n": 484,
+          "orientation_corrected_auroc": 0.6286916208791209
+        }
+      },
+      "section": "descriptive_transfer_boundary",
+      "sources": {
+        "apollo_path_transfer": {
+          "byte_size": 71663,
+          "path": "results/baselines/apollo_control_bank/apollo_residual_path_transfer_report.json",
+          "sha256": "fd2543aa4ce3d39877b436fb13b9a4e81e02e4c7f30ba9c80945dd704ea0fb56"
+        },
+        "apollo_residual_transfer": {
+          "byte_size": 612994,
+          "path": "results/baselines/apollo_control_bank/apollo_residual_transfer_report.json",
+          "sha256": "49b1c2329dee55454a15ce2cfcb81e5ce1450db7544f9efa7c910c5a65b874c1"
+        }
+      }
+    }
+  },
   "family_clustered_gaps": {
     "context_chart_feature_gate_equivariant_neural_context": {
       "fixed_route_bidir_linear_L16_a96": {
@@ -1898,7 +2170,7 @@
     "route_matched_fixed_coordinate"
   ],
   "producer": "experiments/report_powered150_matched_control_audit.py",
-  "producer_sha256": "bdacf7aa9f373bcd6aeaf39b07dd60ff9c6e3ed8c7dd2d1819e1269dab762a88",
+  "producer_sha256": "54486b31912d12457bfc5c4ec7941d7cc4c0894357d887090c5eac8790d51ffd",
   "scenario_clustered_gaps": {
     "context_chart_feature_gate_equivariant_neural_context": {
       "fixed_route_bidir_linear_L16_a96": {

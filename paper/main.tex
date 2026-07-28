@@ -1,0 +1,74 @@
+\documentclass[10pt]{article}
+\usepackage{tmlr}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\IfFileExists{placeins.sty}{%
+  \usepackage[section]{placeins}%
+}{%
+  \newcommand{\FloatBarrier}{\clearpage}%
+}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{../docs/figures/}}
+
+\title{Geometric Flow in Deception-Induced Activation%
+\thanks{\textbf{AI-assistance disclosure.} Large language models assisted with code
+implementation and review, plot and table generation from researcher-specified analyses,
+background-literature searches, manuscript drafting, and copyediting. The authors supplied the
+research questions and interpretations, directed the study, verified the reported evidence, and
+take responsibility for its contents.}}
+
+% TMLR review is double blind. Keep the repository URL and identities out of the
+% submitted PDF; a public preprint can switch to the preprint style separately.
+\author{\name Anonymous Authors \\
+        \addr Anonymous institution}
+
+\def\month{00}
+\def\year{2026}
+\def\openreview{\url{https://openreview.net/forum?id=anonymous}}
+
+\newcommand{\model}{Llama-3.1-8B-Instruct}
+\newcommand{\ci}[2]{\,[#1,#2]}
+\newcommand{\na}{\textsc{n/a}}
+
+\begin{document}
+
+\maketitle
+
+\input{sections/00_abstract}
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_setup}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_limitations}
+\input{sections/07_conclusion}
+\section{Reproducibility statement}
+
+The anonymous supplement contains the scientific code, exact protocols, registry, eight compact
+receipts, tests, and figure generator. Its manifest binds each receipt to its producer, source hashes,
+and chronology tier. Large banks and logs are omitted, so the artifact supports integrity and
+claim-consistency checks rather than independent source-evidence reconstruction.
+
+\section*{Broader Impact Statement}
+
+Activation monitoring could support safety but also be mistaken for early warning, and
+oracle-target correction could be mistaken for autonomous control. Steering could also suppress
+disclosures or enforce harmful behavior. We report honest-row harms and failed instruments, exclude
+raw conversations and credentials, and do not recommend deploying these methods as a monitor or
+controller.
+
+\bibliographystyle{tmlr}
+\bibliography{references}
+
+\appendix
+
+\input{sections/appendix_a_protocols}
+\input{sections/appendix_b_claim_ledger}
+\end{document}

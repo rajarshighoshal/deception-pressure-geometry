@@ -293,6 +293,80 @@ def parse_p3_report(path: Path) -> dict[str, Any]:
     }
 
 
+def parse_pressure_flow(path: Path) -> dict[str, Any]:
+    payload = load_json(path)
+    if payload.get("kind") != "pressure_flow_test":
+        raise ValueError(f"{path}: expected kind='pressure_flow_test'")
+
+    summary = payload["summary"]
+    monotonicity = summary["monotonicity"]
+    generality = summary["generality"]
+    coherence = [float(value) for value in summary["flow_coherence_mean_cos_by_step"]]
+    shuffled = [float(value) for value in summary["flow_coherence_shuffled_baseline"]]
+    if not coherence:
+        raise ValueError(f"{path}: expected at least one consecutive pressure-level step")
+    if len(coherence) != len(shuffled):
+        raise ValueError(f"{path}: coherence and shuffled-baseline step counts differ")
+
+    limitations = [str(item) for item in summary["instrument_limitations"]]
+    anchor_limit = next(
+        (
+            item
+            for item in limitations
+            if "anchor states only" in item and "pre_response" in item
+        ),
+        None,
+    )
+    if anchor_limit is None or "(" not in anchor_limit or ")" not in anchor_limit:
+        raise ValueError(f"{path}: missing anchor-state identity in instrument limitations")
+    anchor_text = anchor_limit.split("(", 1)[1].split(")", 1)[0]
+    turn_text, phase = anchor_text.split(maxsplit=1)
+    if not turn_text.startswith("turn-") or phase != "pre_response":
+        raise ValueError(f"{path}: unsupported anchor-state identity {anchor_text!r}")
+
+    return {
+        "claim_status": "unregistered_descriptive",
+        "analysis_type": "descriptive",
+        "evaluation_scope": "in_sample",
+        "state_scope": "anchor_only",
+        "registered_c9_boundary": "unchanged",
+        "n_pseudo_orbits": int(summary["n_full_orbits"]),
+        "pressure_levels": {
+            "n": len(coherence) + 1,
+            "consecutive_step_count": len(coherence),
+            "derivation": "one_plus_consecutive_step_count",
+        },
+        "anchor": {
+            "turn_index": int(turn_text.removeprefix("turn-")),
+            "phase": phase,
+        },
+        "monotonicity": {
+            "probe_depth": {
+                "median_spearman": float(monotonicity["probe_depth_median_spearman"]),
+                "fraction_positive": float(monotonicity["probe_depth_frac_positive"]),
+            },
+            "contrast_depth": {
+                "median_spearman": float(monotonicity["contrast_depth_median_spearman"]),
+                "fraction_positive": float(monotonicity["contrast_depth_frac_positive"]),
+            },
+        },
+        "flow_coherence": {
+            "mean_cosine_by_consecutive_step": coherence,
+            "shuffled_baseline_by_consecutive_step": shuffled,
+            "mean_cosine_range": {
+                "min": min(coherence),
+                "max": max(coherence),
+            },
+        },
+        "cross_family_field_cosine": {
+            "median": float(generality["cross_family_field_cos_median"]),
+            "min": float(generality["cross_family_field_cos_min"]),
+        },
+        "verdict": str(summary["verdict"]),
+        "instrument_limitations": limitations,
+    }
+
+
 def build_c9_receipt(
     *,
     scripted_outcomes: Path,
@@ -301,12 +375,14 @@ def build_c9_receipt(
     dissociation_report: Path,
     dissociation_bank_rows: Path,
     p3_report: Path,
+    pressure_flow: Path,
 ) -> dict[str, Any]:
     scripted = parse_outcome_report(scripted_outcomes)
     adaptive = parse_outcome_report(adaptive_outcomes)
     hazard = parse_hazard_report(hazard_report)
     dissociation = parse_dissociation_report(dissociation_report, dissociation_bank_rows)
     p3 = parse_p3_report(p3_report)
+    descriptive_pressure_flow = parse_pressure_flow(pressure_flow)
 
     return {
         "schema_version": 1,
@@ -389,6 +465,7 @@ def build_c9_receipt(
         "p3": {
             "primary": p3,
         },
+        "descriptive_pressure_flow": descriptive_pressure_flow,
         "source_artifacts": {
             "scripted_outcomes_report": source_identity(scripted_outcomes),
             "adaptive_outcomes_report": source_identity(adaptive_outcomes),
@@ -396,6 +473,7 @@ def build_c9_receipt(
             "dissociation_hazard_report": source_identity(dissociation_report),
             "dissociation_source_bank_rows": source_identity(dissociation_bank_rows),
             "p3_report": source_identity(p3_report),
+            "pressure_flow": source_identity(pressure_flow),
         },
         "sanity": {
             "scripted_population": scripted["n_conversations"],
@@ -420,6 +498,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dissociation-report", type=Path, required=True)
     parser.add_argument("--dissociation-bank-rows", type=Path, required=True)
     parser.add_argument("--p3-report", type=Path, required=True)
+    parser.add_argument("--pressure-flow", type=Path, required=True)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = parser.parse_args(argv)
 
@@ -430,6 +509,7 @@ def main(argv: list[str] | None = None) -> int:
         dissociation_report=args.dissociation_report,
         dissociation_bank_rows=args.dissociation_bank_rows,
         p3_report=args.p3_report,
+        pressure_flow=args.pressure_flow,
     )
     write_json(args.out, receipt)
     print(f"wrote {args.out}")

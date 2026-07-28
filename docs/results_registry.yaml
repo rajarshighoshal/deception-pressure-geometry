@@ -80,6 +80,39 @@ results:
       retrospective hard-route-matched fixed bidirectional-linear L16 alpha96 reconstruction
       fixes 600/600 with zero harm. The legacy 539/600 floor pooled counter-target candidates.
     claim: C1
+    descriptive_companions:
+      - id: c1_descriptive_structural_hierarchy
+        status: unregistered_descriptive
+        produced_by: experiments/report_powered150_matched_control_audit.py
+        receipt: paper_artifacts/c1_matched_control_audit.json
+        statement: >-
+          The saved-field hierarchy compares a route-feature ridge (170/600), historical
+          route floor (539/600), product-Z2 selector (581/600), chart-distilled selector
+          (584/600), graph mean (598/600), and CNG (599/600). These BF16 results are
+          retrospective, oracle-route-conditioned, held-out-family evaluations; no
+          candidate post-action margins or outcomes enter the response-blind selectors.
+          The locality proxy compares fixes from local versus locality-removed global
+          flow over saved candidates (275/600 versus 52/600). Separately, a 4-bit L20
+          linear gate makes 1,680/1,680 PASS/FAIL/abstain routing predictions across 12
+          held-out fresh families drawn from the same data-generating process; this is
+          routing-only, not OOD, generation, or control. A separate underpowered 4-bit
+          fresh atlas directionally exceeds its route floor (71/100 versus 64/100; CI
+          touches zero), while response-aware atlas and margin argmax tie at 79/100.
+          A receipt-bound Apollo
+          representation-transfer audit across different tasks/constructions reports
+          .629 versus .816, .514 versus .782, and .571 versus .865 — this is
+          different-task representation transfer, not within-benchmark or behavioral
+          controller. No successful OOD, behavioral-controller transfer, or causal
+          explanation claim is implied.
+        boundary: >-
+          Retrospective saved-candidate field with oracle true-status routing.
+          Held-out-family evaluation only, not OOD or generation. Fresh atlas is
+          4-bit, underpowered (CI touches zero), and tests within-construction
+          fresh-family generalization. Apollo transfer is receipt-bound
+          representation transfer across different tasks/constructions; it provides
+          no machine-checkable target/behavioral controller and no causal
+          attribution. Numbers are descriptive; the companion does not revise C1's
+          supported status or its registered verdict.
 
   - id: c2_dose_control_receipt
     branch: structured_action_control
@@ -107,6 +140,30 @@ results:
       +0.3333. The frequent policy fires on 47/48 deceptive and 37/48 honest rows, showing poor
       selectivity. Family-resampling intervals are descriptive with only four clusters.
     claim: C5
+    descriptive_companions:
+      - id: c5_descriptive_free_prose_readout
+        status: unregistered_descriptive
+        produced_by: experiments/report_public_natural_prose_control_receipt.py
+        receipt: paper_artifacts/c5_natural_prose_control_receipt.json
+        statement: >-
+          A no-Z2 free-prose sign channel reads the machine-scored corrective target
+          at 0.98579 versus 0.61559 for a forced-global-Z2 baseline on the same
+          held-out-family rows. This is a readout-only statistic from the controller
+          receipt, computed after the behavioral endpoint was already scored. It does
+          not imply a local Z2 involution,
+          chart-level gauge structure, or geometric control leverage; it is
+          compatible with chart-local structure but does not prove local symmetry
+          decomposition or selective intervention. It cannot rescue the registered
+          behavioral failure of C5.
+        boundary: >-
+          Post-hoc readout on four held-out families after the behavioral endpoint
+          was settled. Not a prospective or confirmatory analysis. Compatible with
+          chart-local structure but does not establish geometric control superiority,
+          local gauge invariance, or a Z2 decomposition that could have been used for
+          intervention. The forced-global-Z2 comparator is a single fixed sign
+          partition applied across all families; it was not selected or optimized for
+          this comparison. This companion is readout-only and does not revise C5's
+          refuted status.
 
   - id: c9_pressure_commitment_receipt
     branch: natural_pressure
@@ -118,12 +175,39 @@ results:
       Smooth pressure yields deceptive commitment in 26/32 scripted and 45/48 adaptive cases;
       smooth-minus-late-compressed effects are +0.31 CI [+0.04, +0.55] and +0.21875
       CI [+0.0545, +0.3961], using conversation-level Newcombe intervals. Current intensity
-      predicts hazard, while the tested cumulative-history term adds no held-out value. The
-      dissociation estimate uses 84/96 conversations after registered exclusions and retains
-      realized intensity/history correlation +0.332. An adequate post-hoc commitment axis
-      (AUC 0.920) finds no registered smooth-versus-step approach-drift difference: -0.020
-      CI [-0.145, +0.108].
+      is positively associated in-bank; only the history increment was tested held-out and adds
+      no held-out log-loss value. The dissociation estimate uses 84/96 conversations after
+      registered exclusions and retains realized intensity/history correlation +0.332. An
+      adequate post-hoc commitment axis (AUC 0.920) finds no registered smooth-versus-step
+      approach-drift difference: -0.020 CI [-0.145, +0.108].
     claim: C9
+    descriptive_companions:
+      - id: c9_descriptive_pressure_flow
+        status: unregistered_descriptive
+        produced_by: experiments/report_public_natpress_receipt.py
+        receipt: paper_artifacts/c9_pressure_commitment_receipt.json
+        statement: >-
+          Across 1,800 anchor pseudo-orbits spanning the seven assigned pressure levels,
+          pre-response states deepen monotonically with pressure intensity (median
+          depth Spearman 0.714 on two independent depth measures), and consecutive-level
+          displacement fields are nearly identical across scenario families (median
+          cross-family field cosine 0.907). This is a descriptive one-parameter monotone
+          flow: pressure mounts along a shared field direction rather than accumulating
+          as an unstructured scalar. The orbits are pseudo-orbits with offset RNG seeds;
+          reversibility, closure, and true group structure were not tested. The result
+          is in-sample, pressure/text-confounded (pressure schedules, scenario text, and
+          assistant replies all co-vary across orbit positions), and does not imply a
+          group action, semigroup structure, causal pressure-to-depth law, or universal
+          transfer across models or constructions.
+        boundary: >-
+          Purely descriptive, in-sample on the same natural-pressure development
+          banks used for C9. RNG seeds are offset between orbit positions; orbits
+          are not true group orbits. Pressure schedule, scenario text, and assistant
+          replies are fully confounded (the measured field cannot be uniquely
+          attributed to pressure intensity alone). No group/semigroup/causal/universal
+          transfer claim is made. This companion is a descriptive observation from
+          the C9 receipt and does not revise C9's supported status or its registered
+          verdict.
 
   - id: c10_postcommitment_detection_receipt
     branch: activation_state_audit
@@ -253,8 +337,8 @@ claims:
     status: supported
     registration_tier: retrospective_synthesis
     boundary: >-
-      One Llama-3.1-8B-Instruct model, development banks, and blinded three-judge labels that have
-      not been human-validated. The P3 commitment axis is adequate for its registered test, but its
+      One Llama-3.1-8B-Instruct model, development banks, and blinded LLM-judge labels from three
+      separate calls to one judge model/family that have not been human-validated. The P3 commitment axis is adequate for its registered test, but its
       drift contrast crosses zero. Headline arm intervals are conversation-level Wilson/Newcombe,
       not family-clustered. The dissociation analysis uses 84/96 source conversations after
       registered exclusions and retains intensity/history correlation +0.332. Neither general
@@ -301,13 +385,9 @@ claims:
       prediction on those states, not a universal impossibility result for pre-action warning.
       The registered comparators are truth-aware (keyed on true and desired status) while the
       tested geometry is barred from those fields. Descriptively, the same underlying artifact
-      contains a metric split the registered endpoint does not adjudicate: a nested model adding
-      the geometry to the nuisance features improves held-out AUROC (+0.0091 CI
-      [+0.0047, +0.0132]), Brier (+0.0109 CI [+0.0039, +0.0177]), and log-loss (+0.0141 CI
-      [+0.0012, +0.0268]) on the same events and folds. The nuisance-plus-geometry model also
-      beats the sealed nuisance prior on AUROC (+0.0049 CI [+0.0004, +0.0093]); the
-      geometry-only model does not (AUROC 0.9442 versus 0.9489) and loses on calibrated
-      log-loss. The registered refutation stands on the sealed-prior endpoint.
+      contains receipt-bound raw AUROC scores: geometry-only 0.9442, nuisance-only 0.9446,
+      nuisance-plus-geometry 0.9537, sealed nuisance 0.9489. This is an explicitly descriptive
+      secondary ordering; the registered refutation stands on the sealed-prior endpoint.
     evidence: [c11_precommitment_warning_receipt]
     tests: [tests/test_report_public_detection_receipts.py]
 

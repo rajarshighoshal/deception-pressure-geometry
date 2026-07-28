@@ -278,6 +278,12 @@ def build_payload(
     folds_count: int,
     bootstrap: int,
     seed: int,
+    learned_geometry_map_path: Path | None = None,
+    local_control_flow_path: Path | None = None,
+    gate_l20_path: Path | None = None,
+    fresh_equivariant_path: Path | None = None,
+    apollo_residual_transfer_path: Path | None = None,
+    apollo_path_transfer_path: Path | None = None,
 ) -> dict[str, Any]:
     cng = load_json(cng_path)
     cng_policies = cng.get("policies")
@@ -431,6 +437,24 @@ def build_payload(
         references.append(context_key)
     references = list(dict.fromkeys(references))
 
+    descriptive_structural_evidence: dict[str, Any] | None = None
+    any_evidence = any(
+        p is not None for p in (
+            learned_geometry_map_path, local_control_flow_path,
+            gate_l20_path, fresh_equivariant_path,
+            apollo_residual_transfer_path, apollo_path_transfer_path,
+        )
+    )
+    if any_evidence:
+        descriptive_structural_evidence = extract_descriptive_structural_evidence(
+            learned_geometry_map_path=learned_geometry_map_path,
+            local_control_flow_path=local_control_flow_path,
+            gate_l20_path=gate_l20_path,
+            fresh_equivariant_path=fresh_equivariant_path,
+            apollo_residual_transfer_path=apollo_residual_transfer_path,
+            apollo_path_transfer_path=apollo_path_transfer_path,
+        )
+
     payload: dict[str, Any] = {
         "schema_version": 1,
         "argv": sys.argv,
@@ -467,6 +491,8 @@ def build_payload(
         ) if len(policy_for_gaps) > 1 else {},
         "warnings": warnings,
     }
+    if descriptive_structural_evidence is not None:
+        payload["descriptive_structural_evidence"] = descriptive_structural_evidence
     return payload
 
 
@@ -512,7 +538,7 @@ def build_public_receipt(payload: dict[str, Any]) -> dict[str, Any]:
         if "methods_restricted_to" in policy:
             policies[name]["methods_restricted_to"] = policy["methods_restricted_to"]
 
-    return {
+    receipt: dict[str, Any] = {
         "schema_version": 1,
         "kind": "powered150_matched_control_public_receipt",
         "claim_id": "C1",
@@ -568,6 +594,9 @@ def build_public_receipt(payload: dict[str, Any]) -> dict[str, Any]:
             "establish prospective control superiority."
         ),
     }
+    if "descriptive_structural_evidence" in payload:
+        receipt["descriptive_structural_evidence"] = payload["descriptive_structural_evidence"]
+    return receipt
 
 
 def _fmt_counts(counts: dict[str, int]) -> str:
@@ -672,6 +701,313 @@ def render_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def extract_descriptive_structural_evidence(
+    learned_geometry_map_path: Path | None,
+    local_control_flow_path: Path | None,
+    gate_l20_path: Path | None,
+    fresh_equivariant_path: Path | None,
+    apollo_residual_transfer_path: Path | None = None,
+    apollo_path_transfer_path: Path | None = None,
+) -> dict[str, Any]:
+    """Extract already-computed structural evidence from saved-field retrospective artifacts.
+
+    Does NOT compute new metrics; copies only existing summary fields from the supplied
+    source artifacts.  Missing keys in the sources cause a loud failure — the contract is
+    that the saved artifacts contain pre-computed summaries under well-known policy names.
+    """
+    evidence: dict[str, Any] = {
+        "section": "descriptive_structural_evidence",
+        "registration_status": "unregistered_descriptive",
+        "confirmatory": False,
+        "boundaries": {
+            "saved_field_response_free_selectors": (
+                "retrospective, oracle-route-conditioned, candidate-response-blind "
+                "at held-out application"
+            ),
+            "local_control_flow": (
+                "CPU proxy over saved candidates, not generated intervention"
+            ),
+            "gate_l20": (
+                "routing-only, 12-family leave-one-family-out same-distribution CV, "
+                "not true OOD and not end-to-end control"
+            ),
+            "fresh_equivariant_atlas": (
+                "separate fresh-family development bank; out-of-the-box atlas "
+                "selection (no held-out tuning): context-only k=21 atlas 71/100, "
+                "response-aware k=5 atlas 79/100 (ties margin argmax), route floor "
+                "64/100; gap over floor +0.07 with CI [0.0, +0.149]"
+            ),
+        },
+    }
+
+    sources: dict[str, Any] = {}
+
+    # --- learned geometry map (saved-field) ---
+    if learned_geometry_map_path is not None:
+        lgm = load_json(learned_geometry_map_path)
+        lgm_policies = lgm.get("policies")
+        if not isinstance(lgm_policies, dict):
+            raise ValueError(f"{learned_geometry_map_path}: missing policies object")
+        policy_keys = [
+            "train_best_route_full_reward",
+            "chart_mean_context_cauto_d12_strict",
+            "graph_mean_context_cauto_gauto_d12_strict",
+            "chart_distilled_context_rf",
+            "product_z2_context_rf",
+            "typed_graph_context_reward",
+        ]
+        saved_field: dict[str, Any] = {}
+        for pk in policy_keys:
+            pol = lgm_policies.get(pk)
+            if pol is None:
+                raise KeyError(
+                    f"{learned_geometry_map_path}: expected policy key {pk!r} not found "
+                    f"in saved-field artifact; available keys: {sorted(lgm_policies)}"
+                )
+            summary = pol.get("summary", {})
+            saved_field[pk] = {
+                "fixes_error": summary.get("fixes_error"),
+                "deceptive_n": summary.get("deceptive_n"),
+                "honest_n": summary.get("honest_n"),
+                "honest_harms": summary.get("honest_harms"),
+            }
+        sources["learned_geometry_map"] = {
+            "path": str(learned_geometry_map_path),
+            "sha256": file_sha256(learned_geometry_map_path),
+            "byte_size": learned_geometry_map_path.stat().st_size,
+        }
+        evidence["saved_field"] = saved_field
+
+    # --- local control flow (CPU proxy) ---
+    if local_control_flow_path is not None:
+        lcf = load_json(local_control_flow_path)
+        lcf_policies = lcf.get("policies")
+        if not isinstance(lcf_policies, dict):
+            raise ValueError(f"{local_control_flow_path}: missing policies object")
+        lcf_summaries: dict[str, Any] = {}
+        for pk in ("local_control_flow_context", "global_control_flow_context"):
+            pol = lcf_policies.get(pk)
+            if pol is None:
+                raise KeyError(
+                    f"{local_control_flow_path}: expected policy key {pk!r} not found; "
+                    f"available keys: {sorted(lcf_policies)}"
+                )
+            summary = pol.get("summary", {})
+            lcf_summaries[pk] = {
+                "fixes_error": summary.get("fixes_error"),
+                "deceptive_n": summary.get("deceptive_n"),
+                "honest_n": summary.get("honest_n"),
+                "honest_harms": summary.get("honest_harms"),
+            }
+        paired_gaps = lcf.get("paired_gaps", {})
+        sources["local_control_flow"] = {
+            "path": str(local_control_flow_path),
+            "sha256": file_sha256(local_control_flow_path),
+            "byte_size": local_control_flow_path.stat().st_size,
+        }
+        evidence["locality_proxy"] = {
+            "policy_summaries": lcf_summaries,
+            "paired_gaps": {
+                k: v for k, v in paired_gaps.items()
+                if "fixes_error" in v.get("local_control_flow_context", {})
+                or "fixes_error" in v.get("global_control_flow_context", {})
+            },
+        }
+
+    # --- gate L20 (routing diagnostic) ---
+    if gate_l20_path is not None:
+        gate = load_json(gate_l20_path)
+        gate_summary = gate.get("summary")
+        if not isinstance(gate_summary, dict):
+            raise ValueError(f"{gate_l20_path}: missing summary object")
+        sources["gate_l20"] = {
+            "path": str(gate_l20_path),
+            "sha256": file_sha256(gate_l20_path),
+            "byte_size": gate_l20_path.stat().st_size,
+        }
+        evidence["gate_l20_routing_diagnostic"] = {
+            "n": gate_summary.get("n"),
+            "routing_correct_rate": gate_summary.get("routing_correct_rate"),
+            "target_status_accuracy": gate_summary.get("target_status_accuracy"),
+        }
+
+    # --- fresh equivariant atlas ---
+    if fresh_equivariant_path is not None:
+        fea = load_json(fresh_equivariant_path)
+        fea_policies = fea.get("policies")
+        if not isinstance(fea_policies, dict):
+            raise ValueError(f"{fresh_equivariant_path}: missing policies object")
+        # Extract precomputed summary fields from well-known policy names
+        atlas_policy_summaries: dict[str, Any] = {}
+        for pk in (
+            "route_hybrid_mean_probe",
+            "atlas_context_local_k21_strict",
+            "margin_argmax_all",
+            "atlas_response_local_k5_strict",
+        ):
+            pol = fea_policies.get(pk)
+            if pol is None:
+                raise KeyError(
+                    f"{fresh_equivariant_path}: expected policy key {pk!r} not found "
+                    f"in atlas artifact; available keys: {sorted(fea_policies)}"
+                )
+            summary = pol.get("summary", {})
+            atlas_policy_summaries[pk] = {
+                "deceptive_strict_fixes": summary.get("deceptive_strict_fixes"),
+                "deceptive_n": summary.get("deceptive_n"),
+            }
+        # Extract paired gap data for the two task-specified comparisons
+        fea_paired_gaps = fea.get("paired_gaps")
+        if not isinstance(fea_paired_gaps, dict):
+            raise ValueError(f"{fresh_equivariant_path}: missing paired_gaps object")
+        atlas_paired_gaps: dict[str, Any] = {}
+        for (atlas_key, comparator_key, label) in (
+            ("atlas_context_local_k21_strict", "route_hybrid_mean_probe",
+             "context_k21_vs_route_floor"),
+            ("atlas_response_local_k5_strict", "margin_argmax_all",
+             "response_k5_vs_margin_argmax"),
+        ):
+            atlas_entry = fea_paired_gaps.get(atlas_key)
+            if not isinstance(atlas_entry, dict):
+                raise KeyError(
+                    f"{fresh_equivariant_path}: missing paired_gaps.{atlas_key}"
+                )
+            cmp_entry = atlas_entry.get(comparator_key)
+            if not isinstance(cmp_entry, dict):
+                raise KeyError(
+                    f"{fresh_equivariant_path}: missing "
+                    f"paired_gaps.{atlas_key}.{comparator_key}"
+                )
+            strict_fix = cmp_entry.get("strict_fix")
+            if not isinstance(strict_fix, dict):
+                raise KeyError(
+                    f"{fresh_equivariant_path}: missing "
+                    f"paired_gaps.{atlas_key}.{comparator_key}.strict_fix"
+                )
+            atlas_paired_gaps[label] = {
+                "point": strict_fix.get("point"),
+                "ci95": strict_fix.get("ci95"),
+                "n": strict_fix.get("n"),
+                "n_clusters": strict_fix.get("n_clusters"),
+            }
+        sources["fresh_equivariant_atlas"] = {
+            "path": str(fresh_equivariant_path),
+            "sha256": file_sha256(fresh_equivariant_path),
+            "byte_size": fresh_equivariant_path.stat().st_size,
+        }
+        evidence["fresh_equivariant_atlas"] = {
+            "policy_summaries": atlas_policy_summaries,
+            "paired_gaps": atlas_paired_gaps,
+        }
+
+    # --- Apollo transfer boundary (residual + path) ---
+    transfer_boundary: dict[str, Any] | None = None
+    transfer_sources: dict[str, Any] = {}
+    if apollo_residual_transfer_path is not None or apollo_path_transfer_path is not None:
+        transfer_boundary = {
+            "section": "descriptive_transfer_boundary",
+            "registration_status": "unregistered_descriptive",
+            "confirmatory": False,
+            "boundaries": {
+                "task_instrument": "different task/instrument",
+                "control_target": "target bank lacks machine-checkable control target",
+                "causal_attribution": "no causal attribution",
+                "representation": "representation transfer only",
+                "controller_status": "not a controller result",
+            },
+        }
+
+    if apollo_residual_transfer_path is not None:
+        art = load_json(apollo_residual_transfer_path)
+        art_layers = art.get("layers")
+        if not isinstance(art_layers, list):
+            raise ValueError(f"{apollo_residual_transfer_path}: missing layers array")
+        layer16 = None
+        for lyr in art_layers:
+            if lyr.get("layer") == 16:
+                layer16 = lyr
+                break
+        if layer16 is None:
+            raise ValueError(f"{apollo_residual_transfer_path}: layer 16 not found in layers")
+        l16_detectors = layer16.get("detectors")
+        if not isinstance(l16_detectors, list):
+            raise ValueError(f"{apollo_residual_transfer_path}: layer 16 missing detectors array")
+        # Build lookup by detector name
+        det_map = {d["name"]: d for d in l16_detectors if isinstance(d, dict) and "name" in d}
+        residual_required = [
+            "powered150_linear_pca64_zero_shot",
+            "apollo_native_linear_pca64_train_eval",
+        ]
+        missing_det = [n for n in residual_required if n not in det_map]
+        if missing_det:
+            raise KeyError(
+                f"{apollo_residual_transfer_path}: layer 16 missing detector(s) "
+                f"{missing_det}; available: {sorted(det_map)}"
+            )
+        residual_metrics: dict[str, Any] = {}
+        for det_name in residual_required:
+            metrics = det_map[det_name].get("metrics")
+            if not isinstance(metrics, dict):
+                raise KeyError(
+                    f"{apollo_residual_transfer_path}: detector {det_name!r} missing metrics object"
+                )
+            residual_metrics[det_name] = {
+                "auroc": metrics["auroc"],
+                "orientation_corrected_auroc": metrics["orientation_corrected_auroc"],
+                "n": metrics["n"],
+            }
+        transfer_boundary["residual"] = residual_metrics
+        transfer_sources["apollo_residual_transfer"] = {
+            "path": str(apollo_residual_transfer_path),
+            "sha256": file_sha256(apollo_residual_transfer_path),
+            "byte_size": apollo_residual_transfer_path.stat().st_size,
+        }
+
+    if apollo_path_transfer_path is not None:
+        apt = load_json(apollo_path_transfer_path)
+        apt_detectors = apt.get("detectors")
+        if not isinstance(apt_detectors, list):
+            raise ValueError(f"{apollo_path_transfer_path}: missing detectors array")
+        det_map = {d["name"]: d for d in apt_detectors if isinstance(d, dict) and "name" in d}
+        path_required = [
+            "powered150_linear_path_zero_shot",
+            "apollo_native_linear_path_train_eval",
+            "powered150_grid_gcn_zero_shot",
+            "apollo_native_grid_gcn_train_eval",
+        ]
+        missing_det = [n for n in path_required if n not in det_map]
+        if missing_det:
+            raise KeyError(
+                f"{apollo_path_transfer_path}: missing detector(s) "
+                f"{missing_det}; available: {sorted(det_map)}"
+            )
+        path_metrics: dict[str, Any] = {}
+        for det_name in path_required:
+            metrics = det_map[det_name].get("metrics")
+            if not isinstance(metrics, dict):
+                raise KeyError(
+                    f"{apollo_path_transfer_path}: detector {det_name!r} missing metrics object"
+                )
+            path_metrics[det_name] = {
+                "auroc": metrics["auroc"],
+                "orientation_corrected_auroc": metrics["orientation_corrected_auroc"],
+                "n": metrics["n"],
+            }
+        transfer_boundary["path"] = path_metrics
+        transfer_sources["apollo_path_transfer"] = {
+            "path": str(apollo_path_transfer_path),
+            "sha256": file_sha256(apollo_path_transfer_path),
+            "byte_size": apollo_path_transfer_path.stat().st_size,
+        }
+
+    if transfer_sources:
+        transfer_boundary["sources"] = transfer_sources
+        evidence["transfer_boundary"] = transfer_boundary
+
+    evidence["sources"] = sources
+    return evidence
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -711,6 +1047,42 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--bootstrap", type=int, default=1000)
     parser.add_argument("--no-route-floor-fallback", action="store_true")
+    parser.add_argument(
+        "--learned-geometry-map",
+        type=Path,
+        default=None,
+        help="Optional: learned geometry map selector artifact for descriptive structural evidence.",
+    )
+    parser.add_argument(
+        "--local-control-flow",
+        type=Path,
+        default=None,
+        help="Optional: local control flow artifact for descriptive structural evidence.",
+    )
+    parser.add_argument(
+        "--gate-l20",
+        type=Path,
+        default=None,
+        help="Optional: gate L20 routing diagnostic artifact for descriptive structural evidence.",
+    )
+    parser.add_argument(
+        "--fresh-equivariant",
+        type=Path,
+        default=None,
+        help="Optional: fresh equivariant atlas artifact for descriptive structural evidence.",
+    )
+    parser.add_argument(
+        "--apollo-residual-transfer",
+        type=Path,
+        default=None,
+        help="Optional: Apollo residual transfer report for descriptive transfer boundary evidence.",
+    )
+    parser.add_argument(
+        "--apollo-path-transfer",
+        type=Path,
+        default=None,
+        help="Optional: Apollo path transfer report for descriptive transfer boundary evidence.",
+    )
     return parser
 
 
@@ -732,6 +1104,12 @@ def main() -> None:
         folds_count=args.folds,
         bootstrap=args.bootstrap,
         seed=args.seed,
+        learned_geometry_map_path=args.learned_geometry_map,
+        local_control_flow_path=args.local_control_flow,
+        gate_l20_path=args.gate_l20,
+        fresh_equivariant_path=args.fresh_equivariant,
+        apollo_residual_transfer_path=args.apollo_residual_transfer,
+        apollo_path_transfer_path=args.apollo_path_transfer,
     )
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
     if args.out is not None:

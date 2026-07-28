@@ -1,5 +1,64 @@
 {
   "claim_id": "C9",
+  "descriptive_pressure_flow": {
+    "analysis_type": "descriptive",
+    "anchor": {
+      "phase": "pre_response",
+      "turn_index": 3
+    },
+    "claim_status": "unregistered_descriptive",
+    "cross_family_field_cosine": {
+      "median": 0.9072723686695099,
+      "min": 0.7873175144195557
+    },
+    "evaluation_scope": "in_sample",
+    "flow_coherence": {
+      "mean_cosine_by_consecutive_step": [
+        0.38263678550720215,
+        0.41937118768692017,
+        0.41362547874450684,
+        0.11293558776378632,
+        0.41358867287635803,
+        0.5951504111289978
+      ],
+      "mean_cosine_range": {
+        "max": 0.5951504111289978,
+        "min": 0.11293558776378632
+      },
+      "shuffled_baseline_by_consecutive_step": [
+        -8.083962175676779e-05,
+        -4.218554339063931e-06,
+        -2.5109380046880657e-05,
+        4.335838872743025e-05,
+        -3.882736989451692e-05,
+        3.602963689220718e-06
+      ]
+    },
+    "instrument_limitations": [
+      "pressure covaries with dialogue text; displacements mix pressure and wording effects",
+      "anchor states only (turn-3 pre_response); no trajectory data per pressure level",
+      "depth coordinates (probe margin, contrastive kNN) are choices, not canonical"
+    ],
+    "monotonicity": {
+      "contrast_depth": {
+        "fraction_positive": 0.9088888888888889,
+        "median_spearman": 0.7142857142857144
+      },
+      "probe_depth": {
+        "fraction_positive": 0.9627777777777777,
+        "median_spearman": 0.7142857142857144
+      }
+    },
+    "n_pseudo_orbits": 1800,
+    "pressure_levels": {
+      "consecutive_step_count": 6,
+      "derivation": "one_plus_consecutive_step_count",
+      "n": 7
+    },
+    "registered_c9_boundary": "unchanged",
+    "state_scope": "anchor_only",
+    "verdict": "FOUND: states deepen monotonically along orbits AND displacements share a common field"
+  },
   "hazard": {
     "adaptive_bank": {
       "adaptive_coefficients": {
@@ -464,7 +523,7 @@
     }
   },
   "producer": "experiments/report_public_natpress_receipt.py",
-  "producer_sha256": "b4bbab4a81b27243e421d6c4d827e447570a7fad3db876d9a2d08fb5ec73a03b",
+  "producer_sha256": "943ef65f0b6d89d0e54a0414441f85b45e57c0b7d54adec6ce925d9a85c8b0c5",
   "sanity": {
     "adaptive_population": 128,
     "dissociation_analyzed_population": 84,
@@ -497,6 +556,10 @@
     "p3_report": {
       "byte_size": 4829,
       "sha256": "dbcc8fcaa66469b86ae50ecdbbd10d03ddd5f1de8696b484ccc798b0feaabe83"
+    },
+    "pressure_flow": {
+      "byte_size": 2122,
+      "sha256": "d226ec92b379294f97a1e511e8b49313e06c0b3ea919a636a8f54646a1a08f5e"
     },
     "scripted_outcomes_report": {
       "byte_size": 5299,

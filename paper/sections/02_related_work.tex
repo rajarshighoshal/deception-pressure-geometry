@@ -1,0 +1,39 @@
+\section{Related work}
+
+\paragraph{Reading truth and deception.}
+Linear probes have recovered truth-related information from language-model states
+\citep{burns2023latent,azaria2023internal,marks2024geometry}. More recent work evaluates probes on
+strategic deception and distribution shift \citep{goldowskydill2025deception,kumar2026pressure},
+while \citet{long2025truthful} study representational changes under deceptive instructions. These
+results motivate white-box monitoring, but they do not by themselves establish intentionality,
+pre-action warning, or a causal handle. Our post-commitment result is consistent with strong
+readability; our contribution is to place that result beside matched nuisance and linear
+comparators, then report separate earlier-anchor and intervention tests under stricter
+information budgets.
+
+\paragraph{Activation steering.}
+Inference-time intervention, contrastive activation addition, representation engineering, and
+affine steering alter residual or head-level representations to change generation
+\citep{li2023iti,rimsky2024steering,zou2023representation,singh2024surgery}. Closest to our
+pressure setting, \citet{genadi2026sycophancy} find linearly accessible sycophancy signals and
+effective steering in a sparse set of middle-layer attention heads. These methods motivate
+our fixed-linear and local-direction arms. We do not claim an exact reimplementation of any one
+method. Reliability across models and tasks is not guaranteed \citep{dasilva2025steering}, so our
+main control comparisons hold target information, gate, dose, and token scope explicit rather
+than comparing only against no intervention.
+
+\paragraph{Pressure and sycophancy.}
+Model-written evaluations have exposed diverse behavioral failures
+\citep{perez2023modelwritten}, and multi-turn benchmarks show that sustained dialogue can induce
+sycophantic flips \citep{hong2025sycophancy}. Our setting does not introduce multi-turn pressure
+measurement. It instead fixes scenario truth, controls argument inventory through smooth versus
+late-compressed schedules, and links behavioral timing to activation and intervention analyses.
+
+\paragraph{From probes to causes.}
+Control tasks and amnesic counterfactuals distinguish information in a representation from
+information behaviorally used by a model \citep{hewitt2019control,elazar2021amnesic}. Causal
+abstraction provides a broader language for interventions and mechanistic claims
+\citep{geiger2025causal}. Our evidence ladder applies the same discipline operationally: answer-
+adjacent decoding, pre-answer prediction, oracle-routed correction, and prospective control are
+reported as different estimands. Claim-level chronology follows guidance on preregistration and
+reproducibility \citep{vanmiltenburg2021preregistering,pineau2021reproducibility}.

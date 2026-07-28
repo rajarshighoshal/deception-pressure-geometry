@@ -63,6 +63,24 @@ def _write_jsonl(path: Path, rows: list[dict]) -> None:
     path.write_text("".join(json.dumps(row) + "\n" for row in rows))
 
 
+def _sdf_artifact(*, accuracy: float, z2: bool) -> dict:
+    return {
+        "schema_version": 1,
+        "kind": "sdf_v1",
+        "summary": {
+            "V1_sign_accuracy_heldout": accuracy,
+            "held_out_families": [
+                "ai_content_safety",
+                "environmental_compliance",
+                "research_reproducibility",
+                "supply_chain_integrity",
+            ],
+            "n_dense_crossings": 600,
+            "z2_antisymmetric_by_construction": z2,
+        },
+    }
+
+
 FAMILY_CELLS = {
     "cybersecurity": {
         "base": {"deceptive": 2, "honest": 3},
@@ -146,6 +164,8 @@ def test_cli_requires_explicit_sources_and_has_provider_neutral_help() -> None:
         "holdout_native_gated_arm",
         "holdout_frequent_early_window_arm",
         "holdout_family_matched_linear_arm",
+        "sdf_noz2",
+        "sdf_z2",
     } <= required
 
     help_text = parser.format_help().lower()
@@ -197,6 +217,16 @@ def test_receipt_separates_failed_machine_endpoint_from_judge_channel(tmp_path: 
     _write(primary_path, primary)
     _write(random_path, attribution)
     _write(sign_path, attribution)
+    sdf_noz2_path = tmp_path / "sdf_noz2.json"
+    sdf_z2_path = tmp_path / "sdf_z2.json"
+    _write(
+        sdf_noz2_path,
+        _sdf_artifact(accuracy=0.9857910906298003, z2=False),
+    )
+    _write(
+        sdf_z2_path,
+        _sdf_artifact(accuracy=0.6155913978494624, z2=True),
+    )
 
     holdout = _write_holdout_fixture(tmp_path)
     receipt = build_receipt(
@@ -208,6 +238,8 @@ def test_receipt_separates_failed_machine_endpoint_from_judge_channel(tmp_path: 
         holdout_native_gated_arm=holdout["native"],
         holdout_frequent_early_window_arm=holdout["frequent"],
         holdout_family_matched_linear_arm=holdout["linear"],
+        sdf_noz2=sdf_noz2_path,
+        sdf_z2=sdf_z2_path,
     )
 
     assert receipt["verdict"] == "refuted_under_prospectively_specified_development_instrument"
@@ -228,4 +260,29 @@ def test_receipt_separates_failed_machine_endpoint_from_judge_channel(tmp_path: 
     assert "layers 12, 16, 19, and 20" in receipt["claim_boundary"]
     assert "throughout fresh generation" in receipt["claim_boundary"]
     assert "outcome is unknown" in receipt["claim_boundary"]
+    readout = receipt["descriptive_free_prose_readout"]
+    assert readout["role"] == "descriptive_readout_only_cannot_rescue_c5"
+    assert readout["no_z2_unconstrained_structured_field"] == {
+        "heldout_sign_accuracy": 0.9857910906298003,
+        "n_dense_crossings": 600,
+        "held_out_families": [
+            "ai_content_safety",
+            "environmental_compliance",
+            "research_reproducibility",
+            "supply_chain_integrity",
+        ],
+        "held_out_family_count": 4,
+        "z2_antisymmetric_by_construction": False,
+    }
+    assert readout["forced_global_z2_involution"]["heldout_sign_accuracy"] == (
+        0.6155913978494624
+    )
+    assert readout["forced_global_z2_involution"]["z2_antisymmetric_by_construction"] is True
+    limitations = " ".join(readout["limitations"])
+    assert "not a causal control result" in limitations
+    assert "cannot rescue C5" in limitations
+    assert {
+        "descriptive_free_prose_readout_no_z2",
+        "descriptive_free_prose_readout_global_z2",
+    } <= receipt["source_artifacts"].keys()
     assert str(tmp_path) not in json.dumps(receipt)

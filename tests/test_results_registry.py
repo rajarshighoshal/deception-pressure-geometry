@@ -218,3 +218,88 @@ def test_bad_paper_scope_is_caught():
     errors = validate_registry(reg)
     assert any("unique" in e for e in errors)
     assert any("unknown claim" in e for e in errors)
+
+
+# ---------------------------------------------------------------------------
+# descriptive_companions validation (M4)
+# ---------------------------------------------------------------------------
+
+COMPANION_RESULT_IDS = ["c1_matched_control_audit", "c5_natural_prose_control_receipt",
+                         "c9_pressure_commitment_receipt"]
+
+
+def test_companion_status_is_unregistered_descriptive(registry):
+    """Every descriptive companion must have status unregistered_descriptive."""
+    results_by_id = {r["id"]: r for r in registry["results"]}
+    for rid in COMPANION_RESULT_IDS:
+        result = results_by_id.get(rid)
+        assert result is not None, f"expected result {rid} for companions"
+        companions = result.get("descriptive_companions")
+        assert companions is not None, f"result {rid} missing descriptive_companions"
+        assert len(companions) >= 1, f"result {rid} has empty descriptive_companions"
+        for comp in companions:
+            assert comp.get("status") == "unregistered_descriptive", (
+                f"{comp.get('id')}: expected status unregistered_descriptive, "
+                f"got {comp.get('status')!r}"
+            )
+
+
+def test_companion_producer_is_tracked(registry):
+    """Every companion's produced_by script must be git-tracked."""
+    results_by_id = {r["id"]: r for r in registry["results"]}
+    for rid in COMPANION_RESULT_IDS:
+        result = results_by_id[rid]
+        for comp in result.get("descriptive_companions", []):
+            path = comp.get("produced_by")
+            assert path is not None, f"{comp.get('id')}: missing produced_by"
+            assert _git_tracked(path), (
+                f"{comp.get('id')}: produced_by not tracked: {path}"
+            )
+
+
+def test_companion_receipt_exists(registry):
+    """Every companion's receipt path must exist on disk."""
+    results_by_id = {r["id"]: r for r in registry["results"]}
+    for rid in COMPANION_RESULT_IDS:
+        result = results_by_id[rid]
+        for comp in result.get("descriptive_companions", []):
+            path = comp.get("receipt")
+            assert path is not None, f"{comp.get('id')}: missing receipt"
+            assert (REPO_ROOT / path).exists(), (
+                f"{comp.get('id')}: receipt not found: {path}"
+            )
+
+
+def test_companion_boundary_is_nonempty(registry):
+    """Every companion must have a non-empty boundary string."""
+    results_by_id = {r["id"]: r for r in registry["results"]}
+    for rid in COMPANION_RESULT_IDS:
+        result = results_by_id[rid]
+        for comp in result.get("descriptive_companions", []):
+            boundary = comp.get("boundary")
+            assert boundary is not None, f"{comp.get('id')}: missing boundary"
+            assert isinstance(boundary, str), f"{comp.get('id')}: boundary must be a string"
+            assert boundary.strip(), f"{comp.get('id')}: boundary is empty"
+
+
+def test_companion_has_id_and_statement(registry):
+    """Every companion must have an id and a non-empty statement."""
+    results_by_id = {r["id"]: r for r in registry["results"]}
+    for rid in COMPANION_RESULT_IDS:
+        result = results_by_id[rid]
+        for comp in result.get("descriptive_companions", []):
+            assert comp.get("id"), f"companion in {rid} missing id"
+            assert comp.get("statement"), f"{comp.get('id')}: missing statement"
+            assert comp.get("statement").strip(), f"{comp.get('id')}: empty statement"
+
+
+def test_companions_do_not_affect_registered_claim_count(registry):
+    """The eight registered claims/results must remain unchanged."""
+    claims = {c["id"] for c in registry["claims"]}
+    results = {r["id"] for r in registry["results"]}
+    assert len(claims) == 8
+    assert len(results) == 8
+    for role in ("primary", "supporting", "negative"):
+        assert len(registry["paper_scope"][role]) == len(
+            set(registry["paper_scope"][role])
+        )

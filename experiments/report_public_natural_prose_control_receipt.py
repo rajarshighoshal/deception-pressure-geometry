@@ -26,6 +26,8 @@ PRIMARY_ARMS = {
     "family_matched_linear": "bundle_repe_probe_a8",
 }
 
+SDF_SIGN_ACCURACY_KEY = "V1_sign_accuracy_heldout"
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -269,6 +271,77 @@ def _compact_attribution(path: Path) -> dict[str, Any]:
     }
 
 
+def _compact_descriptive_free_prose_readout(
+    no_z2_path: Path,
+    global_z2_path: Path,
+) -> dict[str, Any]:
+    variants = {}
+    for label, path, expected_z2 in (
+        ("no_z2_unconstrained_structured_field", no_z2_path, False),
+        ("forced_global_z2_involution", global_z2_path, True),
+    ):
+        source = _load(path)
+        if source.get("kind") != "sdf_v1":
+            raise ValueError(f"{path}: expected kind=sdf_v1")
+        summary = source.get("summary")
+        if not isinstance(summary, dict):
+            raise ValueError(f"{path}: expected a summary object")
+        accuracy = summary.get(SDF_SIGN_ACCURACY_KEY)
+        if isinstance(accuracy, bool) or not isinstance(accuracy, (int, float)):
+            raise ValueError(f"{path}: missing numeric {SDF_SIGN_ACCURACY_KEY}")
+        if not 0 <= accuracy <= 1:
+            raise ValueError(f"{path}: {SDF_SIGN_ACCURACY_KEY} must be in [0, 1]")
+        if summary.get("z2_antisymmetric_by_construction") is not expected_z2:
+            raise ValueError(
+                f"{path}: expected z2_antisymmetric_by_construction={expected_z2}"
+            )
+        n_dense_crossings = summary.get("n_dense_crossings")
+        held_out_families = summary.get("held_out_families")
+        if (
+            isinstance(n_dense_crossings, bool)
+            or not isinstance(n_dense_crossings, int)
+            or n_dense_crossings <= 0
+        ):
+            raise ValueError(f"{path}: missing positive integer n_dense_crossings")
+        if (
+            not isinstance(held_out_families, list)
+            or not held_out_families
+            or not all(isinstance(family, str) and family for family in held_out_families)
+            or len(set(held_out_families)) != len(held_out_families)
+        ):
+            raise ValueError(f"{path}: invalid held_out_families")
+        variants[label] = {
+            "heldout_sign_accuracy": accuracy,
+            "n_dense_crossings": n_dense_crossings,
+            "held_out_families": held_out_families,
+            "held_out_family_count": len(held_out_families),
+            "z2_antisymmetric_by_construction": expected_z2,
+        }
+
+    no_z2 = variants["no_z2_unconstrained_structured_field"]
+    global_z2 = variants["forced_global_z2_involution"]
+    if no_z2["n_dense_crossings"] != global_z2["n_dense_crossings"]:
+        raise ValueError("SDF variants use different dense-crossing denominators")
+    if no_z2["held_out_families"] != global_z2["held_out_families"]:
+        raise ValueError("SDF variants use different held-out families")
+
+    return {
+        "role": "descriptive_readout_only_cannot_rescue_c5",
+        **variants,
+        "limitations": [
+            (
+                "The no-Z2 result is an unconstrained structured-field readout, not a causal "
+                "control result or an assumption-free fit."
+            ),
+            (
+                "The forced global Z2 involution comparison is descriptive and does not "
+                "establish causal control or a universal symmetry law."
+            ),
+            "These readout results cannot rescue C5's failed prospective control verdict.",
+        ],
+    }
+
+
 def _ensure_conversation_ids_match(
     *,
     source_rows: dict[str, dict[str, Any]],
@@ -304,6 +377,8 @@ def build_receipt(
     holdout_native_gated_arm: Path,
     holdout_frequent_early_window_arm: Path,
     holdout_family_matched_linear_arm: Path,
+    sdf_noz2: Path,
+    sdf_z2: Path,
 ) -> dict[str, Any]:
     source = _load(primary_path)
     summary = source.get("summary")
@@ -364,6 +439,7 @@ def build_receipt(
     linear_ci = compact_arms["family_matched_linear"]["machine_status"]["deceptive_delta_vs_base"][
         "ci95"
     ]
+    descriptive_free_prose_readout = _compact_descriptive_free_prose_readout(sdf_noz2, sdf_z2)
 
     return {
         "schema_version": 1,
@@ -378,6 +454,8 @@ def build_receipt(
             "holdout_native_gated_arm": _identity(holdout_native_gated_arm),
             "holdout_frequent_early_window_arm": _identity(holdout_frequent_early_window_arm),
             "holdout_family_matched_linear_arm": _identity(holdout_family_matched_linear_arm),
+            "descriptive_free_prose_readout_no_z2": _identity(sdf_noz2),
+            "descriptive_free_prose_readout_global_z2": _identity(sdf_z2),
         },
         "evaluation": {
             "model": "Llama-3.1-8B-Instruct",
@@ -404,6 +482,7 @@ def build_receipt(
                 "endpoint: perturbation, hedging, and coherence changes can move those scores."
             ),
         },
+        "descriptive_free_prose_readout": descriptive_free_prose_readout,
         "checks": {
             "native_primary_delta_is_zero": native_point == 0,
             "frequent_arm_point_is_not_positive": frequent_point <= 0,
@@ -482,6 +561,18 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         help="Held-out family family-matched linear arm generation.",
     )
+    parser.add_argument(
+        "--sdf-noz2",
+        type=Path,
+        required=True,
+        help="Descriptive free-prose structured-field readout without forced global Z2 symmetry.",
+    )
+    parser.add_argument(
+        "--sdf-z2",
+        type=Path,
+        required=True,
+        help="Descriptive free-prose structured-field readout with forced global Z2 symmetry.",
+    )
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     return parser
 
@@ -499,6 +590,8 @@ def main() -> None:
             holdout_native_gated_arm=args.holdout_native_gated_arm,
             holdout_frequent_early_window_arm=args.holdout_frequent_early_window_arm,
             holdout_family_matched_linear_arm=args.holdout_family_matched_linear_arm,
+            sdf_noz2=args.sdf_noz2,
+            sdf_z2=args.sdf_z2,
         ),
     )
     print(f"wrote {args.out}")

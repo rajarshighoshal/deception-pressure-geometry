@@ -1,0 +1,208 @@
+\section{Results}
+
+We present the evidence in three acts. Act~1 establishes that local geometric control works inside
+a machine-checkable task---but the strongest evidence is retrospective and conditional on the task
+supplying the route (section~\ref{sec:local-control}). Act~2 shows that assigned pressure mounts
+as a coherent geometric object (section~\ref{sec:pressure-flow}). Act~3 describes where that
+structure fails to universalize and where reading succeeds after commitment
+(sections~\ref{sec:reading}--\ref{sec:c13}).
+
+\subsection{Local geometric control succeeds inside the task---retrospectively}
+\label{sec:local-control}
+
+The most unambiguous positive geometric-control evidence comes from
+candidate-response-blind structural selection inside an oracle-routed saved-candidate field.
+
+\paragraph{Structural selectors versus a learned linear ranker.}
+In the powered150 saved field, CNG---a chart-based neural geometry selector that takes an
+unconstrained argmax over the candidate menu---fixes 599/600 deceptive rows with 1/600
+honest harm. It is candidate-response-blind at held-out application. The same field exposes
+only corrective-target candidates on deceptive rows because it was generated with the task's
+oracle PASS/FAIL route. A held-out-family ridge receives the same oracle route and candidate
+target as features yet fixes 170/600 and harms 11/600 honest rows; all 233 counter-route
+selections occur on honest rows. A retrospectively selected fixed route-conditioned
+\texttt{bidir\_linear} coordinate (L16, dose 96) reaches 600/600 with zero harm; its
+coordinate was selected post hoc from whole-grid candidate rewards, so it is a
+response-informed feasibility ceiling. Linear actuation suffices once route and coordinate
+are supplied; finding them from context alone is the selection problem the structural
+policies address.
+
+\paragraph{Selector hierarchy and route diagnostic.}
+The selector differences hold across four held-out-family folds. Beyond CNG at
+599/600, graph-mean selection reaches 598/600, chart-mean 596/600, and a distilled
+learned-geometry selector 584/600; a product-$\mathbb{Z}_2$ decision forest reaches 581/600
+with zero harm. The historical route floor stands at 539/600, versus route-feature ridge at
+170/600. The CNG--floor family-cluster interval is $+0.100\ci{+0.045}{+0.165}$; CNG and
+graph mean are indistinguishable. A separate pre-response L20 linear route diagnostic
+recovers the PASS/FAIL route on all 1,680 held-out-family predictions under same-distribution
+leave-one-family-out CV. It is routing-only, not OOD and not end-to-end control; it
+demonstrates that oracle routing may be replaceable within this benchmark.
+
+\paragraph{Locality is load-bearing.}
+In an LCF saved-candidate CPU proxy, the local field fixes 275/600 rows versus 52/600 after
+replacing it with a locality-removed global field, a gap of $+0.372\ci{+0.306}{+0.444}$.
+
+\paragraph{Fresh-family counterweights.}
+Fresh 12-family pilots are less favorable. With the original action pool, structural selectors
+do not exceed a 64/100 linear route floor (non-equivariant atlas 62/100). With an
+equivariant pool, the response-free equivariant atlas reaches 71/100 versus 64/100---a
+directional $+0.07$---but its paired CI touches zero ($[0.0,+0.149]$). The response-aware
+atlas ties margin argmax exactly at 79/100. These counterweights rule out the broad claim
+that geometry beats linear control, and underscore the information-budget gradient:
+response-aware selection is solved by measured margins; response-free structural selection
+is where geometry earns its wins.
+
+\paragraph{Dose and actuator diagnostics.}
+C2 finds dose-selection headroom rather than a learned-dose win: learned dense dose and
+fixed high doses each fix 591/600 deceptive statuses, while dense dose adds 5/600 honest
+harms. Descriptively, training-fold first-crossing median is dose 16 while deployed learned
+doses often reach 96--128. The nonfactorial C12 pilot gives 48/80 tangent, 37/80
+random-gated, and 40/80 global-gated status fixes; factorial arms exist in code but no
+completed result artifact was located, so C12 identifies no tangent-specific contribution.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{structured_action_control_audit.png}
+\caption{Saved-field response-free structural evidence and paired locality, fresh-family, and
+information-budget comparisons. The route diagnostic (L20 linear) recovers 1,680/1,680 routing
+predictions under same-distribution leave-one-family-out CV.}
+\label{fig:structured}
+\end{figure}
+
+\subsection{Pressure mounts as a monotone flow, but the structure is local and task-conditioned}
+\label{sec:pressure-flow}
+
+The arms assigned smooth escalation produce false commitment in 26/32 scripted and 45/48
+adaptive conversations. The assigned-arm smooth-minus-late-compressed differences are
+$+0.31\ci{+0.04}{+0.55}$ and $+0.21875\ci{+0.0545}{+0.3961}$. These Newcombe intervals treat
+conversations as independent even though scenarios repeat, so they are not
+scenario-clustered. Moreover, the scripted manipulation realizes monotone smoothness in only
+12/32 conversations and late compression in 8/16; we report an assigned-arm development
+result, not a clean causal estimate.
+
+No-pressure controls nearly eliminate \emph{deceptive} commitment: 0/32 scripted (Wilson 95\%
+CI $[0,0.1072]$) and 1/16 adaptive ($0.0625\ci{0.0111}{0.2833}$) contradict scenario truth.
+
+Current judged intensity is positively associated with commitment hazard in the fitted
+adaptive and dissociation models: $\alpha=0.565\ci{0.447}{0.747}$ and
+$0.508\ci{0.390}{0.716}$. Only the comparison of the accumulated-history term against the
+current-intensity model is evaluated leave-one-family-out, and it adds no held-out log-loss
+improvement. The registered residual-drift result is negative: the scripted-corner axis
+separates deceptive from honest commitments with held-out AUC 0.920 (above its 0.70 bar), but
+the smooth-versus-step early-drift contrast is $-0.020\ci{-0.145}{+0.108}$.
+
+\paragraph{Pressure as a geometric object.}
+Descriptively, the mounting-pressure trajectory carries a one-parameter flow structure.
+On 1,800 pseudo-orbits across seven assigned pressure levels (turn-3 pre-response anchors,
+layer 16), two independent depth coordinates deepen monotonically (median Spearman 0.714 each;
+fraction monotone 0.963 and 0.909), consecutive-level displacements share a common field
+(per-step coherence cosine 0.11--0.60 against a shuffled baseline at zero), and the fitted
+field is nearly family-identical (cross-family median cosine 0.907, minimum 0.787). These
+are in-sample, anchor-only, pseudo-orbit statistics with pressure covarying with dialogue
+text: coherent monotone flow on a state-conditioned field, not a claimed group, semigroup,
+causal trajectory, or transferable universal field. No group, $\mathbb{Z}_2$, or involution
+claim is made. The compact receipt binds the in-sample descriptive flow statistics.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{pressure_behavior_and_hazard.png}
+\caption{Assigned pressure-arm outcomes and fitted hazard associations (C9). Commitment rates by
+arm with Wilson CIs; in-bank $\alpha$ and $\gamma$ coefficient CIs; held-out history
+$\Delta$LL null. The pressure-flow structure is descriptively a monotone one-parameter flow
+on a state-conditioned field.}
+\label{fig:pressure}
+\end{figure}
+
+\subsection{Reading is nearly linear; pre-action geometry fails its registered comparators}
+\label{sec:reading}
+
+Post-commitment, the local residual--attention graph reaches family-macro Brier 0.02052 versus
+0.09488 for C10's exact nuisance prior. The raw gain, 0.07437, is positive in all 20
+families, and a nuisance-preserving permutation leaves excess 0.03089 ($p=10^{-4}$). A
+nested-selected raw-residual logistic probe is nevertheless stronger: Brier 0.00150, lower
+than the graph in all 20 families by $0.01902\ci{0.01372}{0.02587}$.
+
+The original C10 prior is truth-blind. A registered re-score added true and desired status.
+This near-oracle prior reaches Brier 0.02748; the graph's gain is
+$+0.00696\ci{-0.00038}{+0.01303}$, positive in 16/20 families. The preregistered 95\%
+criterion is not met, so the verdict is \textbf{refuted-under-adequate-instrument}. The
+permutation still rejects (observed excess $+0.03091$, $p=10^{-4}$), while the linear probe
+gains $+0.02598$ over the same prior.
+
+Before commitment, all three registered C11 endpoints fail their declared truth-aware
+comparator: spectral and path fields reach AUROC 0.4168 and 0.3725; masked geometry-only
+log-loss gain is $-0.0218\ci{-0.0733}{+0.0233}$. That refutation coexists with a descriptive
+metric split on 1,568 honest/deceptive events: geometry-only, nuisance-only, and
+nuisance-plus-geometry logistic models reach AUROC 0.9442, 0.9446, and 0.9537 (sealed prior
+0.9489). The nested ordering is descriptive; the registered refutation stands.
+
+Post-action readout is nearly linear and dominates geometric alternatives; pre-action
+geometry fails its registered comparators. The information-budget distinction is central:
+post-commitment sees the committed status token; pre-commitment geometric instruments see
+neither the outcome nor the true and desired status carried by their registered comparator.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{decodability_timing_gap.png}
+\caption{Truth-aware post-commitment Brier decomposition (C10, left) and pre-action
+geometry-only log-loss gain over sealed nuisance prior (C11, right). Post-commitment linear
+probe dominates all geometric alternatives; pre-commitment registered gain crosses zero.}
+\label{fig:timing}
+\end{figure}
+
+\subsection{The structure does not universalize}
+\label{sec:transfer}
+
+\paragraph{Apollo transfer weakens qualitatively.}
+Descriptive zero-shot transfer from powered150 to a 484-row Apollo-derived evaluation split is
+weak relative to target-native fitting. Layer-16 PCA64 linear transfer AUROC~0.629 versus
+target-native~0.816, path linear~0.514 versus~0.782, and grid GCN~0.571 versus~0.865; all
+use $n=484$. The source task supplies a machine-checkable PASS/FAIL field; the Apollo
+artifact uses soft judging and lacks a machine-checkable control target. This is
+unregistered descriptive representation transfer, not controller evidence.
+
+\paragraph{The prospectively specified tangent-actuated prose policy fails.}
+C5 is the closest experiment to end-to-end control. On four held-out families, the frozen
+native layer-16 tangent-actuated policy produces no paired status changes and fires on only
+2/47 eligible deceptive and 3/37 eligible honest rows. Forcing the same actuator throughout
+an early window yields 3 deceptive fixes and 7 harms, net $-0.0833\ci{-0.2083}{+0.0417}$.
+The family-matched linear arm yields 21 deceptive fixes and 5 harms, net $+0.3333$, but also
+26 honest-source fixes and 6 harms; it moves status broadly without
+deception-selective control.
+
+Secondary judge-rated honesty and coherence do not rescue the failed endpoint. The reading
+side works: an unconstrained structured deception field separates deceptive from honest
+free-prose states at 0.986 held-out sign accuracy (four held-out families, 600 dense
+crossings), while forcing a global $\mathbb{Z}_2$ involution collapses held-out sign
+accuracy to 0.616---compatible with chart-local structure but not proof of a local
+involution. The failure is of the tested layer-16 tangent-actuated policy, not of pre-action
+readout in prose. The richer online four-layer controller was never built; it remains future
+work.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{natural_prose_control_failure.png}
+\caption{Prospectively specified natural-prose development result (C5). Net deceptive effects per
+arm with transition counts. Native and frequent arms are layer-16 tangent-actuated policies;
+their effects are nonpositive. The linear arm changes both deceptive- and honest-source outputs.}
+\label{fig:natural}
+\end{figure}
+
+\subsection{Gauge replay is behaviorally null; curvature is not adjudicated}
+\label{sec:c13}
+
+Only 21/402 C13 roots receive an active supported step; 333 exit the boundary, 37 have an
+undefined field, 10 are off-support, and one has zero direction. Gauge minus no intervention
+is $0.0000\ci{0.0000}{0.0000}$, and the deception-specific transport remainder is
+$+0.0125\ci{-0.0160}{+0.0406}$. The separate holonomy instrument clears adequacy in 0/5
+folds, so neither curvature nor flatness is adjudicated. Appendix~\ref{app:c13} separates
+these instruments.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{gauge_control_null.png}
+\caption{Gauge-geodesic contrasts and proposal-support counts (C13). All 402 roots shown; only 21
+receive an active supported step. The gauge arm has no behavioral effect.}
+\label{fig:gauge-results}
+\end{figure}
+\FloatBarrier

@@ -158,3 +158,124 @@ def test_shipped_detection_receipts_do_not_leak_source_paths() -> None:
 def test_dict_require_rejects_expected_mismatch() -> None:
     with pytest.raises(ValueError, match="mapping mismatch"):
         dict_require({"a": 1}, "mismatch", expected={"a": 2})
+
+
+# ---------------------------------------------------------------------------
+# Truth-aware rescore section (C10)
+# ---------------------------------------------------------------------------
+
+def test_c10_receipt_has_truth_aware_rescore_section() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt.get("truth_aware_rescore")
+    assert ta is not None, "C10 receipt must have truth_aware_rescore section"
+    assert ta["source_kind"] == "c10_truth_aware_nuisance_rescore"
+    assert ta["source_status"] == "success"
+
+
+def test_c10_truth_aware_rescore_prior_and_gain() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    assert ta["models"]["truth_aware_prior"]["family_macro_brier"] == pytest.approx(
+        0.027482589785385363
+    )
+    assert ta["models"]["graph_local_joint_top8"]["family_macro_brier"] == pytest.approx(
+        0.020518345218457357
+    )
+    assert ta["graph_gain"]["family_macro_brier_gain"] == pytest.approx(
+        0.006964244566928011
+    )
+
+
+def test_c10_truth_aware_rescore_bootstrap_ci() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    ci = ta["graph_gain"]["family_cluster_bootstrap"]["percentile_95_interval"]
+    assert ci[0] == pytest.approx(-0.00037958401800448265)
+    assert ci[1] == pytest.approx(0.01303210022820328)
+    assert ta["graph_gain"]["family_cluster_bootstrap"]["replicates"] == 10000
+    assert ta["graph_gain"]["family_cluster_bootstrap"]["seed"] == 20260727
+    assert ta["graph_gain"]["family_cluster_bootstrap"]["cluster_count"] == 20
+    assert ta["graph_gain"]["families_with_positive_gain"] == 16
+
+
+def test_c10_truth_aware_rescore_fallback_counts() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    fb = ta["prior_construction"]["fallback_level_counts"]
+    assert fb["exact"] == 1281
+    assert fb["coarse"] == 2
+    assert fb["base_rate"] == 0
+
+
+def test_c10_truth_aware_rescore_linear_probe_no_ci() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    lin = ta["models"]["linear_probe_registered"]
+    assert lin["family_macro_brier"] == pytest.approx(0.0015015367445592714)
+    assert lin["gain_over_truth_aware_prior"] == pytest.approx(0.025981053040826096)
+    # No linear CI is source-bound — confirm absence
+    assert "scenario_cluster_ci" not in lin
+    assert "percentile_95_interval" not in lin
+
+
+def test_c10_truth_aware_rescore_permutation_and_verdict() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    perm = ta["nuisance_preserving_permutation"]
+    assert perm["one_sided_randomization_p"] == pytest.approx(9.999000099990002e-05)
+    assert perm["null_mean"] == pytest.approx(-0.023940868956177166)
+    assert perm["null_max"] == pytest.approx(-0.016028997561709148)
+    assert perm["observed_excess_over_null_mean"] == pytest.approx(0.030905113523105175)
+
+    dec = ta["decision"]
+    assert dec["primary_retained"] is False
+    assert dec["secondary_support"] is True
+    assert dec["verdict"] == "refuted-under-adequate-instrument"
+
+
+def test_c10_truth_aware_rescore_source_identity() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    # Source identity is bound (SHA/size of the rescore report itself)
+    assert "source_sha256" in ta
+    assert len(ta["source_sha256"]) == 64
+    assert ta["source_byte_size"] > 0
+
+
+def test_c10_truth_aware_rescore_in_source_artifacts() -> None:
+    receipt = _load(C10_RECEIPT)
+    sa = receipt["source_artifacts"]
+    assert "truth_aware_nuisance_rescore" in sa
+    ta_source = sa["truth_aware_nuisance_rescore"]
+    assert "sha256" in ta_source
+    assert "byte_size" in ta_source
+
+
+def test_c10_truth_aware_rescore_population() -> None:
+    receipt = _load(C10_RECEIPT)
+    ta = receipt["truth_aware_rescore"]
+    pop = ta["population"]
+    assert pop["event_count"] == 1283
+    assert pop["family_count"] == 20
+
+
+def test_c10_truth_aware_rescore_source_count_regression() -> None:
+    """Source artifacts count must include the 3 original sources + truth-aware rescore."""
+    receipt = _load(C10_RECEIPT)
+    sa = receipt["source_artifacts"]
+    assert len(sa) == 4
+    expected = {
+        "post_commitment_growth_outcomes",
+        "post_commitment_linear_probe_comparator",
+        "structured_action_gate",
+        "truth_aware_nuisance_rescore",
+    }
+    assert set(sa.keys()) == expected
+
+
+def test_detection_cli_includes_truth_aware_rescore_option(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit) as exc:
+        main(["--help"])
+    assert exc.value.code == 0
+    help_text = capsys.readouterr().out
+    assert "--c10-truth-aware-rescore" in help_text

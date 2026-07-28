@@ -63,7 +63,11 @@ def _model_scores(model: Mapping[str, Any], *, label: str) -> tuple[float, float
 
 
 def build_c10_receipt(
-    *, outcome_report: Path, comparator_report: Path, gate_report: Path
+    *,
+    outcome_report: Path,
+    comparator_report: Path,
+    gate_report: Path,
+    truth_aware_rescore: Path | None = None,
 ) -> dict[str, Any]:
     outcome = load_json(outcome_report)
     comparator = load_json(comparator_report)
@@ -166,17 +170,151 @@ def build_c10_receipt(
     exact_brier_per_family = dict_require(gains.get("per_family_brier_gain"), "exact_nuisance per-family brier gain")
     per_family_positive = sum(1 for value in exact_brier_per_family.values() if number_value(value, "per_family_brier_gain") > 0)
 
-    return {
+    # --- truth-aware rescore (optional) ---
+    ta_source = None
+    ta_section: dict[str, Any] | None = None
+    if truth_aware_rescore is not None:
+        ta_report = load_json(truth_aware_rescore)
+        if ta_report.get("kind") != "c10_truth_aware_nuisance_rescore":
+            raise ValueError("C10 truth-aware rescore report has wrong kind")
+        if ta_report.get("status") != "success":
+            raise ValueError("C10 truth-aware rescore report is not a success report")
+
+        ta_source = source_identity(truth_aware_rescore)
+
+        ta_decision = dict_require(ta_report.get("decision"), "ta.decision")
+        ta_population = dict_require(ta_report.get("population"), "ta.population")
+        ta_prior = dict_require(ta_report.get("prior_construction"), "ta.prior_construction")
+        ta_fallback = dict_require(
+            ta_prior.get("fallback_level_counts"), "ta.prior.fallback_level_counts"
+        )
+        ta_models = dict_require(ta_report.get("models"), "ta.models")
+        ta_ta_model = dict_require(
+            ta_models.get("truth_aware_exact_nuisance_family_balanced"), "ta.models.ta"
+        )
+        ta_graph = dict_require(ta_models.get("local_joint_top8"), "ta.models.graph")
+        ta_linear_model = dict_require(
+            ta_models.get("linear_probe_registered"), "ta.models.linear"
+        )
+        ta_primary = dict_require(ta_report.get("primary"), "ta.primary")
+        ta_bootstrap = dict_require(
+            ta_primary.get("family_cluster_bootstrap"), "ta.primary.bootstrap"
+        )
+        ta_perm_test = dict_require(
+            ta_report.get("nuisance_preserving_permutation"),
+            "ta.nuisance_preserving_permutation",
+        )
+
+        ta_section = {
+            "source_kind": str(ta_report["kind"]),
+            "source_status": str(ta_report["status"]),
+            "source_sha256": sha256_file(truth_aware_rescore),
+            "source_byte_size": truth_aware_rescore.stat().st_size,
+            "decision_rule": str(ta_report["decision_rule"]),
+            "metric": str(ta_report["metric"]),
+            "population": {
+                "event_count": int(ta_population["event_count"]),
+                "family_count": int(ta_population["family_count"]),
+            },
+            "models": {
+                "truth_aware_prior": {
+                    "family_macro_brier": number_value(
+                        ta_ta_model["family_macro_brier"],
+                        "ta.models.ta.family_macro_brier",
+                    ),
+                },
+                "graph_local_joint_top8": {
+                    "family_macro_brier": number_value(
+                        ta_graph["family_macro_brier"],
+                        "ta.models.graph.family_macro_brier",
+                    ),
+                },
+                "linear_probe_registered": {
+                    "family_macro_brier": number_value(
+                        ta_linear_model["family_macro_brier"],
+                        "ta.models.linear.family_macro_brier",
+                    ),
+                    "gain_over_truth_aware_prior": number_value(
+                        ta_report["probe_gain_over_truth_aware_prior"],
+                        "ta.probe_gain_over_truth_aware_prior",
+                    ),
+                },
+            },
+            "graph_gain": {
+                "family_macro_brier_gain": number_value(
+                    ta_primary["observed_family_macro_brier_gain"],
+                    "ta.primary.observed_family_macro_brier_gain",
+                ),
+                "families_with_positive_gain": int(
+                    ta_primary["families_with_positive_gain"]
+                ),
+                "family_cluster_bootstrap": {
+                    "replicates": int(ta_bootstrap["replicates"]),
+                    "seed": int(ta_bootstrap["seed"]),
+                    "cluster_count": int(ta_bootstrap["cluster_count"]),
+                    "percentile_95_interval": [
+                        number_value(
+                            ta_bootstrap["percentile_95_interval"][0],
+                            "ta.bootstrap.ci[0]",
+                        ),
+                        number_value(
+                            ta_bootstrap["percentile_95_interval"][1],
+                            "ta.bootstrap.ci[1]",
+                        ),
+                    ],
+                },
+            },
+            "prior_construction": {
+                "fallback_level_counts": {
+                    "exact": int(ta_fallback["exact"]),
+                    "coarse": int(ta_fallback["coarse"]),
+                    "base_rate": int(ta_fallback["base_rate"]),
+                },
+            },
+            "nuisance_preserving_permutation": {
+                "observed_gain": number_value(
+                    ta_perm_test["observed_family_macro_brier_gain"],
+                    "ta.perm.observed_gain",
+                ),
+                "one_sided_randomization_p": number_value(
+                    ta_perm_test["one_sided_randomization_p"],
+                    "ta.perm.p",
+                ),
+                "null_mean": number_value(
+                    ta_perm_test["null_mean"],
+                    "ta.perm.null_mean",
+                ),
+                "null_max": number_value(
+                    ta_perm_test["null_max"],
+                    "ta.perm.null_max",
+                ),
+                "observed_excess_over_null_mean": number_value(
+                    ta_perm_test["observed_excess_over_null_mean"],
+                    "ta.perm.obs_excess",
+                ),
+            },
+            "decision": {
+                "primary_retained": bool(ta_decision["primary_retained"]),
+                "secondary_support": bool(ta_decision["secondary_support"]),
+                "verdict": str(ta_decision["verdict"]),
+            },
+        }
+
+    source_artifacts: dict[str, Any] = {
+        "post_commitment_growth_outcomes": source_identity(outcome_report),
+        "post_commitment_linear_probe_comparator": source_identity(comparator_report),
+        "structured_action_gate": source_identity(gate_report),
+    }
+    if ta_source is not None:
+        source_artifacts["truth_aware_nuisance_rescore"] = ta_source
+
+    receipt: dict[str, Any] = {
         "schema_version": 1,
         "kind": "c10_postcommitment_detection_public_receipt",
         "claim_id": "C10",
         "producer": "experiments/report_public_detection_receipts.py",
         "producer_sha256": sha256_file(Path(__file__)),
-        "source_artifacts": {
-            "post_commitment_growth_outcomes": source_identity(outcome_report),
-            "post_commitment_linear_probe_comparator": source_identity(comparator_report),
-            "structured_action_gate": source_identity(gate_report),
-        },
+        "source_artifacts": source_artifacts,
         "bank_qualification": {
             "protocol_id": str(gate["protocol_id"]),
             "protocol_sha256": str(gate["protocol_sha256"]),
@@ -423,6 +561,9 @@ def build_c10_receipt(
             ),
         },
     }
+    if ta_section is not None:
+        receipt["truth_aware_rescore"] = ta_section
+    return receipt
 
 
 def build_c11_receipt(
@@ -806,6 +947,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--c10-out", type=Path, default=DEFAULT_C10_OUT)
     parser.add_argument("--c11-out", type=Path, default=DEFAULT_C11_OUT)
+    parser.add_argument(
+        "--c10-truth-aware-rescore",
+        type=Path,
+        default=None,
+        help="Optional C10 truth-aware nuisance rescore report path for the truth_aware_rescore receipt section",
+    )
     args = parser.parse_args(argv)
 
     write_json(
@@ -814,6 +961,7 @@ def main(argv: list[str] | None = None) -> int:
             outcome_report=args.c10_outcome_report,
             comparator_report=args.c10_comparator_report,
             gate_report=args.structured_action_gate_report,
+            truth_aware_rescore=args.c10_truth_aware_rescore,
         ),
     )
     write_json(

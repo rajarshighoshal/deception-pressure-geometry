@@ -87,6 +87,38 @@
   },
   "claim_boundary": "The prospectively specified development test of the layer-16 natural-prose controller failed. The public receipt does not include the timestamped registration history and the artifact manifest marks the result nonconfirmatory. This experiment did not test an online controller that attaches novel live typed token-residual-attention states at layers 12, 16, 19, and 20 and updates intervention, local direction, and dose throughout fresh generation. Building and prospectively evaluating that richer state-dependent controller was outside the completed study's available time and compute budget and remains concrete future work; its outcome is unknown, and its absence cannot rescue the failed controller.",
   "claim_id": "C5",
+  "descriptive_free_prose_readout": {
+    "forced_global_z2_involution": {
+      "held_out_families": [
+        "ai_content_safety",
+        "environmental_compliance",
+        "research_reproducibility",
+        "supply_chain_integrity"
+      ],
+      "held_out_family_count": 4,
+      "heldout_sign_accuracy": 0.6155913978494624,
+      "n_dense_crossings": 600,
+      "z2_antisymmetric_by_construction": true
+    },
+    "limitations": [
+      "The no-Z2 result is an unconstrained structured-field readout, not a causal control result or an assumption-free fit.",
+      "The forced global Z2 involution comparison is descriptive and does not establish causal control or a universal symmetry law.",
+      "These readout results cannot rescue C5's failed prospective control verdict."
+    ],
+    "no_z2_unconstrained_structured_field": {
+      "held_out_families": [
+        "ai_content_safety",
+        "environmental_compliance",
+        "research_reproducibility",
+        "supply_chain_integrity"
+      ],
+      "held_out_family_count": 4,
+      "heldout_sign_accuracy": 0.9857910906298003,
+      "n_dense_crossings": 600,
+      "z2_antisymmetric_by_construction": false
+    },
+    "role": "descriptive_readout_only_cannot_rescue_c5"
+  },
   "evaluation": {
     "activation_scope": "layer-16 residual stream",
     "arms": {
@@ -524,9 +556,17 @@
   },
   "kind": "c5_natural_prose_control_public_receipt",
   "producer": "experiments/report_public_natural_prose_control_receipt.py",
-  "producer_sha256": "52155bf5bf3498c05d8ad55df56479c77beeeb76ace51a7296c8fb1b964da9a0",
+  "producer_sha256": "8da4e6b714ca936ee86cc3f1aa7ac0b7559eac49f5556525f2f10024a0fefa40",
   "schema_version": 1,
   "source_artifacts": {
+    "descriptive_free_prose_readout_global_z2": {
+      "byte_size": 1024,
+      "sha256": "d81562e3d31f84aeed1c300d2ac2278f174ed594b16fa3a73442066f6e3478e7"
+    },
+    "descriptive_free_prose_readout_no_z2": {
+      "byte_size": 1120,
+      "sha256": "b3c41a4de4a6fc90069403808ad3b151de4a87b74e4750d11acf5705e126f033"
+    },
     "holdout_base_generations": {
       "byte_size": 58491,
       "sha256": "c457e431cc737a398285b9b0cc4d518ca23eb4775cef37ed9ed86e8bf4a98b32"

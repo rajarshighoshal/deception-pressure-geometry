@@ -157,7 +157,7 @@
     }
   },
   "producer": "experiments/report_public_detection_receipts.py",
-  "producer_sha256": "c1cde2b939aa6b5e464f8e10b9d8fcc57d77d2aefccd20db0c504b37c4dc6e30",
+  "producer_sha256": "776417bf904d58c275b1732b89eef191c047d8d92dd98d78b183282c9f1684d0",
   "schema_version": 1,
   "source_artifacts": {
     "post_commitment_growth_outcomes": {
@@ -171,6 +171,66 @@
     "structured_action_gate": {
       "byte_size": 12067,
       "sha256": "80806a4084c629e4a75ac3819ec8c4af35aed8650ce57ee12a8204f1f70ea0aa"
+    },
+    "truth_aware_nuisance_rescore": {
+      "byte_size": 13818,
+      "sha256": "43cd2c0f3dd0d61df8e9703bf58bb06535d2c6bda259d9d2c6dd5c433154d657"
     }
+  },
+  "truth_aware_rescore": {
+    "decision": {
+      "primary_retained": false,
+      "secondary_support": true,
+      "verdict": "refuted-under-adequate-instrument"
+    },
+    "decision_rule": "The graph's residual over a truth-aware nuisance prior is RETAINED if the family-macro Brier gain is positive and its 10,000-replicate family-cluster bootstrap 95% CI excludes zero; secondary support requires the nuisance-preserving permutation excess over the null mean to be positive at one-sided p < 0.05. Verdict language: found / refuted-under-adequate-instrument / not-found-under-this-instrument.",
+    "graph_gain": {
+      "families_with_positive_gain": 16,
+      "family_cluster_bootstrap": {
+        "cluster_count": 20,
+        "percentile_95_interval": [
+          -0.00037958401800448265,
+          0.01303210022820328
+        ],
+        "replicates": 10000,
+        "seed": 20260727
+      },
+      "family_macro_brier_gain": 0.006964244566928011
+    },
+    "metric": "binary Brier/log-loss of the conditional deception probability P(DECEPTIVE)/(P(HONEST)+P(DECEPTIVE)) against 1[outcome_class==DECEPTIVE], per-family mean then unweighted macro over the 20 families; mirrors _model_metrics(binary_mode='honest_deceptive') of the source projection",
+    "models": {
+      "graph_local_joint_top8": {
+        "family_macro_brier": 0.020518345218457357
+      },
+      "linear_probe_registered": {
+        "family_macro_brier": 0.0015015367445592714,
+        "gain_over_truth_aware_prior": 0.025981053040826096
+      },
+      "truth_aware_prior": {
+        "family_macro_brier": 0.027482589785385363
+      }
+    },
+    "nuisance_preserving_permutation": {
+      "null_max": -0.016028997561709148,
+      "null_mean": -0.023940868956177166,
+      "observed_excess_over_null_mean": 0.030905113523105175,
+      "observed_gain": 0.006964244566928011,
+      "one_sided_randomization_p": 9.999000099990002e-05
+    },
+    "population": {
+      "event_count": 1283,
+      "family_count": 20
+    },
+    "prior_construction": {
+      "fallback_level_counts": {
+        "base_rate": 0,
+        "coarse": 2,
+        "exact": 1281
+      }
+    },
+    "source_byte_size": 13818,
+    "source_kind": "c10_truth_aware_nuisance_rescore",
+    "source_sha256": "43cd2c0f3dd0d61df8e9703bf58bb06535d2c6bda259d9d2c6dd5c433154d657",
+    "source_status": "success"
   }
 }
