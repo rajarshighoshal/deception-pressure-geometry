@@ -1,5 +1,4 @@
-title: "Deception under pressure: reading and steering the geometry"
-description: "A public longform narrative for the Llama-3.1-8B deception-pressure geometry study: local geometric selection, pressure as a flow, and why the learned structure did not become universal."
+title: "In search of universal structure: local geometry and the limits of transfer"
 url: "https://rajarshighoshal.github.io"
 baseurl: "/deception-pressure-geometry"
 markdown: kramdown
