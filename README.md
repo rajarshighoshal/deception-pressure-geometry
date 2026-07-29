@@ -57,7 +57,7 @@ The study uses three non-pooled settings:
 
 Claims combine prospective tests, analyses frozen before label opening, and retrospective
 syntheses. Those chronology tiers are kept distinct in
-[the results registry](docs/results_registry.yaml). Every manuscript claim points to one compact
+[the results registry](docs/results_registry.yaml). Every scientific claim points to one compact
 receipt under [`paper_artifacts/`](paper_artifacts/); the receipts bind the exact source artifacts
 by SHA-256 without publishing large activation banks or operational logs.
 
@@ -253,7 +253,6 @@ uv run python experiments/plot_public_figures.py
 | [`experiments/`](experiments/) | Receipt, analysis, and figure-producing CLIs |
 | [`configs/`](configs/) | Frozen scientific protocols and scenario definitions |
 | [`paper_artifacts/`](paper_artifacts/) | Compact claim-linked evidence receipts and manifest |
-| [`paper/`](paper/) | Anonymous TMLR manuscript source and bibliography |
 | [`docs/`](docs/) | Result registry, experiment design, and README figures |
 | [`tests/`](tests/) | Unit, drift, import, and artifact-closure gates |
 

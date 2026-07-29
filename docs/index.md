@@ -297,7 +297,6 @@ strong, and reliable control requires learning more than the representation alon
 ---
 
 [Frozen code and data](https://github.com/rajarshighoshal/deception-pressure-geometry/tree/2746821b2b7bdeb3a17a438f1570b2907450d9ae),
-[manuscript source](https://github.com/rajarshighoshal/deception-pressure-geometry/tree/2746821b2b7bdeb3a17a438f1570b2907450d9ae/paper),
 [the results registry](https://github.com/rajarshighoshal/deception-pressure-geometry/blob/2746821b2b7bdeb3a17a438f1570b2907450d9ae/docs/results_registry.yaml), and
 [file checksums](https://github.com/rajarshighoshal/deception-pressure-geometry/blob/2746821b2b7bdeb3a17a438f1570b2907450d9ae/paper_artifacts/manifest.json).
 
