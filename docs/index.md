@@ -113,7 +113,7 @@ doses. Each row therefore came with a menu of candidate interventions and the co
 produced. A selector's job was to choose among those candidates without seeing their eventual outcome.
 
 The geometric selector represented each activation state through its local neighbourhood. It used
-nearby states from training scenario families—groups of examples generated from the same template—
+nearby states from training scenario families (groups of examples generated from the same template),
 the shape of the small cloud around the current state, and how that neighbourhood responded to a
 small movement. As I added richer structural information, the
 selector climbed from **170 corrected rows out of 600** to **599 out of 600**, while breaking one of
@@ -133,7 +133,7 @@ correction from 275 of 600 rows to 52 of 600.*
 
 There is an essential qualification. The saved intervention dataset was built with the correct status
 known, and on deceptive rows every available candidate pointed toward that correct status. The
-selector still had to choose layer, dose, and intervention form, but it was handed the correct target—
+selector still had to choose layer, dose, and intervention form, but it was handed the correct target:
 the answer to the most important binary question, “which way is truthful?” This is why I describe the
 result as successful local selection, not an end-to-end deception controller.
 
@@ -163,15 +163,15 @@ families. The strongest post-action result therefore did not require an elaborat
 after commitment, the relevant distinction was almost linearly exposed.
 
 A stronger baseline sharpened the interpretation. Once the baseline could also see the scenario's
-true and pressured statuses—the facts defining the label—the graph's remaining advantage shrank to
-**0.00696** and was not reliably above zero across scenario families. The linear probe still retained
-a gain of **0.02598**. Post-action activations clearly carried information beyond simple event
-bookkeeping, but linear readout captured it better than the relational graph I built.
+true and pressured statuses, it could see the facts defining the label. The graph's remaining
+advantage shrank to **0.00696** and was not reliably above zero across scenario families. The linear
+probe still retained a gain of **0.02598**. Post-action activations clearly carried information beyond
+simple event bookkeeping, but linear readout captured it better than the relational graph I built.
 
 Before the action, the picture was subtler. Two hand-designed geometric warning scores landed below
 chance, at AUROC **0.4168** and **0.3725**. Yet a model fitted on the full set of geometry features
 ranked outcomes at **0.9442**, almost identical to a bookkeeping model at **0.9446**; combining them
-reached **0.9537**. The measure fixed in advance—calibrated log-loss—did not improve, so I cannot claim
+reached **0.9537**. The measure fixed in advance (calibrated log-loss) did not improve, so I cannot claim
 a validated early-warning system. But the fitted ranking result shows that the pre-action geometry was
 not empty. The features contained ordering information that my original summary statistics failed to
 extract reliably.
@@ -183,10 +183,10 @@ hand-designed geometric scores fail, while a fitted model finds a strong but ret
 signal. Readout quality depends on both timing and the form of the readout.*
 {: .figure-caption}
 
-That gap—weak hand-designed warnings, strong fitted ranking, and near-perfect post-action linear
-readout—changed how I thought about the problem. The information may exist before the answer, but that
-does not mean a chosen scalar score has isolated it. And once the answer enters the causal stream,
-reading the state becomes much easier than predicting or redirecting what comes next.
+The gap between weak hand-designed warnings, strong fitted ranking, and near-perfect post-action
+linear readout changed how I thought about the problem. The information may exist before the answer,
+but that does not mean a chosen scalar score has isolated it. And once the answer enters the causal
+stream, reading the state becomes much easier than predicting or redirecting what comes next.
 
 ## The search for universality
 
@@ -304,8 +304,8 @@ strong, and reliable control requires learning more than the representation alon
 If you think I got something wrong, I'd like to hear it.
 
 **Other work.** *Think Less, Code Better: Probing When Chain-of-Thought Hurts and
-How to Route Around It* — [ACL 2026 Student Research Workshop](https://aclanthology.org/2026.acl-srw.13/).
-*Parallel k-Clique Counting via Hierarchical Breadth-First Search* — to appear,
+How to Route Around It*: [ACL 2026 Student Research Workshop](https://aclanthology.org/2026.acl-srw.13/).
+*Parallel k-Clique Counting via Hierarchical Breadth-First Search*: to appear,
 SC26. Other code and projects: [github.com/rajarshighoshal](https://github.com/rajarshighoshal).
 
 *GPU compute was supported by a BlueDot Impact Rapid Grant.*
