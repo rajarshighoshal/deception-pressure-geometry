@@ -221,8 +221,9 @@ honest rows.*
 {: .figure-caption}
 
 It would be easy to read this as “the geometry disappeared.” Another result argues against that
-interpretation. On those same free-prose rows, a post-hoc readout recovered the corrective direction
-with **0.986 accuracy**, compared with **0.616** for a baseline forced to use one global sign rule. The
+interpretation. On a separate four-family held-out split from the same free-prose construction, a
+post-hoc readout recovered the corrective direction with **0.986 accuracy**, compared with **0.616**
+for a baseline forced to use one global sign rule. The
 relevant information was present and easier to read without forcing that global convention; the
 controller's gate and intervention rule did not convert it into reliable behavioral control.
 

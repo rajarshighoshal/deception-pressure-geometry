@@ -91,7 +91,7 @@
       "sha256": "87ceb62a0c007fa46e8c4fbe73d1132f7a4aa5419d7d498373d3a0f0c9235d00",
       "byte_size": 17354,
       "producer": "experiments/report_public_natural_prose_control_receipt.py",
-      "producer_command": ".venv/bin/python experiments/report_public_natural_prose_control_receipt.py --primary SOURCE_C5_PRIMARY.json --random SOURCE_C5_RANDOM.json --sign-flip SOURCE_C5_SIGN_FLIP.json --holdout-source-rows results/baselines/g1_source_freeprose/holdout_wheel3_4fam/g1_rows.jsonl --holdout-base-generations results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/base_generations.jsonl --holdout-native-gated-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/sdf_controller_gated/steered_generations.jsonl --holdout-frequent-early-window-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/sdf_controller_early_window/steered_generations.jsonl --holdout-family-matched-linear-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/bundle_repe_probe_a8/steered_generations.jsonl --out paper_artifacts/c5_natural_prose_control_receipt.json",
+      "producer_command": ".venv/bin/python experiments/report_public_natural_prose_control_receipt.py --primary SOURCE_C5_PRIMARY.json --random SOURCE_C5_RANDOM.json --sign-flip SOURCE_C5_SIGN_FLIP.json --holdout-source-rows results/baselines/g1_source_freeprose/holdout_wheel3_4fam/g1_rows.jsonl --holdout-base-generations results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/base_generations.jsonl --holdout-native-gated-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/sdf_controller_gated/steered_generations.jsonl --holdout-frequent-early-window-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/sdf_controller_early_window/steered_generations.jsonl --holdout-family-matched-linear-arm results/generation/g1_wheel_test/wheel3_heldout_4fam_run_20260710T181628Z/policies/bundle_repe_probe_a8/steered_generations.jsonl --sdf-noz2 results/baselines/g1_source_freeprose/sdf_v1_noz2.json --sdf-z2 results/baselines/g1_source_freeprose/sdf_v1.json --out paper_artifacts/c5_natural_prose_control_receipt.json",
       "input_hashes": {
         "prospective_heldout_family_test": "727db19d5c28168831793e342dec6bc2c05417f6bdebdd56d0d1469477d2462d",
         "matched_random_axis": "03646472c4b539c2f33f0516fa813529d87f7113ca477f2ac7568f3e892a5041",
@@ -100,7 +100,9 @@
         "holdout_base_generations": "c457e431cc737a398285b9b0cc4d518ca23eb4775cef37ed9ed86e8bf4a98b32",
         "holdout_native_gated_arm": "c504fb320683ad7e5a8dba4bf59c4f49391f2f2f9dc477a7f473a64ce2c12ad6",
         "holdout_frequent_early_window_arm": "f0d8ff942e63a1ef30ec74f53d7d620191a786553c489734e1f078ddfe06d1b7",
-        "holdout_family_matched_linear_arm": "10dfb6297c034b7bf7c7ad3349b57aaaf3e850a12ffa27af5af4bdd8bbc049a7"
+        "holdout_family_matched_linear_arm": "10dfb6297c034b7bf7c7ad3349b57aaaf3e850a12ffa27af5af4bdd8bbc049a7",
+        "descriptive_free_prose_readout_no_z2": "b3c41a4de4a6fc90069403808ad3b151de4a87b74e4750d11acf5705e126f033",
+        "descriptive_free_prose_readout_global_z2": "d81562e3d31f84aeed1c300d2ac2278f174ed594b16fa3a73442066f6e3478e7"
       },
       "model_dependent": true,
       "model_identity": {

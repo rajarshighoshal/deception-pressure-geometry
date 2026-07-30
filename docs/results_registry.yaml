@@ -147,8 +147,9 @@ results:
         receipt: paper_artifacts/c5_natural_prose_control_receipt.json
         statement: >-
           A no-Z2 free-prose sign channel reads the machine-scored corrective target
-          at 0.98579 versus 0.61559 for a forced-global-Z2 baseline on the same
-          held-out-family rows. This is a readout-only statistic from the controller
+          at 0.98579 versus 0.61559 for a forced-global-Z2 baseline on a separate
+          four-family held-out split, not C5's 96 behavioral rows. This is a
+          readout-only statistic from the controller
           receipt, computed after the behavioral endpoint was already scored. It does
           not imply a local Z2 involution,
           chart-level gauge structure, or geometric control leverage; it is
@@ -156,8 +157,9 @@ results:
           decomposition or selective intervention. It cannot rescue the registered
           behavioral failure of C5.
         boundary: >-
-          Post-hoc readout on four held-out families after the behavioral endpoint
-          was settled. Not a prospective or confirmatory analysis. Compatible with
+          Post-hoc readout on a different four-family held-out split after the
+          behavioral endpoint was settled. Not a prospective or confirmatory
+          analysis. Compatible with
           chart-local structure but does not establish geometric control superiority,
           local gauge invariance, or a Z2 decomposition that could have been used for
           intervention. The forced-global-Z2 comparator is a single fixed sign
