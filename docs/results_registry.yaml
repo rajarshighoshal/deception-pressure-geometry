@@ -20,6 +20,7 @@ paper_scope:
   primary: [C9, C10, C5]
   supporting: [C1, C12]
   negative: [C2, C11, C13]
+  descriptive: [C14_DESCRIPTIVE]
 
 branches:
   structured_action_control:
@@ -238,6 +239,45 @@ results:
       CI [-0.0733, +0.0233] over nuisance; the secondary sealed-local model loses by -0.0865
       CI [-0.1400, -0.0384]. Twenty token-identical prefixes produce mixed sampled outcomes.
     claim: C11
+    descriptive_companions:
+      - id: c14_descriptive_representation_structure
+        status: unregistered_descriptive
+        produced_by: experiments/report_public_representation_receipt.py
+        receipt: paper_artifacts/c14_representation_receipt.json
+        statement: >-
+          On the same sealed structured-action development bank as C11,
+          a local source-geometry estimator reconstructs held-out-family
+          pre-status displacement with cosine 0.9289 vs 0.4839 global
+          (+0.4252 CI [+0.3799, +0.4638], 193/200 roots). Nearest-neighbour
+          retrieval reaches 0.9149 (local-minus-nearest +0.0140 CI [+0.0007,
+          +0.0284]). The honestward-minus-generic specificity margin is
+          +0.0135 CI [+0.0034, +0.0237] (NSE +0.0144), indicating the
+          reconstructed field is mostly generic transition displacement.
+          Generic-transport displacement across 849 source roots projects
+          stably to rank 32 (96.96--96.97% variance retained; rank-32 cosine
+          0.8760 vs full 0.8787 vs global 0.1130). A 256-landmark fallback
+          reaches 0.8473 and does not meet the frozen selection target. A
+          separate post-evidence registered descriptive follow-up on 1,165
+          grouped observations finds that a global linear function of
+          compositional action and oriented source state reaches family-macro
+          cosine 0.8915 vs action-only 0.6808 (delta +0.2107), with an
+          endpoint-constrained diagnostic at 0.8205, explaining ~66.3% of
+          the additive gain and leaving +0.0710 (fold range +0.0589 to
+          +0.0821). All results are retrospective unregistered descriptive or
+          post-evidence registered descriptive; none is confirmatory.
+        boundary: >-
+          Purely descriptive, on the same sealed structured-action
+          development banks as C11. The honestward/specificity/compression
+          analyses are retrospective unregistered descriptive; the additive
+          and endpoint analyses are post-evidence registered descriptive
+          follow-ups. No claim is upgraded to supported and none is
+          confirmatory. Reconstruction is offline held-out-family
+          displacement retrieval, not injection, steering, or control.
+          Nearest-neighbour tie shows locality/exemplar selection, not a
+          learned field, carries most of the gain. Only one model, one
+          developmental bank, one information measure, and one construction
+          were tested. Raw banks and held-out labels remain unavailable in
+          the public closure.
 
   - id: c12_steering_decomposition_receipt
     branch: pilot_steering_decomposition
@@ -268,6 +308,61 @@ results:
       remainder is +0.0125 CI [-0.0160, +0.0406]. The holonomy instrument clears adequacy in 0/5
       folds, so curvature is not adjudicated.
     claim: C13
+    descriptive_companions:
+      - id: c14_descriptive_transport_decomposition
+        status: unregistered_descriptive
+        produced_by: experiments/report_public_representation_receipt.py
+        receipt: paper_artifacts/c14_representation_receipt.json
+        statement: >-
+          A post-evidence registered descriptive follow-up on the same
+          structured-action bank evaluates a compositional-action-plus-
+          oriented-source additive factorization of transition displacement
+          (1,165 grouped observations, 849 source roots, 20 families, rank-32
+          PCA). Action-only ridge reaches family-macro cosine 0.6808;
+          adding oriented source reaches 0.8915 (delta +0.2107, positive in
+          all five folds). An endpoint-prototype diagnostic with source
+          matrix fixed to -I reaches 0.8205, explaining ~66.3% of the
+          additive gain and leaving +0.0710 (fold range +0.0589 to +0.0821).
+          This result is descriptive and post-evidence registered; it does not
+          re-open any previously settled claim and does not establish causal
+          steering.
+        boundary: >-
+          Post-evidence registered descriptive follow-up on the same
+          structured-action bank as C13. Five-fold consistency is not a
+          confidence interval. Desired status and destination program are
+          supplied. The result predicts observed activation displacements; it
+          is not an additive output-steering method, action selector, or
+          intervention. This companion is descriptive only and does not
+          revise C13's not-found-under-instrument status.
+
+  - id: c14_representation_structure
+    branch: activation_state_audit
+    status: done
+    produced_by: experiments/report_public_representation_receipt.py
+    artifact: paper_artifacts/c14_representation_receipt.json
+    artifact_state: tracked
+    metric_summary: >-
+      Descriptive companion receipt aggregating five private source reports from the sealed
+      structured-action development bank. Honestward local retrieval: cosine 0.9289 vs global
+      0.4839 (+0.4252 CI [+0.3799, +0.4638] on 193/200 roots). Specificity: honestward-minus-
+      generic +0.0135 CI [+0.0034, +0.0237]; mostly generic transition displacement. Compression:
+      rank-32 output subspace retains 96.96--96.97% train variance; rank-32 cosine 0.8760 vs
+      full 0.8787 vs global 0.1130; 256-landmark fallback 0.8473. Additive factorization:
+      action-only 0.6808, source-plus-action 0.8915, delta +0.2107 in all five folds. Endpoint
+      diagnostic: constrained 0.8205, gap +0.0710 (fold range +0.0589 to +0.0821), ~66.3%
+      explained. All results are unregistered descriptive or post-evidence registered
+      descriptive — none is confirmatory.
+    claim: C14_DESCRIPTIVE
+    descriptive_companions:
+      - id: c14_descriptive_representation_structure
+        status: unregistered_descriptive
+        produced_by: experiments/report_public_representation_receipt.py
+        receipt: paper_artifacts/c14_representation_receipt.json
+        statement: >-
+          See C11 and C13 descriptive_companions for full statement.
+        boundary: >-
+          Descriptive companion only. No new claim is made. All values are sourced from
+          retrospective analyses or post-evidence registered follow-ups. None is confirmatory.
 
 claims:
   - id: C1
@@ -427,3 +522,19 @@ claims:
       its resolution gate in all five folds, so curvature and flatness are both unevaluable.
     evidence: [c13_gauge_control_receipt]
     tests: [tests/test_report_public_gauge_receipt.py]
+
+  - id: C14_DESCRIPTIVE
+    statement: >-
+      Local source geometry reconstructs held-out-family activation displacement, and the
+      displacement output is compact and factorizable by action and source state, on a single
+      development bank. All results are descriptive; none is confirmatory.
+    status: unregistered_descriptive
+    registration_tier: unregistered_descriptive
+    boundary: >-
+      Purely descriptive companion receipt on the same sealed structured-action bank as C11
+      and C13. Single model, one development bank, offline displacement reconstruction.
+      Honestward/specificity/compression are retrospective unregistered descriptive; additive
+      and endpoint are post-evidence registered descriptive follow-ups. No causal or autonomous
+      control claim is made, and no prior verdict is revised.
+    evidence: [c14_representation_structure]
+    tests: [tests/test_report_public_representation_receipt.py]

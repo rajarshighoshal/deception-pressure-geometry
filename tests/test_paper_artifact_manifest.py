@@ -16,7 +16,7 @@ from experiments.verify_paper_artifacts import (
     validate_manifest,
 )
 
-CLAIM_IDS = ("C1", "C2", "C5", "C9", "C10", "C11", "C12", "C13")
+CLAIM_IDS = ("C1", "C2", "C5", "C9", "C10", "C11", "C12", "C13", "C14_DESCRIPTIVE")
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -155,9 +155,9 @@ def test_shipped_manifest_inputs_match_frozen_protocol_configs(claim_id: str, ha
     assert expected == _file_sha256(path)
 
 
-def test_schema_v2_accepts_exact_eight_entry_registry_closure(tmp_path):
+def test_schema_v2_accepts_exact_nine_entry_registry_closure(tmp_path):
     manifest, registry, tracked = _fixture(tmp_path)
-    assert len(manifest["artifacts"]) == 8
+    assert len(manifest["artifacts"]) == 9
     assert _errors(tmp_path, manifest, registry, tracked) == []
 
 
@@ -168,16 +168,16 @@ def test_empty_manifest_no_longer_fabricates_a_valid_evidence_set(tmp_path):
         "artifacts": [],
     }
     errors = _errors(tmp_path, manifest, _registry(), set())
-    assert sum("missing registry result_id" in error for error in errors) == 8
-    assert sum("missing registry claim_id" in error for error in errors) == 8
+    assert sum("missing registry result_id" in error for error in errors) == 9
+    assert sum("missing registry claim_id" in error for error in errors) == 9
 
 
 def test_missing_and_duplicate_result_and_claim_links_fail(tmp_path):
     manifest, registry, tracked = _fixture(tmp_path)
     manifest["artifacts"].pop()
     errors = _errors(tmp_path, manifest, registry, tracked)
-    assert any("missing registry result_id 'c13_result'" in error for error in errors)
-    assert any("missing registry claim_id 'C13'" in error for error in errors)
+    assert any("missing registry result_id 'c14_descriptive_result'" in error for error in errors)
+    assert any("missing registry claim_id 'C14_DESCRIPTIVE'" in error for error in errors)
 
     manifest, registry, tracked = _fixture(tmp_path)
     duplicate = copy.deepcopy(manifest["artifacts"][0])

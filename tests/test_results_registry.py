@@ -87,12 +87,12 @@ def test_public_registry_is_one_receipt_per_claim(registry):
     results = {result["id"]: result for result in registry["results"]}
     scoped = {
         claim_id
-        for role in ("primary", "supporting", "negative")
-        for claim_id in registry["paper_scope"][role]
+        for role in ("primary", "supporting", "negative", "descriptive")
+        for claim_id in registry["paper_scope"].get(role, [])
     }
 
     assert set(claims) == scoped
-    assert len(claims) == len(results) == 8
+    assert len(claims) == len(results) == 9
     for claim_id, claim in claims.items():
         assert len(claim["evidence"]) == 1
         result = results[claim["evidence"][0]]
@@ -105,8 +105,14 @@ def test_public_registry_is_one_receipt_per_claim(registry):
 
 def test_render_claim_table_covers_every_claim(registry):
     table = render_claim_table(registry)
+    # The claim table only renders primary/supporting/negative scoped claims.
+    # Descriptive companions (unregistered_descriptive) are intentionally excluded.
+    scoped_claim_ids: set[str] = set()
+    for role in ("primary", "supporting", "negative"):
+        scoped_claim_ids.update(registry.get("paper_scope", {}).get(role, []))
     for claim in registry["claims"]:
-        assert claim["id"] in table
+        if claim["id"] in scoped_claim_ids:
+            assert claim["id"] in table
 
 
 def test_readme_claim_block_is_in_sync(registry):
@@ -225,7 +231,8 @@ def test_bad_paper_scope_is_caught():
 # ---------------------------------------------------------------------------
 
 COMPANION_RESULT_IDS = ["c1_matched_control_audit", "c5_natural_prose_control_receipt",
-                         "c9_pressure_commitment_receipt"]
+                         "c9_pressure_commitment_receipt", "c11_precommitment_warning_receipt",
+                         "c13_gauge_control_receipt"]
 
 
 def test_companion_status_is_unregistered_descriptive(registry):
@@ -294,11 +301,11 @@ def test_companion_has_id_and_statement(registry):
 
 
 def test_companions_do_not_affect_registered_claim_count(registry):
-    """The eight registered claims/results must remain unchanged."""
+    """The nine registered claims/results must remain unchanged (C14_DESCRIPTIVE added)."""
     claims = {c["id"] for c in registry["claims"]}
     results = {r["id"] for r in registry["results"]}
-    assert len(claims) == 8
-    assert len(results) == 8
+    assert len(claims) == 9
+    assert len(results) == 9
     for role in ("primary", "supporting", "negative"):
         assert len(registry["paper_scope"][role]) == len(
             set(registry["paper_scope"][role])
