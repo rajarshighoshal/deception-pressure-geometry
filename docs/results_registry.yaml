@@ -346,7 +346,7 @@ results:
     artifact: paper_artifacts/c14_representation_receipt.json
     artifact_state: tracked
     metric_summary: >-
-      Descriptive companion receipt aggregating six private source reports from the sealed
+      Descriptive companion receipt aggregating seven private source reports from the sealed
       structured-action development bank. Honestward local retrieval: cosine 0.9289 vs global
       0.4839 (+0.4252 CI [+0.3799, +0.4638] on 193/200 roots). Specificity: honestward-minus-
       generic +0.0135 CI [+0.0034, +0.0237]; mostly generic transition displacement. Compression:
@@ -358,7 +358,14 @@ results:
       sealed evaluation) finds raw-activation retrieval reaches 0.9326 (k=8) and 0.9304
       (nearest) and a truth-aware design-cell mean 0.9223 at full coverage; graph-local minus
       raw-k8 is -0.0243 CI [-0.0387, -0.0109] and graph-local minus design-cell-mean -0.0138 CI
-      [-0.0314, +0.0055], so locality, not the typed graph, carries the gain. All results are
+      [-0.0314, +0.0055], so locality, not the typed graph, carries the gain. A registered
+      within-cell diagnostic (2026-08-02, double fidelity-gated) locates the address's
+      resolution: the unrestricted nearest activation neighbour lies in the query's design
+      cell on 195/195 covered queries (support >= 2; per-fold median support 12--19), and
+      within-cell selection does not beat the cell mean (-0.0022 CI [-0.0127, +0.0068]);
+      raw-k8 minus design-cell-mean is +0.0103 CI [-0.0049, +0.0261]. Excluding the five
+      roots whose cells are unseen in training lifts the nearest-exemplar mean from 0.9304
+      to 0.9471. All results are
       unregistered descriptive or post-evidence registered descriptive — none is confirmatory.
     claim: C14_DESCRIPTIVE
     descriptive_companions:

@@ -81,8 +81,10 @@
     "honestward_local_beats_global_substantially": true,
     "honestward_nearest_is_close": true,
     "honestward_shuffled_control_positive": true,
+    "nearest_neighbour_lands_in_cell_on_all_covered_queries": true,
     "simple_addresses_match_or_exceed_graph_local": true,
-    "specificity_is_mostly_generic": true
+    "specificity_is_mostly_generic": true,
+    "within_cell_selection_ties_cell_mean": true
   },
   "chronology": {
     "additive_compositional_transport": {
@@ -114,6 +116,11 @@
       "date": "2026-07-21",
       "note": "Post-hoc analysis of the same sealed structured-action bank.",
       "tier": "retrospective_unregistered_descriptive"
+    },
+    "within_cell_retrieval": {
+      "date": "2026-08-02",
+      "note": "Registered before execution; the bank, the sealed evaluation, and the simple-address report predate the registration. Two fidelity gates (sealed subtree and baseline replication) passed before any new number was read.",
+      "tier": "post_evidence_descriptive_diagnostic"
     }
   },
   "claim_id": "C14_DESCRIPTIVE",
@@ -531,7 +538,7 @@
   },
   "kind": "c14_representation_structure_public_receipt",
   "producer": "experiments/report_public_representation_receipt.py",
-  "producer_sha256": "669fe5405e45601cb2307c25c34b100612d649edb9c0953529cfe9847cbe745d",
+  "producer_sha256": "39b6a5ced9006ed8ace6d2499d9dcb7ae1f230c38dfe0edb97a8142b962358f3",
   "schema_version": 1,
   "simple_address_baselines": {
     "bootstrap": {
@@ -804,6 +811,10 @@
     "simple_address_baselines": {
       "byte_size": 12643,
       "sha256": "e0d053fb096fee2b49e07d58c71045f6df71438c4554c86a30bd54b3e8853fca"
+    },
+    "within_cell_retrieval": {
+      "byte_size": 13624,
+      "sha256": "06e179053c2f88e1ca4355171b1aa883a1ecc45c290bcdc99b1b9b3f363b7373"
     }
   },
   "specificity_controls": {
@@ -878,5 +889,371 @@
     },
     "primary_view": "intervention_masked_action_free"
   },
-  "status": "unregistered_descriptive"
+  "status": "unregistered_descriptive",
+  "within_cell_retrieval": {
+    "baseline_replication_gate": "passed",
+    "bootstrap": {
+      "resamples": 2000,
+      "seed": 20260802
+    },
+    "comparisons": {
+      "action_free_full_context": {
+        "raw_k8_minus_design_cell_mean": {
+          "mean_cosine_difference": 0.010309777578209589,
+          "n_pairs": 200,
+          "scenario_cluster_ci": [
+            -0.004873899223476894,
+            0.026106097436936274
+          ]
+        },
+        "within_cell_nn_minus_design_cell_mean": {
+          "mean_cosine_difference": -0.0022329174492502855,
+          "n_pairs": 195,
+          "scenario_cluster_ci": [
+            -0.012740195379829839,
+            0.006751670312497356
+          ]
+        },
+        "within_cell_nn_minus_global_mean": {
+          "mean_cosine_difference": 0.4474025261255313,
+          "n_pairs": 195,
+          "scenario_cluster_ci": [
+            0.4064653289456504,
+            0.4845788401364475
+          ]
+        },
+        "within_cell_nn_minus_raw_nn": {
+          "mean_cosine_difference": 0.0,
+          "n_pairs": 195,
+          "scenario_cluster_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "intervention_masked_action_free": {
+        "raw_k8_minus_design_cell_mean": {
+          "mean_cosine_difference": 0.010309777578209589,
+          "n_pairs": 200,
+          "scenario_cluster_ci": [
+            -0.004873899223476896,
+            0.026106097436936274
+          ]
+        },
+        "within_cell_nn_minus_design_cell_mean": {
+          "mean_cosine_difference": -0.0022329174492502855,
+          "n_pairs": 195,
+          "scenario_cluster_ci": [
+            -0.012740195379829839,
+            0.006751670312497356
+          ]
+        },
+        "within_cell_nn_minus_global_mean": {
+          "mean_cosine_difference": 0.4474025261255313,
+          "n_pairs": 195,
+          "scenario_cluster_ci": [
+            0.4064653289456503,
+            0.4845788401364475
+          ]
+        },
+        "within_cell_nn_minus_raw_nn": {
+          "mean_cosine_difference": 0.0,
+          "n_pairs": 195,
+          "scenario_cluster_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "design_cell_fallbacks": {
+      "action_free_full_context": 5,
+      "intervention_masked_action_free": 5
+    },
+    "fidelity_gate_passed": true,
+    "models": {
+      "action_free_full_context": {
+        "design_cell_mean": {
+          "cosine_mean": 0.9223194155844522,
+          "defined_count": 200,
+          "normalized_squared_error": 0.15342257285195132,
+          "per_fold_cosine": {
+            "outer_1": 0.9564860261663616,
+            "outer_2": 0.9453836941288466,
+            "outer_3": 0.9526849259583918,
+            "outer_4": 0.85301740647717,
+            "outer_5": 0.9173614465092416
+          },
+          "total_count": 200
+        },
+        "global_mean_recomputed": {
+          "cosine_mean": 0.4839248580990402,
+          "defined_count": 200,
+          "normalized_squared_error": 0.9307181425452272,
+          "per_fold_cosine": {
+            "outer_1": 0.5766234815214248,
+            "outer_2": 0.5076280342387378,
+            "outer_3": 0.4549200069344639,
+            "outer_4": 0.35931111090571183,
+            "outer_5": 0.5713618682814191
+          },
+          "total_count": 200
+        },
+        "raw_k8": {
+          "cosine_mean": 0.9326291931626618,
+          "defined_count": 200,
+          "normalized_squared_error": 0.12211340104531086,
+          "per_fold_cosine": {
+            "outer_1": 0.9698855441716056,
+            "outer_2": 0.9573859809596981,
+            "outer_3": 0.9616530614690998,
+            "outer_4": 0.8496597317199193,
+            "outer_5": 0.9441922679555312
+          },
+          "total_count": 200
+        },
+        "raw_nn": {
+          "cosine_mean": 0.9304177044577958,
+          "defined_count": 200,
+          "normalized_squared_error": 0.14862567412806435,
+          "per_fold_cosine": {
+            "outer_1": 0.9644625043515452,
+            "outer_2": 0.9476097558497993,
+            "outer_3": 0.9344114068417186,
+            "outer_4": 0.8715561817569487,
+            "outer_5": 0.9520766384070153
+          },
+          "total_count": 200
+        },
+        "within_cell_nn": {
+          "cosine_mean": 0.947135107626243,
+          "defined_count": 195,
+          "normalized_squared_error": 0.1124962540429728,
+          "per_fold_cosine": {
+            "outer_1": 0.9644625043515452,
+            "outer_2": 0.9476097558497993,
+            "outer_3": 0.9344114068417186,
+            "outer_4": 0.9348623229098536,
+            "outer_5": 0.960484259383313
+          },
+          "total_count": 200
+        }
+      },
+      "intervention_masked_action_free": {
+        "design_cell_mean": {
+          "cosine_mean": 0.9223194155844522,
+          "defined_count": 200,
+          "normalized_squared_error": 0.15342257285195132,
+          "per_fold_cosine": {
+            "outer_1": 0.9564860261663615,
+            "outer_2": 0.9453836941288464,
+            "outer_3": 0.9526849259583918,
+            "outer_4": 0.85301740647717,
+            "outer_5": 0.9173614465092417
+          },
+          "total_count": 200
+        },
+        "global_mean_recomputed": {
+          "cosine_mean": 0.4839248580990402,
+          "defined_count": 200,
+          "normalized_squared_error": 0.9307181425452272,
+          "per_fold_cosine": {
+            "outer_1": 0.576623481521425,
+            "outer_2": 0.5076280342387378,
+            "outer_3": 0.4549200069344639,
+            "outer_4": 0.3593111109057119,
+            "outer_5": 0.571361868281419
+          },
+          "total_count": 200
+        },
+        "raw_k8": {
+          "cosine_mean": 0.9326291931626619,
+          "defined_count": 200,
+          "normalized_squared_error": 0.12211340104531086,
+          "per_fold_cosine": {
+            "outer_1": 0.9698855441716058,
+            "outer_2": 0.9573859809596981,
+            "outer_3": 0.9616530614690999,
+            "outer_4": 0.8496597317199193,
+            "outer_5": 0.9441922679555312
+          },
+          "total_count": 200
+        },
+        "raw_nn": {
+          "cosine_mean": 0.9304177044577958,
+          "defined_count": 200,
+          "normalized_squared_error": 0.14862567412806438,
+          "per_fold_cosine": {
+            "outer_1": 0.964462504351545,
+            "outer_2": 0.9476097558497993,
+            "outer_3": 0.9344114068417186,
+            "outer_4": 0.8715561817569486,
+            "outer_5": 0.9520766384070152
+          },
+          "total_count": 200
+        },
+        "within_cell_nn": {
+          "cosine_mean": 0.947135107626243,
+          "defined_count": 195,
+          "normalized_squared_error": 0.1124962540429728,
+          "per_fold_cosine": {
+            "outer_1": 0.964462504351545,
+            "outer_2": 0.9476097558497993,
+            "outer_3": 0.9344114068417186,
+            "outer_4": 0.9348623229098536,
+            "outer_5": 0.960484259383313
+          },
+          "total_count": 200
+        }
+      }
+    },
+    "population": {
+      "cell_definition": [
+        "turn_index",
+        "intervention_history",
+        "pressure_exposed",
+        "true_status"
+      ],
+      "crossings": 242,
+      "deceptive_source_roots": 200,
+      "distance": "euclidean_on_raw_flattened_root_residual",
+      "folds": [
+        "outer_1",
+        "outer_2",
+        "outer_3",
+        "outer_4",
+        "outer_5"
+      ],
+      "min_cell_support": 2,
+      "views": [
+        "action_free_full_context",
+        "intervention_masked_action_free"
+      ]
+    },
+    "registration_character": "post_evidence_descriptive_diagnostic",
+    "within_cell_support": {
+      "action_free_full_context": {
+        "distribution": {
+          "0": 5,
+          "10": 12,
+          "11": 12,
+          "12": 12,
+          "13": 5,
+          "14": 11,
+          "15": 5,
+          "16": 3,
+          "17": 2,
+          "19": 36,
+          "2": 2,
+          "21": 8,
+          "22": 24,
+          "23": 34,
+          "24": 5,
+          "3": 2,
+          "5": 5,
+          "8": 4,
+          "9": 13
+        },
+        "min_support_for_definition": 2,
+        "per_fold": {
+          "outer_1": {
+            "defined": 37,
+            "max": 23,
+            "median": 19.0,
+            "min": 9,
+            "total": 37
+          },
+          "outer_2": {
+            "defined": 41,
+            "max": 23,
+            "median": 19.0,
+            "min": 8,
+            "total": 41
+          },
+          "outer_3": {
+            "defined": 42,
+            "max": 23,
+            "median": 14.0,
+            "min": 3,
+            "total": 42
+          },
+          "outer_4": {
+            "defined": 44,
+            "max": 23,
+            "median": 12.0,
+            "min": 0,
+            "total": 48
+          },
+          "outer_5": {
+            "defined": 31,
+            "max": 24,
+            "median": 19.0,
+            "min": 0,
+            "total": 32
+          }
+        }
+      },
+      "intervention_masked_action_free": {
+        "distribution": {
+          "0": 5,
+          "10": 12,
+          "11": 12,
+          "12": 12,
+          "13": 5,
+          "14": 11,
+          "15": 5,
+          "16": 3,
+          "17": 2,
+          "19": 36,
+          "2": 2,
+          "21": 8,
+          "22": 24,
+          "23": 34,
+          "24": 5,
+          "3": 2,
+          "5": 5,
+          "8": 4,
+          "9": 13
+        },
+        "min_support_for_definition": 2,
+        "per_fold": {
+          "outer_1": {
+            "defined": 37,
+            "max": 23,
+            "median": 19.0,
+            "min": 9,
+            "total": 37
+          },
+          "outer_2": {
+            "defined": 41,
+            "max": 23,
+            "median": 19.0,
+            "min": 8,
+            "total": 41
+          },
+          "outer_3": {
+            "defined": 42,
+            "max": 23,
+            "median": 14.0,
+            "min": 3,
+            "total": 42
+          },
+          "outer_4": {
+            "defined": 44,
+            "max": 23,
+            "median": 12.0,
+            "min": 0,
+            "total": 48
+          },
+          "outer_5": {
+            "defined": 31,
+            "max": 24,
+            "median": 19.0,
+            "min": 0,
+            "total": 32
+          }
+        }
+      }
+    }
+  }
 }

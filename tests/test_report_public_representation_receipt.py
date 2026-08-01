@@ -38,6 +38,8 @@ def test_c14_receipt_has_all_five_sections() -> None:
         "compression_frontier",
         "additive_compositional_transport",
         "endpoint_prototype_diagnostic",
+        "simple_address_baselines",
+        "within_cell_retrieval",
     ):
         assert section in receipt, f"missing section {section}"
         assert isinstance(receipt[section], dict), f"{section} must be a dict"
@@ -52,6 +54,8 @@ def test_c14_receipt_source_hashes_match_frozen() -> None:
         "pre_status_compression_frontier": FROZEN_SOURCE_HASHES["compression"],
         "additive_compositional_transport": FROZEN_SOURCE_HASHES["additive"],
         "endpoint_prototype_diagnostic": FROZEN_SOURCE_HASHES["endpoint"],
+        "simple_address_baselines": FROZEN_SOURCE_HASHES["simple_address"],
+        "within_cell_retrieval": FROZEN_SOURCE_HASHES["within_cell"],
     }
     for key, expected_hash in expected.items():
         assert key in sa, f"missing source_artifacts.{key}"
@@ -282,6 +286,8 @@ def test_c14_hash_gate_rejects_mismatch(tmp_path: Path) -> None:
     end.write_text("x")
     simple = tmp_path / "sa.json"
     simple.write_text("x")
+    within = tmp_path / "wc.json"
+    within.write_text("x")
 
     with pytest.raises(SystemExit) as excinfo:
         build_c14_receipt(
@@ -291,6 +297,7 @@ def test_c14_hash_gate_rejects_mismatch(tmp_path: Path) -> None:
             additive_path=add_,
             endpoint_path=end,
             simple_address_path=simple,
+            within_cell_path=within,
         )
     assert excinfo.value.code == 1
 
@@ -351,6 +358,38 @@ def test_simple_address_block_matches_source_report() -> None:
     assert lo2 < 0.0 < hi2, "design-cell comparison should be a statistical tie"
     assert receipt["checks"]["simple_addresses_match_or_exceed_graph_local"] is True
     assert receipt["checks"]["design_cell_mean_statistically_ties_graph_local"] is True
+
+
+def test_within_cell_block_matches_source_report() -> None:
+    """The within-cell block must mirror the frozen diagnostic's registered outputs."""
+    receipt = json.loads(C14_RECEIPT.read_text(encoding="utf-8"))
+    block = receipt["within_cell_retrieval"]
+    assert block["fidelity_gate_passed"] is True
+    assert block["baseline_replication_gate"] == "passed"
+    view = block["models"]["intervention_masked_action_free"]
+    within = view["within_cell_nn"]
+    assert within["defined_count"] == 195
+    assert within["total_count"] == 200
+    assert abs(within["cosine_mean"] - 0.947135) < 5e-6
+    comps = block["comparisons"]["intervention_masked_action_free"]
+    tie = comps["within_cell_nn_minus_design_cell_mean"]
+    lo, hi = tie["scenario_cluster_ci"]
+    assert lo < 0.0 < hi, "within-cell selection should statistically tie the cell mean"
+    assert tie["n_pairs"] == 195
+    identical = comps["within_cell_nn_minus_raw_nn"]
+    assert identical["mean_cosine_difference"] == 0.0
+    assert identical["scenario_cluster_ci"] == [0.0, 0.0], (
+        "the nearest neighbour must land in-cell on every covered query"
+    )
+    marginal = comps["raw_k8_minus_design_cell_mean"]
+    lo2, hi2 = marginal["scenario_cluster_ci"]
+    assert lo2 < 0.0 < hi2, "the marginal raw-vs-cell contrast is a statistical tie"
+    support = block["within_cell_support"]["intervention_masked_action_free"]
+    assert support["min_support_for_definition"] == 2
+    assert receipt["checks"]["within_cell_selection_ties_cell_mean"] is True
+    assert receipt["checks"][
+        "nearest_neighbour_lands_in_cell_on_all_covered_queries"
+    ] is True
 
 
 def test_receipt_contains_no_private_repository_paths() -> None:
