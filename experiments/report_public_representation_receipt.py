@@ -7,7 +7,7 @@ unregistered status of its source reports. It produces a compact citable JSON
 suitable for manuscript table regeneration and drift verification, keyed by
 exact SHA-256 source bindings.
 
-The five source reports live in a private development repository and are NOT
+The six source reports live in a private development repository and are NOT
 referenced by path in the public receipt.  They are bound only by the
 live-computed SHA-256 values confirmed in the representation-receipt audit.
 
@@ -43,6 +43,7 @@ FROZEN_SOURCE_HASHES: dict[str, str] = {
     "compression": "997637b6fd50a8ad34da2b0835a58f677e8e0f79bf8b6279769afee7709b295f",
     "additive": "7c83ae7d6bf0d8bf0261e2b471c6aade0d8c0f801d5a8b38a90cd7c12de8c762",
     "endpoint": "9bf787927c3f8bd5b54b961bdfbf1931aeae29b9aaf6d1d2b2f49000288197d8",
+    "simple_address": "e0d053fb096fee2b49e07d58c71045f6df71438c4554c86a30bd54b3e8853fca",
 }
 
 # Absolute-path stripping regex — replace any absolute filesystem path with a
@@ -427,6 +428,54 @@ def _build_endpoint(source: dict[str, Any], *, action_only_cosine: float = 0.0) 
 # ---------------------------------------------------------------------------
 # Main receipt builder
 # ---------------------------------------------------------------------------
+
+
+def _build_simple_address(report: dict[str, Any]) -> dict[str, Any]:
+    """Expose compact citable summaries of the simple-address baselines."""
+    models_out: dict[str, Any] = {}
+    comparisons_out: dict[str, Any] = {}
+    for view, models in _d(report.get("models"), "simple_address.models").items():
+        models_out[view] = {
+            name: {
+                "cosine_mean": _n(info.get("cosine"), f"{view}.{name}.cosine"),
+                "normalized_squared_error": _n(
+                    info.get("normalized_squared_error"), f"{view}.{name}.nse"
+                ),
+                "defined_count": info.get("defined_count"),
+                "total_count": info.get("total_count"),
+                "per_fold_cosine": info.get("per_fold_cosine"),
+            }
+            for name, info in _d(models, view).items()
+        }
+    for view, comparisons in _d(
+        report.get("comparisons"), "simple_address.comparisons"
+    ).items():
+        comparisons_out[view] = {
+            name: {
+                "mean_cosine_difference": _n(
+                    entry.get("mean_difference"), f"{view}.{name}.mean"
+                ),
+                "scenario_cluster_ci": _d(entry.get("ci"), f"{view}.{name}.ci").get(
+                    "interval"
+                ),
+                "n_pairs": entry.get("n_pairs"),
+            }
+            for name, entry in _d(comparisons, view).items()
+        }
+    registration = report.get("registration") or {}
+    return {
+        "registration_character": registration.get("character"),
+        "population": report.get("population"),
+        "fidelity_gate_passed": _d(report.get("fidelity_gate"), "fidelity").get(
+            "passed"
+        ),
+        "models": models_out,
+        "comparisons": comparisons_out,
+        "design_cell_fallbacks": report.get("design_cell_fallbacks"),
+        "bootstrap": report.get("bootstrap"),
+    }
+
+
 def build_c14_receipt(
     *,
     honestward_path: Path,
@@ -434,6 +483,7 @@ def build_c14_receipt(
     compression_path: Path,
     additive_path: Path,
     endpoint_path: Path,
+    simple_address_path: Path,
 ) -> dict[str, Any]:
     # Hard SHA-256 gate
     for label, path in [
@@ -442,6 +492,7 @@ def build_c14_receipt(
         ("compression", compression_path),
         ("additive", additive_path),
         ("endpoint", endpoint_path),
+        ("simple_address", simple_address_path),
     ]:
         live_hash = sha256_file(path)
         expected = FROZEN_SOURCE_HASHES[label]
@@ -459,6 +510,7 @@ def build_c14_receipt(
     compression = load_json(compression_path)
     additive = load_json(additive_path)
     endpoint = load_json(endpoint_path)
+    simple_address = load_json(simple_address_path)
 
     return {
         "schema_version": 1,
@@ -474,6 +526,7 @@ def build_c14_receipt(
             "pre_status_compression_frontier": source_identity(compression_path),
             "additive_compositional_transport": source_identity(additive_path),
             "endpoint_prototype_diagnostic": source_identity(endpoint_path),
+            "simple_address_baselines": source_identity(simple_address_path),
         },
         "chronology": {
             "honestward_field_sealed": {
@@ -511,11 +564,21 @@ def build_c14_receipt(
                     "Verdict is descriptive."
                 ),
             },
+            "simple_address_baselines": {
+                "date": "2026-08-01",
+                "tier": "post_evidence_descriptive_diagnostic",
+                "note": (
+                    "Registered before execution; the bank and the sealed honestward "
+                    "evaluation predate the registration. Fidelity gate reproduced "
+                    "every sealed model aggregate before any new number was read."
+                ),
+            },
         },
         "honestward_field": _build_honestward(honestward),
         "specificity_controls": _build_specificity(specificity),
         "compression_frontier": _build_compression(compression),
         "additive_compositional_transport": _build_additive(additive),
+        "simple_address_baselines": _build_simple_address(simple_address),
         "endpoint_prototype_diagnostic": _build_endpoint(
             endpoint,
             action_only_cosine=_n(
@@ -526,6 +589,8 @@ def build_c14_receipt(
             ),
         ),
         "checks": {
+            "simple_addresses_match_or_exceed_graph_local": True,
+            "design_cell_mean_statistically_ties_graph_local": True,
             "honestward_local_beats_global_substantially": True,
             "honestward_shuffled_control_positive": True,
             "honestward_nearest_is_close": True,
@@ -555,6 +620,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="Path to pre_status_compression_frontier report.json")
     parser.add_argument("--additive-transport", type=Path, required=True,
                         help="Path to additive_compositional_transport report.json")
+    parser.add_argument("--simple-address-baselines", type=Path, required=True,
+                        help="path to the frozen simple-address baselines report")
     parser.add_argument("--endpoint-diagnostic", type=Path, required=True,
                         help="Path to endpoint_prototype_diagnostic report.json")
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT,
@@ -567,6 +634,7 @@ def main(argv: list[str] | None = None) -> int:
         compression_path=args.pre_status_compression,
         additive_path=args.additive_transport,
         endpoint_path=args.endpoint_diagnostic,
+        simple_address_path=args.simple_address_baselines,
     )
     write_json(args.out, receipt)
     print(f"wrote {args.out}")

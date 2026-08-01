@@ -254,7 +254,7 @@ results:
           +0.0135 CI [+0.0034, +0.0237] (NSE +0.0144), indicating the
           reconstructed field is mostly generic transition displacement.
           Generic-transport displacement across 849 source roots projects
-          stably to rank 32 (96.96--96.97% variance retained; rank-32 cosine
+          stably to rank 32 (96.75--96.92% variance retained; rank-32 cosine
           0.8760 vs full 0.8787 vs global 0.1130). A 256-landmark fallback
           reaches 0.8473 and does not meet the frozen selection target. A
           separate post-evidence registered descriptive follow-up on 1,165
@@ -263,8 +263,12 @@ results:
           cosine 0.8915 vs action-only 0.6808 (delta +0.2107), with an
           endpoint-constrained diagnostic at 0.8205, explaining ~66.3% of
           the additive gain and leaving +0.0710 (fold range +0.0589 to
-          +0.0821). All results are retrospective unregistered descriptive or
-          post-evidence registered descriptive; none is confirmatory.
+          +0.0821). A registered simple-address diagnostic finds raw-activation
+          retrieval (0.9326 k=8; 0.9304 nearest) and a metadata-only
+          design-cell mean (0.9223) match or exceed the typed-graph estimator,
+          so locality rather than the typed graph carries the gain. All results
+          are retrospective unregistered descriptive or post-evidence
+          registered descriptive; none is confirmatory.
         boundary: >-
           Purely descriptive, on the same sealed structured-action
           development banks as C11. The honestward/specificity/compression
@@ -342,16 +346,20 @@ results:
     artifact: paper_artifacts/c14_representation_receipt.json
     artifact_state: tracked
     metric_summary: >-
-      Descriptive companion receipt aggregating five private source reports from the sealed
+      Descriptive companion receipt aggregating six private source reports from the sealed
       structured-action development bank. Honestward local retrieval: cosine 0.9289 vs global
       0.4839 (+0.4252 CI [+0.3799, +0.4638] on 193/200 roots). Specificity: honestward-minus-
       generic +0.0135 CI [+0.0034, +0.0237]; mostly generic transition displacement. Compression:
-      rank-32 output subspace retains 96.96--96.97% train variance; rank-32 cosine 0.8760 vs
+      rank-32 output subspace retains 96.75--96.92% train variance; rank-32 cosine 0.8760 vs
       full 0.8787 vs global 0.1130; 256-landmark fallback 0.8473. Additive factorization:
       action-only 0.6808, source-plus-action 0.8915, delta +0.2107 in all five folds. Endpoint
       diagnostic: constrained 0.8205, gap +0.0710 (fold range +0.0589 to +0.0821), ~66.3%
-      explained. All results are unregistered descriptive or post-evidence registered
-      descriptive — none is confirmatory.
+      explained. A registered simple-address diagnostic (2026-08-01, fidelity-gated against the
+      sealed evaluation) finds raw-activation retrieval reaches 0.9326 (k=8) and 0.9304
+      (nearest) and a truth-aware design-cell mean 0.9223 at full coverage; graph-local minus
+      raw-k8 is -0.0243 CI [-0.0387, -0.0109] and graph-local minus design-cell-mean -0.0138 CI
+      [-0.0314, +0.0055], so locality, not the typed graph, carries the gain. All results are
+      unregistered descriptive or post-evidence registered descriptive — none is confirmatory.
     claim: C14_DESCRIPTIVE
     descriptive_companions:
       - id: c14_descriptive_representation_structure
@@ -532,7 +540,9 @@ claims:
     registration_tier: unregistered_descriptive
     boundary: >-
       Purely descriptive companion receipt on the same sealed structured-action bank as C11
-      and C13. Single model, one development bank, offline displacement reconstruction.
+      and C13. Single model, one development bank, offline displacement reconstruction. The
+      registered simple-address diagnostic shows the typed graph is not the source of the
+      local advantage: raw-activation and truth-aware design-metadata addresses match or exceed it.
       Honestward/specificity/compression are retrospective unregistered descriptive; additive
       and endpoint are post-evidence registered descriptive follow-ups. No causal or autonomous
       control claim is made, and no prior verdict is revised.

@@ -6,13 +6,13 @@
       "artifact_id": "c1-public-receipt",
       "result_id": "c1_matched_control_audit",
       "claim_id": "C1",
- "location": {
-  "kind": "tracked_path",
-  "path": "paper_artifacts/c1_matched_control_audit.json"
- },
-   "sha256": "e08ca3b2db1a4a9ba979e3a7499b21f77dd997c298d6d7e3af96e78d9a6d787b",
-   "byte_size": 73165,
- "producer": "experiments/report_powered150_matched_control_audit.py",
+      "location": {
+        "kind": "tracked_path",
+        "path": "paper_artifacts/c1_matched_control_audit.json"
+      },
+      "sha256": "e08ca3b2db1a4a9ba979e3a7499b21f77dd997c298d6d7e3af96e78d9a6d787b",
+      "byte_size": 73165,
+      "producer": "experiments/report_powered150_matched_control_audit.py",
       "producer_command": ".venv/bin/python experiments/report_powered150_matched_control_audit.py --selector SOURCE_SELECTOR.json --cng SOURCE_CNG.json --action-response SOURCE_ACTION_RESPONSE.json --receipt paper_artifacts/c1_matched_control_audit.json --folds 4 --seed 20260726 --bootstrap 2000 --learned-geometry-map SOURCE_LGM.json --local-control-flow SOURCE_LCF.json --gate-l20 SOURCE_GATE_L20.json --fresh-equivariant SOURCE_FRESH_EQUIVARIANT_ATLAS.json --apollo-residual-transfer SOURCE_APOLLO_RESIDUAL_TRANSFER.json --apollo-path-transfer SOURCE_APOLLO_PATH_TRANSFER.json",
       "input_hashes": {
         "action_response_field": "272322d80d23a01bf4a2f545f82fb9d0a9612d89cfab93a4af1319f9dccf19ab",
@@ -318,16 +318,17 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c14_representation_receipt.json"
       },
-      "sha256": "a0409bf05c17e65873db4e596aa46fec143b4d66df69959db6e8796b842e6fda",
-      "byte_size": 19312,
+      "sha256": "09d96f9096921c836e5fcfe97cb20d8abd4d62175cecfe145454c46ec1556726",
+      "byte_size": 27697,
       "producer": "experiments/report_public_representation_receipt.py",
-      "producer_command": ".venv/bin/python experiments/report_public_representation_receipt.py --pre-status-honestward SOURCE_HONESTWARD.json --pre-status-specificity SOURCE_SPECIFICITY.json --pre-status-compression SOURCE_COMPRESSION.json --additive-transport SOURCE_ADDITIVE.json --endpoint-diagnostic SOURCE_ENDPOINT.json --out paper_artifacts/c14_representation_receipt.json",
+      "producer_command": ".venv/bin/python experiments/report_public_representation_receipt.py --pre-status-honestward SOURCE_HONESTWARD.json --pre-status-specificity SOURCE_SPECIFICITY.json --pre-status-compression SOURCE_COMPRESSION.json --additive-transport SOURCE_ADDITIVE.json --endpoint-diagnostic SOURCE_ENDPOINT.json --simple-address-baselines SOURCE_SIMPLE_ADDRESS.json --out paper_artifacts/c14_representation_receipt.json",
       "input_hashes": {
         "pre_status_honestward_field_sealed": "af2681460f01e37f4fc76cfa2c55739f2dc258527448585a2e09ff615166a9cb",
         "pre_status_specificity_controls": "01b27b122c44607d999639f2b2f16744d23f9f65e389b796389b63d6be777363",
         "pre_status_compression_frontier": "997637b6fd50a8ad34da2b0835a58f677e8e0f79bf8b6279769afee7709b295f",
         "additive_compositional_transport": "7c83ae7d6bf0d8bf0261e2b471c6aade0d8c0f801d5a8b38a90cd7c12de8c762",
-        "endpoint_prototype_diagnostic": "9bf787927c3f8bd5b54b961bdfbf1931aeae29b9aaf6d1d2b2f49000288197d8"
+        "endpoint_prototype_diagnostic": "9bf787927c3f8bd5b54b961bdfbf1931aeae29b9aaf6d1d2b2f49000288197d8",
+        "simple_address_baselines": "e0d053fb096fee2b49e07d58c71045f6df71438c4554c86a30bd54b3e8853fca"
       },
       "model_dependent": true,
       "model_identity": {
@@ -344,7 +345,7 @@
         "lifecycle_status": "completed_representation_structure_audit",
         "source_commit": null,
         "source_tree_dirty": null,
-        "note": "Descriptive companion receipt aggregating five private source reports from the sealed structured-action development bank. No new claim is made. The honestward/specificity/compression reports are retrospective unregistered descriptive; the additive/endpoint reports are post-evidence registered descriptive follow-ups."
+        "note": "Descriptive companion receipt aggregating six private source reports from the sealed structured-action development bank. No new claim is made. The honestward/specificity/compression reports are retrospective unregistered descriptive; the additive/endpoint/simple-address reports are post-evidence registered descriptive follow-ups."
       }
     }
   ]

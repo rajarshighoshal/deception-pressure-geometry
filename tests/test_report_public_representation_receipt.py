@@ -280,6 +280,8 @@ def test_c14_hash_gate_rejects_mismatch(tmp_path: Path) -> None:
     add_.write_text("x")
     end = tmp_path / "e.json"
     end.write_text("x")
+    simple = tmp_path / "sa.json"
+    simple.write_text("x")
 
     with pytest.raises(SystemExit) as excinfo:
         build_c14_receipt(
@@ -288,5 +290,72 @@ def test_c14_hash_gate_rejects_mismatch(tmp_path: Path) -> None:
             compression_path=comp,
             additive_path=add_,
             endpoint_path=end,
+            simple_address_path=simple,
         )
     assert excinfo.value.code == 1
+
+
+def test_registry_compression_variance_prose_matches_receipt() -> None:
+    """The registry's rank-32 variance range must equal the receipt's fold values.
+
+    Drift guard: the two prose statements in docs/results_registry.yaml carry the
+    fold-selection variance range as NN.NN--NN.NN%. They must match the receipt's
+    min/max rank_variance_explained to two decimals, in both locations.
+    """
+    import re
+
+    receipt = json.loads(
+        (REPO_ROOT / "paper_artifacts" / "c14_representation_receipt.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    fold_vars = [
+        fold["rank_variance_explained"]
+        for fold in receipt["compression_frontier"]["fold_selections"]
+    ]
+    expected = f"{min(fold_vars) * 100:.2f}--{max(fold_vars) * 100:.2f}%"
+
+    registry_text = (REPO_ROOT / "docs" / "results_registry.yaml").read_text(
+        encoding="utf-8"
+    )
+    stated = re.findall(r"(\d{2}\.\d{2}--\d{2}\.\d{2}%)\s*(?:variance retained|train variance)",
+                        registry_text)
+    assert stated, "registry no longer states a rank-32 variance range"
+    assert len(stated) == 2, f"expected the range in exactly 2 places, found {len(stated)}"
+    for value in stated:
+        assert value == expected, (
+            f"registry states {value!r} but receipt fold values give {expected!r}"
+        )
+
+
+def test_simple_address_block_matches_source_report() -> None:
+    """The receipt's simple-address block must mirror the frozen source values."""
+    receipt = json.loads(C14_RECEIPT.read_text(encoding="utf-8"))
+    block = receipt["simple_address_baselines"]
+    assert block["fidelity_gate_passed"] is True
+    view = block["models"]["intervention_masked_action_free"]
+    assert set(view) == {
+        "raw_nn",
+        "raw_k8",
+        "design_cell_mean",
+        "global_mean_recomputed",
+    }
+    for info in view.values():
+        assert info["defined_count"] == info["total_count"] == 200
+    comps = block["comparisons"]["intervention_masked_action_free"]
+    graph_vs_k8 = comps["graph_local_minus_raw_k8"]
+    lo, hi = graph_vs_k8["scenario_cluster_ci"]
+    assert hi < 0.0, "raw_k8 should exceed graph local with a CI excluding zero"
+    graph_vs_cell = comps["graph_local_minus_design_cell_mean"]
+    lo2, hi2 = graph_vs_cell["scenario_cluster_ci"]
+    assert lo2 < 0.0 < hi2, "design-cell comparison should be a statistical tie"
+    assert receipt["checks"]["simple_addresses_match_or_exceed_graph_local"] is True
+    assert receipt["checks"]["design_cell_mean_statistically_ties_graph_local"] is True
+
+
+def test_receipt_contains_no_private_repository_paths() -> None:
+    """The public receipt must not reference files that exist only privately."""
+    text = C14_RECEIPT.read_text(encoding="utf-8")
+    assert "docs/registrations" not in text
+    assert "/Users/" not in text
+    assert "lie-geometry-probes" not in text

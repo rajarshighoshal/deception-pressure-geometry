@@ -76,10 +76,12 @@
   "checks": {
     "additive_improves_over_action_only_in_all_folds": true,
     "compression_rank32_preserves_cosine": true,
+    "design_cell_mean_statistically_ties_graph_local": true,
     "endpoint_explains_most_but_not_all_additive_gain": true,
     "honestward_local_beats_global_substantially": true,
     "honestward_nearest_is_close": true,
     "honestward_shuffled_control_positive": true,
+    "simple_addresses_match_or_exceed_graph_local": true,
     "specificity_is_mostly_generic": true
   },
   "chronology": {
@@ -102,6 +104,11 @@
       "date": "2026-07-21",
       "note": "Already partially bound in C11 receipt's source_artifacts. This receipt extracts the local/global/nearest shielded retrieval summaries, not the raw risk-field scores.",
       "tier": "retrospective_unregistered_descriptive"
+    },
+    "simple_address_baselines": {
+      "date": "2026-08-01",
+      "note": "Registered before execution; the bank and the sealed honestward evaluation predate the registration. Fidelity gate reproduced every sealed model aggregate before any new number was read.",
+      "tier": "post_evidence_descriptive_diagnostic"
     },
     "specificity_controls": {
       "date": "2026-07-21",
@@ -524,8 +531,255 @@
   },
   "kind": "c14_representation_structure_public_receipt",
   "producer": "experiments/report_public_representation_receipt.py",
-  "producer_sha256": "132ef3abca3298a02556c9eb769b4c3457884999560c579071204cd6e77a0404",
+  "producer_sha256": "669fe5405e45601cb2307c25c34b100612d649edb9c0953529cfe9847cbe745d",
   "schema_version": 1,
+  "simple_address_baselines": {
+    "bootstrap": {
+      "resamples": 2000,
+      "seed": 20260801
+    },
+    "comparisons": {
+      "action_free_full_context": {
+        "design_cell_mean_minus_global_mean": {
+          "mean_cosine_difference": 0.438394557485412,
+          "n_pairs": 200,
+          "scenario_cluster_ci": [
+            0.38980836124628193,
+            0.47537788478155185
+          ]
+        },
+        "graph_local_minus_design_cell_mean": {
+          "mean_cosine_difference": -0.016387054420168416,
+          "n_pairs": 192,
+          "scenario_cluster_ci": [
+            -0.03025306853055524,
+            -0.004422245258464228
+          ]
+        },
+        "graph_local_minus_raw_k8": {
+          "mean_cosine_difference": -0.0240500808796575,
+          "n_pairs": 192,
+          "scenario_cluster_ci": [
+            -0.03814242165728915,
+            -0.012235617221237501
+          ]
+        },
+        "graph_local_minus_raw_nn": {
+          "mean_cosine_difference": -0.015248357133610169,
+          "n_pairs": 192,
+          "scenario_cluster_ci": [
+            -0.030850537696109123,
+            -0.00029329895912991405
+          ]
+        },
+        "graph_nearest_minus_raw_nn": {
+          "mean_cosine_difference": -0.029288883170042024,
+          "n_pairs": 192,
+          "scenario_cluster_ci": [
+            -0.051511418335715674,
+            -0.008635747299635852
+          ]
+        },
+        "raw_nn_minus_global_mean": {
+          "mean_cosine_difference": 0.4464928463587555,
+          "n_pairs": 200,
+          "scenario_cluster_ci": [
+            0.4005746563618557,
+            0.4872720922862943
+          ]
+        }
+      },
+      "intervention_masked_action_free": {
+        "design_cell_mean_minus_global_mean": {
+          "mean_cosine_difference": 0.4383945574854119,
+          "n_pairs": 200,
+          "scenario_cluster_ci": [
+            0.38980836124628193,
+            0.47537788478155185
+          ]
+        },
+        "graph_local_minus_design_cell_mean": {
+          "mean_cosine_difference": -0.013836784173809846,
+          "n_pairs": 193,
+          "scenario_cluster_ci": [
+            -0.03142197145248685,
+            0.005450543120984746
+          ]
+        },
+        "graph_local_minus_raw_k8": {
+          "mean_cosine_difference": -0.024327323746426432,
+          "n_pairs": 193,
+          "scenario_cluster_ci": [
+            -0.038726834570983186,
+            -0.010910529711844348
+          ]
+        },
+        "graph_local_minus_raw_nn": {
+          "mean_cosine_difference": -0.01897074881817341,
+          "n_pairs": 193,
+          "scenario_cluster_ci": [
+            -0.03477121743045068,
+            -0.0025146521868322012
+          ]
+        },
+        "graph_nearest_minus_raw_nn": {
+          "mean_cosine_difference": -0.03292822974145685,
+          "n_pairs": 193,
+          "scenario_cluster_ci": [
+            -0.055847513842322456,
+            -0.010927542085539163
+          ]
+        },
+        "raw_nn_minus_global_mean": {
+          "mean_cosine_difference": 0.4464928463587555,
+          "n_pairs": 200,
+          "scenario_cluster_ci": [
+            0.4005746563618557,
+            0.4872720922862943
+          ]
+        }
+      }
+    },
+    "design_cell_fallbacks": {
+      "action_free_full_context": 5,
+      "intervention_masked_action_free": 5
+    },
+    "fidelity_gate_passed": true,
+    "models": {
+      "action_free_full_context": {
+        "design_cell_mean": {
+          "cosine_mean": 0.9223194155844522,
+          "defined_count": 200,
+          "normalized_squared_error": 0.15342257285195132,
+          "per_fold_cosine": {
+            "outer_1": 0.9564860261663616,
+            "outer_2": 0.9453836941288466,
+            "outer_3": 0.9526849259583918,
+            "outer_4": 0.85301740647717,
+            "outer_5": 0.9173614465092416
+          },
+          "total_count": 200
+        },
+        "global_mean_recomputed": {
+          "cosine_mean": 0.4839248580990402,
+          "defined_count": 200,
+          "normalized_squared_error": 0.9307181425452272,
+          "per_fold_cosine": {
+            "outer_1": 0.5766234815214248,
+            "outer_2": 0.5076280342387378,
+            "outer_3": 0.4549200069344639,
+            "outer_4": 0.35931111090571183,
+            "outer_5": 0.5713618682814191
+          },
+          "total_count": 200
+        },
+        "raw_k8": {
+          "cosine_mean": 0.9326291931626618,
+          "defined_count": 200,
+          "normalized_squared_error": 0.12211340104531086,
+          "per_fold_cosine": {
+            "outer_1": 0.9698855441716056,
+            "outer_2": 0.9573859809596981,
+            "outer_3": 0.9616530614690998,
+            "outer_4": 0.8496597317199193,
+            "outer_5": 0.9441922679555312
+          },
+          "total_count": 200
+        },
+        "raw_nn": {
+          "cosine_mean": 0.9304177044577958,
+          "defined_count": 200,
+          "normalized_squared_error": 0.14862567412806435,
+          "per_fold_cosine": {
+            "outer_1": 0.9644625043515452,
+            "outer_2": 0.9476097558497993,
+            "outer_3": 0.9344114068417186,
+            "outer_4": 0.8715561817569487,
+            "outer_5": 0.9520766384070153
+          },
+          "total_count": 200
+        }
+      },
+      "intervention_masked_action_free": {
+        "design_cell_mean": {
+          "cosine_mean": 0.9223194155844522,
+          "defined_count": 200,
+          "normalized_squared_error": 0.15342257285195132,
+          "per_fold_cosine": {
+            "outer_1": 0.9564860261663615,
+            "outer_2": 0.9453836941288464,
+            "outer_3": 0.9526849259583918,
+            "outer_4": 0.85301740647717,
+            "outer_5": 0.9173614465092417
+          },
+          "total_count": 200
+        },
+        "global_mean_recomputed": {
+          "cosine_mean": 0.4839248580990402,
+          "defined_count": 200,
+          "normalized_squared_error": 0.9307181425452272,
+          "per_fold_cosine": {
+            "outer_1": 0.576623481521425,
+            "outer_2": 0.5076280342387378,
+            "outer_3": 0.4549200069344639,
+            "outer_4": 0.3593111109057119,
+            "outer_5": 0.571361868281419
+          },
+          "total_count": 200
+        },
+        "raw_k8": {
+          "cosine_mean": 0.9326291931626619,
+          "defined_count": 200,
+          "normalized_squared_error": 0.12211340104531086,
+          "per_fold_cosine": {
+            "outer_1": 0.9698855441716058,
+            "outer_2": 0.9573859809596981,
+            "outer_3": 0.9616530614690999,
+            "outer_4": 0.8496597317199193,
+            "outer_5": 0.9441922679555312
+          },
+          "total_count": 200
+        },
+        "raw_nn": {
+          "cosine_mean": 0.9304177044577958,
+          "defined_count": 200,
+          "normalized_squared_error": 0.14862567412806438,
+          "per_fold_cosine": {
+            "outer_1": 0.964462504351545,
+            "outer_2": 0.9476097558497993,
+            "outer_3": 0.9344114068417186,
+            "outer_4": 0.8715561817569486,
+            "outer_5": 0.9520766384070152
+          },
+          "total_count": 200
+        }
+      }
+    },
+    "population": {
+      "cell_definition": [
+        "turn_index",
+        "intervention_history",
+        "pressure_exposed",
+        "true_status"
+      ],
+      "crossings": 242,
+      "deceptive_source_roots": 200,
+      "distance": "euclidean_on_raw_flattened_root_residual",
+      "folds": [
+        "outer_1",
+        "outer_2",
+        "outer_3",
+        "outer_4",
+        "outer_5"
+      ],
+      "k_neighbours": 8,
+      "views": [
+        "action_free_full_context",
+        "intervention_masked_action_free"
+      ]
+    },
+    "registration_character": "post_evidence_descriptive_diagnostic"
+  },
   "source_artifacts": {
     "additive_compositional_transport": {
       "byte_size": 5778,
@@ -546,6 +800,10 @@
     "pre_status_specificity_controls": {
       "byte_size": 4193317,
       "sha256": "01b27b122c44607d999639f2b2f16744d23f9f65e389b796389b63d6be777363"
+    },
+    "simple_address_baselines": {
+      "byte_size": 12643,
+      "sha256": "e0d053fb096fee2b49e07d58c71045f6df71438c4554c86a30bd54b3e8853fca"
     }
   },
   "specificity_controls": {
