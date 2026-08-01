@@ -28,12 +28,12 @@ scenarios, twenty families. The model first demonstrates the correct answer with
 pressure. Then, under graded pressure, it samples a one-token status report — honest
 or deceptive. I capture the activation state at the anchor right before that token.
 
-For each scenario I now have pairs: the pre-commitment state of a conversation that
-went deceptive, and the pre-commitment state of a matched conversation that stayed
-honest. The **displacement** is just the difference vector between two such matched
-states. The question becomes: given a new deceptive state from a scenario family the
-estimator has never seen, can I reconstruct what the displacement to honest looks like
-there — before ever seeing the honest branch?
+For each scenario I now have pairs. Picture two identical conversations up to the
+pressure point: in one the model caves, in one it holds. The pre-commitment state of
+the first, and the pre-commitment state of the second. The **displacement** is just
+the arrow between those two states. The question becomes: given a new deceptive state
+from a scenario family the estimator has never seen, can I reconstruct what the arrow
+to honest looks like there — before ever seeing the honest branch?
 
 This is a different object from a probe. A probe says what a state *is*. This asks
 where the state *would move*, and from what information.
@@ -162,10 +162,12 @@ answer is a result.
 
 ---
 
-This is the working paper's story in plain language. The first study's public
-artifact — registry, receipts, code — is at
+That is where this stands. The state before the model lies is an address into a
+small, mostly generic, partially linear vocabulary of moves — and the test that
+decides whether it becomes a handle is fully specified and waiting to be run.
+
+The first study's artifact — registry, receipts, code — is public at
 [github.com/rajarshighoshal/lie-geometry-probes](https://github.com/rajarshighoshal/lie-geometry-probes).
-The new study's artifact ships with the paper.
 
 If you think I got something wrong, I'd like to hear it.
 
