@@ -6,7 +6,9 @@ from pathlib import Path
 from experiments.plot_representation_figures import (
     EXPECTED_KIND,
     FIGURE_NAMES,
+    MOBILE_FIGURE_STEMS,
     RECEIPT_PATH,
+    SOCIAL_CARD_NAME,
     REPO_ROOT,
     load_receipt,
     main,
@@ -34,6 +36,17 @@ def test_render_nonempty_outputs(tmp_path: Path) -> None:
     for path in sorted(out_dir.glob("*.pdf")):
         assert path.stat().st_size > 5_000
         assert path.read_bytes().startswith(b"%PDF")
+
+
+def test_web_variants_and_social_card_are_registered() -> None:
+    assert MOBILE_FIGURE_STEMS == [
+        "representation_reconstruction_mobile",
+        "representation_structure_mobile",
+        "representation_factorization_mobile",
+    ]
+    assert SOCIAL_CARD_NAME == "addressability_social_card.png"
+    assert SOCIAL_CARD_NAME in FIGURE_NAMES
+    assert all(f"{stem}.png" in FIGURE_NAMES for stem in MOBILE_FIGURE_STEMS)
 
 
 def test_only_input_is_the_committed_receipt() -> None:

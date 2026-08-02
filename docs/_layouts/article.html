@@ -11,9 +11,13 @@
   <meta property="og:title" content="{{ page.title | escape }}">
   <meta property="og:description" content="{{ page.deck | default: page.title | strip_html | strip_newlines | escape }}">
   <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}/">
-  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/figures/structured_action_control_audit.png">
+  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/{{ page.og_image | default: 'figures/addressability_social_card.png' }}">
+  <meta property="og:image:alt" content="{{ page.og_image_alt | default: page.deck | strip_html | strip_newlines | escape }}">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="{{ '/assets/article.css' | relative_url }}?v={{ site.github.build_revision | default: '2' }}">
+  <meta name="twitter:title" content="{{ page.title | escape }}">
+  <meta name="twitter:description" content="{{ page.deck | default: page.title | strip_html | strip_newlines | escape }}">
+  <meta name="twitter:image" content="{{ site.url }}{{ site.baseurl }}/{{ page.og_image | default: 'figures/addressability_social_card.png' }}">
+  <link rel="stylesheet" href="{{ '/assets/article.css' | relative_url }}?v={{ site.github.build_revision | default: '3' }}">
 </head>
 <body>
   <a class="skip-link" href="#article">Skip to article</a>
@@ -31,10 +35,11 @@
   <main id="article">
     <article>
       <header class="article-header">
-        <p class="article-meta">Research note · July 2026</p>
+        <div class="header-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="article-meta">Research note{% if page.published %} · Published {{ page.published }}{% endif %}{% if page.updated %} · Updated {{ page.updated }}{% endif %}</p>
         <h1>{{ page.title }}</h1>
         {% if page.deck %}<p class="deck">{{ page.deck }}</p>{% endif %}
-        {% if page.byline %}<p class="byline">Rajarshi Ghoshal</p>{% endif %}
+        {% if page.byline %}<p class="byline">{{ page.byline }}</p>{% endif %}
       </header>
 
       <div class="article-body">

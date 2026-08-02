@@ -8,8 +8,11 @@ emitted as vector PDF for the manuscript plus PNG as a web byproduct.
   representation_reconstruction.{pdf,png} — held-out cosines + paired differences
   representation_structure.{pdf,png}      — specificity + output compression
   representation_factorization.{pdf,png}  — source-plus-action waterfall
+  *_mobile.png                           — stacked web variants for narrow screens
+  addressability_social_card.png         — 1200 x 630 article share card
 
-Every scientific value is parsed from paper_artifacts/c14_representation_receipt.json.
+Every scientific value in the charts and social card is parsed from
+paper_artifacts/c14_representation_receipt.json.
 """
 from __future__ import annotations
 
@@ -38,8 +41,14 @@ FIGURE_STEMS = [
     "representation_structure",
     "representation_factorization",
 ]
+MOBILE_FIGURE_STEMS = [f"{stem}_mobile" for stem in FIGURE_STEMS]
+SOCIAL_CARD_NAME = "addressability_social_card.png"
 ACTIVE_FORMATS: tuple[str, ...] = ("pdf", "png")
-FIGURE_NAMES = [f"{stem}.{ext}" for stem in FIGURE_STEMS for ext in ("pdf", "png")]
+FIGURE_NAMES = (
+    [f"{stem}.{ext}" for stem in FIGURE_STEMS for ext in ("pdf", "png")]
+    + [f"{stem}.png" for stem in MOBILE_FIGURE_STEMS]
+    + [SOCIAL_CARD_NAME]
+)
 
 # ---------------------------------------------------------------------------
 # Ledger theme
@@ -48,6 +57,7 @@ INK = "#1A1814"          # warm near-black: text, primary marks
 INK_SOFT = "#6E6862"     # secondary text
 HAIR = "#D8D3CC"         # hairlines, grid
 PAPER = "#FFFFFF"
+WEB_PAPER = "#FBFAF6"
 BLUE = "#4F72AE"         # muted steel blue: the local estimator / this paper's method
 EMBER = "#C9834F"        # soft amber: retrieval/alternative family (nearest, landmark)
 CHARCOAL = "#3A362F"     # global / linear baselines
@@ -243,6 +253,198 @@ def _coverage_chip(ax: plt.Axes, x: float, y: float, defined: int, total: int) -
             color=PAPER, style="italic")
 
 
+
+
+def _set_figure_background(fig: plt.Figure) -> None:
+    """Use a warm editorial canvas while keeping each plotting field white."""
+    fig.patch.set_facecolor(WEB_PAPER)
+    for ax in fig.axes:
+        ax.set_facecolor(PAPER)
+
+
+def _save_standard(fig: plt.Figure, out_dir: Path, stem: str) -> None:
+    _set_figure_background(fig)
+    for ext in ACTIVE_FORMATS:
+        fig.savefig(out_dir / f"{stem}.{ext}", facecolor=WEB_PAPER)
+
+
+def _plot_interval_row(
+    ax: plt.Axes, yi: float, point: float, ci: list[float] | tuple[float, float],
+    color: str, *, hollow: bool = False, marker_size: float = 7.5,
+) -> None:
+    ax.plot([ci[0], ci[1]], [yi, yi], "-", color=color, lw=2.8,
+            solid_capstyle="butt", zorder=3)
+    for cap in ci:
+        ax.plot([cap, cap], [yi - 0.13, yi + 0.13], "-", color=color, lw=1.3, zorder=3)
+    ax.plot(point, yi, "o", ms=marker_size, mfc=PAPER if hollow else color,
+            mec=color, mew=1.5, zorder=4)
+
+
+def figure_reconstruction_mobile(data: dict[str, Any], out_dir: Path) -> None:
+    """Stack the reconstruction evidence with phone-sized labels."""
+    fig = plt.figure(figsize=(4.4, 10.0))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.18, 1.0], hspace=0.46,
+                          top=0.94, bottom=0.07, left=0.34, right=0.94)
+    ax = fig.add_subplot(gs[0])
+    bars = data["bars"]
+    y = np.arange(len(bars))[::-1]
+    ax.barh(y, [b[1] for b in bars], height=0.58, color=[b[4] for b in bars], zorder=3)
+    for yi, (_, val, defined, total, _) in zip(y, bars):
+        ax.text(min(val + 0.018, 1.005), yi, f"{val:.3f}", va="center", ha="left",
+                fontsize=13.5, color=INK, fontweight="bold")
+        ax.text(0.018, yi, f"{defined}/{total}", va="center", ha="left", fontsize=9.8,
+                color=PAPER, style="italic")
+    ax.set_yticks(y, [b[0] for b in bars], fontsize=11.5)
+    ax.set_xlim(0, 1.08)
+    ax.set_xticks([0, 0.5, 1.0])
+    ax.tick_params(axis="x", labelsize=10.5)
+    ax.set_xlabel("held-out reconstruction cosine", fontsize=11.5)
+    ax.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
+    _chip(ax, "A", "Local addresses reconstruct held-out displacement", y=1.075)
+
+    ax2 = fig.add_subplot(gs[1])
+    paired = data["paired"]
+    y2 = np.arange(len(paired))[::-1]
+    for yi, (name, point, ci, color, hollow) in zip(y2, paired):
+        _plot_interval_row(ax2, yi, point, ci, color, hollow=hollow)
+        label = f"+{point:.3f}" if point >= 0 else f"−{abs(point):.3f}"
+        ax2.text(ci[1] + 0.017, yi, label, va="center", fontsize=11.5, color=INK)
+    ax2.axvline(0.0, color=INK, lw=1.0, zorder=2)
+    ax2.set_yticks(y2, [p[0] for p in paired], fontsize=10.7)
+    ax2.set_xlim(-0.08, 0.69)
+    ax2.set_xticks([0, 0.25, 0.5])
+    ax2.tick_params(axis="x", labelsize=10.5)
+    ax2.set_xlabel("paired cosine difference · 95% interval", fontsize=11.5)
+    ax2.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
+    _chip(ax2, "B", "Retrieval, not graph machinery, carries the gain", y=1.075)
+    _set_figure_background(fig)
+    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[0]}.png", dpi=220, facecolor=WEB_PAPER)
+    plt.close(fig)
+
+
+def figure_structure_mobile(data: dict[str, Any], out_dir: Path) -> None:
+    """Stack specificity and output compression for narrow screens."""
+    fig = plt.figure(figsize=(4.4, 9.0))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.15, 0.9], hspace=0.48,
+                          top=0.93, bottom=0.075, left=0.37, right=0.94)
+    _tier_fig(fig, "U", x=0.97, y=0.985)
+    ax = fig.add_subplot(gs[0])
+    rows = []
+    for name, cos_pt, cos_ci, nse_pt, nse_ci in data["specificity"]:
+        rows.append((f"{name} (cos)", cos_pt, cos_ci, BLUE))
+        rows.append((f"{name} (NSE)", nse_pt, nse_ci, GRAY))
+    spacing = np.array([0.0, 1.0, 2.6, 3.6, 5.2, 6.2])
+    y = spacing.max() - spacing
+    for yi, (_, pt, ci, color) in zip(y, rows):
+        _plot_interval_row(ax, yi, pt, ci, color)
+    ax.axvline(0.0, color=INK, lw=1.0, zorder=2)
+    ax.set_yticks(y, [r[0] for r in rows], fontsize=10.6)
+    ax.tick_params(axis="x", labelsize=10.5)
+    ax.set_xlabel("paired difference · 95% interval", fontsize=11.5)
+    ax.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
+    _chip(ax, "A", "Specificity is small and metric-dependent", y=1.08)
+
+    ax2 = fig.add_subplot(gs[1])
+    comp = data["compression"]
+    y2 = np.arange(len(comp))[::-1]
+    ax2.barh(y2, [c[1] for c in comp], height=0.58, color=[c[4] for c in comp], zorder=3)
+    for yi, (_, val, defined, total, _) in zip(y2, comp):
+        ax2.text(val + 0.017, yi, f"{val:.3f}", va="center", fontsize=13,
+                 color=INK, fontweight="bold")
+        if defined != total:
+            ax2.text(0.018, yi, f"{defined}/{total}", va="center", fontsize=9.5,
+                     color=PAPER, style="italic")
+    ax2.set_yticks(y2, [c[0] for c in comp], fontsize=11.2)
+    ax2.set_xlim(0, 1.08)
+    ax2.set_xticks([0, 0.5, 1.0])
+    ax2.tick_params(axis="x", labelsize=10.5)
+    ax2.set_xlabel("generic reconstruction cosine · 849 roots", fontsize=11.5)
+    ax2.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
+    _chip(ax2, "B", "Rank-32 projection preserves the output vocabulary", y=1.08)
+    _set_figure_background(fig)
+    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[1]}.png", dpi=220, facecolor=WEB_PAPER)
+    plt.close(fig)
+
+
+def figure_factorization_mobile(data: dict[str, Any], out_dir: Path) -> None:
+    """Render the factorization as three horizontal phone-readable stages."""
+    fig, ax = plt.subplots(figsize=(4.4, 6.4))
+    fig.subplots_adjust(left=0.08, right=0.94, top=0.88, bottom=0.25)
+    _tier_fig(fig, "D", x=0.97, y=0.98)
+    action = data["action_cos"]
+    constrained = data["constrained_cos"]
+    additive = data["additive_cos"]
+    rows = [
+        ("Action only", action, CHARCOAL),
+        ("+ endpoint subtraction", constrained, "#9AA8B8"),
+        ("+ learned source coupling", additive, BLUE),
+    ]
+    y = np.arange(len(rows))[::-1]
+    ax.barh(y, [r[1] for r in rows], height=0.52, color=[r[2] for r in rows], zorder=3)
+    for yi, (label, value, _) in zip(y, rows):
+        ax.text(0.025, yi, label, va="center", ha="left", color=PAPER, fontsize=11.5,
+                fontweight="bold")
+        ax.text(value + 0.018, yi, f"{value:.4f}", va="center", fontsize=14,
+                color=INK, fontweight="bold")
+    ax.text(0.03, -0.23,
+            f"Endpoint subtraction explains {data['endpoint_ratio']*100:.1f}% of the observed lift",
+            transform=ax.transAxes, fontsize=10.5, color=INK_SOFT, clip_on=False)
+    ax.text(0.03, -0.30,
+            f"Learned source coupling adds +{data['gap_free_minus_constrained']:.4f}",
+            transform=ax.transAxes, fontsize=10.5, color=BLUE, clip_on=False)
+    ax.set_xlim(0, 1.04)
+    ax.set_yticks([])
+    ax.set_xticks([0, 0.5, 1.0])
+    ax.tick_params(axis="x", labelsize=10.5)
+    ax.set_xlabel("held-out family-macro cosine", fontsize=11.5)
+    ax.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
+    _chip(ax, "", "A destination-conditioned rule predicts displacement", y=1.08)
+    _set_figure_background(fig)
+    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[2]}.png", dpi=220, facecolor=WEB_PAPER)
+    plt.close(fig)
+
+
+def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
+    """Generate a restrained 1200 x 630 share card from receipt-derived values."""
+    local = data["bars"][0][1]
+    global_mean = next(row[1] for row in data["bars"] if row[0] == "Global train mean")
+    fig = plt.figure(figsize=(12, 6.3), dpi=100, facecolor=WEB_PAPER)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, 12)
+    ax.set_ylim(0, 6.3)
+    ax.axis("off")
+    for radius, color, alpha, angle in ((2.4, BLUE, 0.22, -12), (1.6, EMBER, 0.24, 16)):
+        ellipse = matplotlib.patches.Ellipse((10.2, 3.25), radius * 2, radius * 0.95,
+                                             angle=angle, fill=False, lw=1.6,
+                                             edgecolor=color, alpha=alpha)
+        ax.add_patch(ellipse)
+    ax.scatter([8.75, 10.05, 11.05], [3.1, 4.25, 2.35], s=[85, 55, 70],
+               color=[BLUE, INK, EMBER], alpha=0.8)
+    ax.annotate("", xy=(10.9, 3.15), xytext=(8.9, 3.15),
+                arrowprops=dict(arrowstyle="-|>", lw=2.2, color=BLUE))
+    ax.text(0.75, 5.55, "DECEPTION PRESSURE GEOMETRY", fontsize=13, color=BLUE,
+            fontweight="bold", family="sans-serif")
+    ax.text(0.75, 4.72, "The state before the model lies", fontsize=34, color=INK,
+            fontweight="bold", family="sans-serif")
+    ax.text(0.75, 4.23, "is an address", fontsize=34, color=INK,
+            fontweight="bold", family="sans-serif")
+    ax.text(0.75, 3.25, "Local activation retrieval reconstructs held-out displacement",
+            fontsize=15.5, color=INK_SOFT, family="sans-serif")
+    ax.text(0.75, 2.14, f"{local:.2f}", fontsize=43, color=BLUE, fontweight="bold",
+            family="sans-serif")
+    ax.text(2.32, 2.32, "local retrieval", fontsize=14, color=INK_SOFT, family="sans-serif")
+    ax.text(4.15, 2.14, f"{global_mean:.2f}", fontsize=43, color=CHARCOAL,
+            fontweight="bold", family="sans-serif")
+    ax.text(5.73, 2.32, "one global direction", fontsize=14, color=INK_SOFT,
+            family="sans-serif")
+    ax.text(0.75, 0.74,
+            "Offline reconstruction · held-out families · causal injection remains open",
+            fontsize=13, color=INK_SOFT, family="sans-serif")
+    fig.savefig(out_dir / SOCIAL_CARD_NAME, dpi=100, facecolor=WEB_PAPER,
+                bbox_inches=None, pad_inches=0)
+    plt.close(fig)
+
+
 # ---------------------------------------------------------------------------
 # Figure 1: reconstruction
 # ---------------------------------------------------------------------------
@@ -294,8 +496,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     ax2.set_axisbelow(True)
     _chip(ax2, "B", "Retrieval carries the gain, under every address tested")
 
-    for ext in ACTIVE_FORMATS:
-        fig.savefig(out_dir / f"{FIGURE_STEMS[0]}.{ext}")
+    _save_standard(fig, out_dir, FIGURE_STEMS[0])
     plt.close(fig)
 
 
@@ -353,8 +554,7 @@ def figure_structure(data: dict[str, Any], out_dir: Path) -> None:
              fontsize=7.2, color=INK_SOFT, style="italic")
     _chip(ax2, "B", "Output compression")
 
-    for ext in ACTIVE_FORMATS:
-        fig.savefig(out_dir / f"{FIGURE_STEMS[1]}.{ext}")
+    _save_standard(fig, out_dir, FIGURE_STEMS[1])
     plt.close(fig)
 
 
@@ -418,8 +618,7 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
             transform=ax.transAxes, fontsize=7.2, color=INK_SOFT, style="italic")
     _chip(ax, "", "A linear source-plus-action model predicts displacement")
 
-    for ext in ACTIVE_FORMATS:
-        fig.savefig(out_dir / f"{FIGURE_STEMS[2]}.{ext}")
+    _save_standard(fig, out_dir, FIGURE_STEMS[2])
     plt.close(fig)
 
 
@@ -440,6 +639,10 @@ def main(argv: list[str] | None = None) -> int:
     figure_reconstruction(data, args.out_dir)
     figure_structure(data, args.out_dir)
     figure_factorization(data, args.out_dir)
+    figure_reconstruction_mobile(data, args.out_dir)
+    figure_structure_mobile(data, args.out_dir)
+    figure_factorization_mobile(data, args.out_dir)
+    figure_social_card(data, args.out_dir)
     return 0
 
 

@@ -70,15 +70,20 @@ def _readme_figure_names() -> list[str]:
 
 
 def test_plot_public_figure_names_match_readme_and_figures() -> None:
-    from experiments.plot_representation_figures import FIGURE_STEMS as REPR_STEMS
+    from experiments.plot_representation_figures import (
+        FIGURE_STEMS as REPR_STEMS,
+        MOBILE_FIGURE_STEMS,
+        SOCIAL_CARD_NAME,
+    )
 
-    expected = sorted(set(FIGURE_NAMES) | {f"{stem}.png" for stem in REPR_STEMS})
-    readme_names = _readme_figure_names()
-    assert readme_names == expected
+    readme_expected = sorted(set(FIGURE_NAMES) | {f"{stem}.png" for stem in REPR_STEMS})
+    assert _readme_figure_names() == readme_expected
 
+    article_only = {f"{stem}.png" for stem in MOBILE_FIGURE_STEMS} | {SOCIAL_CARD_NAME}
+    expected_all = sorted(set(readme_expected) | article_only)
     figures_dir = REPO_ROOT / "docs" / "figures"
     actual = sorted(p.name for p in figures_dir.glob("*.png"))
-    assert actual == expected
+    assert actual == expected_all
 
 
 def _digest(path: Path) -> str:
