@@ -544,7 +544,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     ax.set_xlim(0.38, 0.97)
     ax.set_ylim(0.0, 1.0)
     ax.set_yticks([])
-    AXIS_Y = 0.30
+    AXIS_Y = 0.37
     ax.axhline(AXIS_Y, color=INK, lw=0.8, zorder=1)
     ax.axvspan(band_lo, band_hi, ymin=AXIS_Y - 0.055, ymax=AXIS_Y + 0.055,
                color="#E7E2D6", zorder=0,
@@ -562,7 +562,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
         left = v == min(o[1] for o in others)
         ax.annotate(f"{name.lower()}\n{v:.4f} $\\cdot$ {d}/{tot}",
                     xy=(v, AXIS_Y - 0.035),
-                    xytext=(v - 0.014 if left else v + 0.014, AXIS_Y - 0.20),
+                    xytext=(v - 0.014 if left else v + 0.014, AXIS_Y - 0.165),
                     ha="right" if left else "left", va="top", fontsize=7.6,
                     color=INK,
                     arrowprops=dict(arrowstyle="-", color=INK_SOFT, lw=0.6))
@@ -580,7 +580,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     axz = ax.inset_axes([0.40, 0.66, 0.585, 0.32])
     axz.set_facecolor("#F1EEE6")
     zlo, zhi = 0.9095, 0.9425
-    ys = np.linspace(0.80, 0.20, len(tied))
+    ys = np.linspace(0.83, 0.17, len(tied))
     for (name, v, c, hollow), yy in zip(sorted(tied, key=lambda r: -r[1]), ys):
         axz.plot(v, yy, "o", ms=7,
                  mfc=(BLUE_WASH if c == BLUE else EMBER_WASH) if hollow else c,
