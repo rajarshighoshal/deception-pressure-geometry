@@ -43,9 +43,14 @@ FIGURE_STEMS = [
 ]
 MOBILE_FIGURE_STEMS = [f"{stem}_mobile" for stem in FIGURE_STEMS]
 SOCIAL_CARD_NAME = "addressability_social_card.png"
+COMBINED_STEM = "representation_structure_factorization"
+PRESSURE_STEM = "representation_pressure_behavior"
+PRESSURE_RECEIPT_PATH = REPO_ROOT / "paper_artifacts" / "pressure_behavior_receipt.json"
 ACTIVE_FORMATS: tuple[str, ...] = ("pdf", "png")
 FIGURE_NAMES = (
     [f"{stem}.{ext}" for stem in FIGURE_STEMS for ext in ("pdf", "png")]
+    + [f"{COMBINED_STEM}.{ext}" for ext in ("pdf", "png")]
+    + [f"{PRESSURE_STEM}.{ext}" for ext in ("pdf", "png")]
     + [f"{stem}.png" for stem in MOBILE_FIGURE_STEMS]
     + [SOCIAL_CARD_NAME]
 )
@@ -503,7 +508,7 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
-    fig = plt.figure(figsize=(6.5, 5.9))
+    fig = plt.figure(figsize=(6.5, 5.3))
     gs = fig.add_gridspec(2, 1, height_ratios=[1.28, 1.0], hspace=0.42,
                           top=0.93, bottom=0.085)
     # Mixed chronology (sealed models vs. registered baselines): stated in the
@@ -697,8 +702,8 @@ def figure_structure(data: dict[str, Any], out_dir: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
-    fig, ax = plt.subplots(figsize=(6.5, 3.5))
-    fig.subplots_adjust(top=0.84)
+    fig, ax = plt.subplots(figsize=(5.6, 2.95))
+    fig.subplots_adjust(top=0.82)
     _tier_fig(fig, "D")
     action = data["action_cos"]
     constrained = data["constrained_cos"]
@@ -736,8 +741,8 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
                 "cosine improvement)",
                 xy=(xs[1] - w / 2, (action + constrained) / 2),
                 xytext=(-0.50, 0.985),
-                fontsize=8, color=INK_SOFT, va="top", ha="left",
-                arrowprops=dict(arrowstyle="-", color=INK_SOFT, lw=0.7,
+                fontsize=8, color=INK, va="top", ha="left",
+                arrowprops=dict(arrowstyle="-", color=INK, lw=0.7,
                                 shrinkB=4))
     ax.annotate(f"$+{data['gap_free_minus_constrained']:.4f}$  learned source coupling",
                 xy=(xs[2] + w / 2, (constrained + additive) / 2),
@@ -761,6 +766,140 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
     plt.close(fig)
 
 
+def figure_structure_factorization(data: dict[str, Any], out_dir: Path) -> None:
+    """Hero waterfall on top, compression beneath: one top-to-bottom reading path."""
+    fig = plt.figure(figsize=(6.5, 4.6))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.55, 1.0], hspace=0.52,
+                          top=0.90, bottom=0.10, left=0.08, right=0.975)
+
+    # -- A (hero): factorization waterfall, annotated -------------------------
+    ax3 = fig.add_subplot(gs[0])
+    action = data["action_cos"]
+    constrained = data["constrained_cos"]
+    additive = data["additive_cos"]
+    xs = np.array([0.0, 1.0, 2.0])
+    w = 0.5
+    ax3.bar(xs[0], action, w, color=CHARCOAL, zorder=3, edgecolor=INK, linewidth=0.45)
+    for x0, segs in ((xs[1], [(0.0, action, CHARCOAL), (action, constrained, EMBER)]),
+                     (xs[2], [(0.0, action, CHARCOAL), (action, constrained, EMBER),
+                              (constrained, additive, BLUE)])):
+        for lo, hi, color in segs:
+            ax3.bar(x0, hi - lo, w, bottom=lo, color=color, zorder=3,
+                    edgecolor=PAPER, linewidth=0.4)
+        ax3.bar(x0, segs[-1][1], w, fill=False, zorder=4, edgecolor=INK,
+                linewidth=0.45)
+    for x0, level in ((xs[0], action), (xs[1], constrained)):
+        ax3.plot([x0 + w / 2, x0 + 1 - w / 2], [level, level], ls=(0, (2, 2)),
+                 color=INK_SOFT, lw=0.8, zorder=4)
+    off = np.linspace(-0.13, 0.13, len(data["action_folds"]))
+    for x0, folds in ((xs[0], data["action_folds"]),
+                      (xs[1], data["constrained_folds"]),
+                      (xs[2], data["additive_folds"])):
+        ax3.plot(x0 + off, folds, "o", ms=2.6, mfc=PAPER, mec=INK, mew=0.7, zorder=5)
+    for x0, v in ((xs[0], action), (xs[1], constrained), (xs[2], additive)):
+        ax3.text(x0, v + 0.05, f"{v:.4f}", ha="center", fontsize=9, color=INK,
+                 fontweight="bold")
+    ax3.annotate(f"$+{constrained - action:.4f}$  endpoint subtraction\n"
+                 f"({data['endpoint_ratio']*100:.1f}% of the observed\n"
+                 "cosine improvement)",
+                 xy=(xs[1] - w / 2, (action + constrained) / 2),
+                 xytext=(-0.58, 0.99), fontsize=7.6, color=INK,
+                 va="top", ha="left",
+                 arrowprops=dict(arrowstyle="-", color=INK, lw=0.7, shrinkB=4))
+    ax3.annotate(f"$+{data['gap_free_minus_constrained']:.4f}$  learned\n"
+                 "source coupling",
+                 xy=(xs[2] + w / 2, (constrained + additive) / 2),
+                 xytext=(2.45, 0.62), fontsize=7.6, color=BLUE, va="center",
+                 arrowprops=dict(arrowstyle="-", color=BLUE, lw=0.7, shrinkB=2))
+    ax3.set_xticks(xs, ["action only", "$+$ endpoint ($B=-I$)",
+                        "$+$ learned source (free $B$)"], fontsize=8)
+    ax3.set_xlim(-0.72, 3.05)
+    ax3.set_ylim(0, 1.02)
+    ax3.set_yticks([0, 0.5, 1.0])
+    ax3.tick_params(labelsize=7.5)
+    ax3.set_ylabel("family-macro cosine", fontsize=8)
+    ax3.grid(axis="y", color=HAIR, lw=0.35, zorder=0)
+    ax3.set_axisbelow(True)
+    _chip(ax3, "A", "A linear source-plus-action rule predicts displacement",
+          y=1.075)
+
+    # -- B: compression -------------------------------------------------------
+    ax2 = fig.add_subplot(gs[1])
+    comp = data["compression"]
+    y2 = np.arange(len(comp))[::-1]
+    cfills = [BLUE_WASH if c[4] == "HOLLOW" else c[4] for c in comp]
+    cedges = [BLUE if c[4] == "HOLLOW" else INK for c in comp]
+    cwidths = [0.9 if c[4] == "HOLLOW" else 0.35 for c in comp]
+    ax2.barh(y2, [c[1] for c in comp], height=0.6, color=cfills, zorder=3,
+             edgecolor=cedges, linewidth=cwidths)
+    full_cos = comp[0][1]
+    for yi, (name, val, defined, total, color) in zip(y2, comp):
+        dark_fill = color in (BLUE, CHARCOAL)
+        inside = val > 0.4
+        shown = name
+        if color == "HOLLOW":
+            shown = f"{name}  $\\cdot$  {val / full_cos * 100:.1f}% of full"
+        ax2.text(0.015 if inside else val + 0.015, yi, shown, va="center", ha="left",
+                 fontsize=8, color=PAPER if (dark_fill and inside) else INK,
+                 zorder=5)
+        ax2.text(val + 0.015 if inside else val + 0.36, yi, f"{val:.4f}",
+                 va="center", ha="left", fontsize=8.4, color=INK,
+                 fontweight="bold")
+    ax2.set_yticks([])
+    ax2.set_xlim(0, 1.12)
+    ax2.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
+    ax2.tick_params(labelsize=7.5)
+    ax2.set_xlabel("generic reconstruction cosine  $\\cdot$  849 roots", fontsize=8)
+    ax2.grid(axis="x", color=HAIR, lw=0.35, zorder=0)
+    ax2.set_axisbelow(True)
+    _chip(ax2, "B", "Rank 32 keeps the whole vocabulary", y=1.14)
+
+    _save_standard(fig, out_dir, COMBINED_STEM)
+    plt.close(fig)
+
+
+def figure_pressure_behavior(out_dir: Path) -> None:
+    """Deceptive-commitment rate per two-slot pressure program (own receipt)."""
+    receipt = json.loads(PRESSURE_RECEIPT_PATH.read_text(encoding="utf-8"))
+    if receipt.get("kind") != "pressure_behavior_public_receipt":
+        die("unexpected pressure receipt kind")
+    programs = receipt["programs"]
+    order = ["NN", "AN", "D2N", "AA", "AB", "BA"]
+    gloss = {
+        "NN": "no pressure",
+        "AN": "one pressure sentence",
+        "D2N": "doubled sentence, one slot",
+        "AA": "pressure at both slots",
+        "AB": "pressure, then caveat-suppression",
+        "BA": "caveat-suppression, then pressure",
+    }
+    fig, ax = plt.subplots(figsize=(6.5, 1.92))
+    fig.subplots_adjust(top=0.80, bottom=0.235, left=0.30, right=0.955)
+    y = np.arange(len(order))[::-1]
+    rates = [programs[k]["deceptive_rate"] for k in order]
+    colors = [GRAY if k == "NN" else CHARCOAL for k in order]
+    ax.barh(y, rates, height=0.58, color=colors, zorder=3,
+            edgecolor=INK, linewidth=0.35)
+    for yi, k, rate in zip(y, order, rates):
+        n = programs[k]["n"]
+        ax.text(rate + 0.012, yi, f"{rate * 100:.1f}%", va="center", ha="left",
+                fontsize=8.4, color=INK, fontweight="bold")
+        ax.text(1.115, yi, f"{programs[k]['deceptive']}/{n}", va="center",
+                ha="right", fontsize=7.0, color=INK_SOFT)
+    ax.set_yticks(y, [gloss[k] for k in order], fontsize=8)
+    ax.tick_params(axis="y", length=0)
+    ax.set_xlim(0, 1.12)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
+    ax.set_xticklabels(["0%", "25%", "50%", "75%", "100%"], fontsize=7.5)
+    ax.set_xlabel("conversations committing a false status  $\\cdot$  600 presented",
+                  fontsize=8)
+    ax.grid(axis="x", color=HAIR, lw=0.35, zorder=0)
+    ax.set_axisbelow(True)
+    _chip(ax, "", "One pressure sentence flips most commitments", y=1.13)
+    _save_standard(fig, out_dir, PRESSURE_STEM)
+    plt.close(fig)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--receipt", type=Path, default=RECEIPT_PATH)
@@ -781,6 +920,8 @@ def main(argv: list[str] | None = None) -> int:
     figure_reconstruction(data, args.out_dir)
     figure_structure(data, args.out_dir)
     figure_factorization(data, args.out_dir)
+    figure_structure_factorization(data, args.out_dir)
+    figure_pressure_behavior(args.out_dir)
     apply_theme("web")
     web_data = parse_data(load_receipt(args.receipt))
     figure_reconstruction_mobile(web_data, args.out_dir)

@@ -378,6 +378,22 @@ results:
         boundary: >-
           Descriptive companion only. No new claim is made. All values are sourced from
           retrospective analyses or post-evidence registered follow-ups. None is confirmatory.
+      - id: c14_descriptive_bank_behavior_rates
+        status: unregistered_descriptive
+        produced_by: experiments/report_public_pressure_behavior_receipt.py
+        receipt: paper_artifacts/pressure_behavior_receipt.json
+        statement: >-
+          Per-program behavioral outcome rates on the frozen presented-bank rollout rows of
+          the sealed structured-action development bank (600 conversations; 564
+          knowledge-correct, 36 knowledge-incorrect). Judged deceptive rates by two-slot
+          pressure program: no pressure 11/60 (18.3%); one pressure sentence 90/120 (75.0%);
+          doubled sentence in one slot 39/60 (65.0%); pressure at both slots 113/120 (94.2%);
+          pressure then caveat-suppression 120/120 (100%); caveat-suppression then pressure
+          107/120 (89.2%).
+        boundary: >-
+          Retrospective unregistered descriptive. Characterizes the developmental bank the
+          representation results run on; blinded LLM-judge labels, one model, no human
+          validation, no confirmatory reading, no new claim.
 
 claims:
   - id: C1
@@ -554,4 +570,4 @@ claims:
       and endpoint are post-evidence registered descriptive follow-ups. No causal or autonomous
       control claim is made, and no prior verdict is revised.
     evidence: [c14_representation_structure]
-    tests: [tests/test_report_public_representation_receipt.py]
+    tests: [tests/test_report_public_representation_receipt.py, tests/test_report_public_pressure_behavior_receipt.py]
