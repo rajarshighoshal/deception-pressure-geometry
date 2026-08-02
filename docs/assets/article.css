@@ -1322,12 +1322,18 @@ body {
 .shared-root {
   width: fit-content;
   margin: 0 auto;
-  padding: 0.65rem 0.9rem;
-  border-radius: 9px;
-  background: var(--ink);
-  color: var(--surface);
-  font-size: 0.75rem;
+  padding: 0.15rem 0.2rem;
+  background: none;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-align: center;
+}
+
+.shared-root strong {
+  color: var(--soft-ink);
+  font-weight: 600;
 }
 
 .branch-lines {

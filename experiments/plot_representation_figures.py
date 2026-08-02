@@ -56,7 +56,7 @@ FIGURE_NAMES = (
 INK = "#171814"          # warm near-black: text, primary marks
 INK_SOFT = "#5B554C"     # secondary text
 HAIR = "#C4B7A5"         # hairlines, grid
-PAPER = "#E9E2D5"
+PAPER = "#FFFDF8"
 WEB_PAPER = "#DCD4C3"
 BLUE = "#1F5E8C"         # muted steel blue: the local estimator / this paper's method
 EMBER = "#B0722A"        # soft amber: retrieval/alternative family (nearest, landmark)
@@ -144,7 +144,7 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              models["local"]["defined_count"], models["local"]["total_count"], BLUE),
             ("Truth-aware design-cell mean", sa_models["design_cell_mean"]["cosine_mean"],
              sa_models["design_cell_mean"]["defined_count"],
-             sa_models["design_cell_mean"]["total_count"], "#675184"),
+             sa_models["design_cell_mean"]["total_count"], "#654d82"),
             ("Typed-graph nearest", models["nearest"]["cosine_mean"],
              models["nearest"]["defined_count"], models["nearest"]["total_count"],
              "#6E91C5"),
@@ -173,7 +173,7 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
             ("graph local $-$ design-cell mean",
              sa_comps["graph_local_minus_design_cell_mean"]["mean_cosine_difference"],
              sa_comps["graph_local_minus_design_cell_mean"]["scenario_cluster_ci"],
-             "#675184", False),
+             "#654d82", False),
         ],
         "specificity": [
             ("honestward $-$ generic",
@@ -287,7 +287,8 @@ def figure_reconstruction_mobile(data: dict[str, Any], out_dir: Path) -> None:
                           top=0.94, bottom=0.07, left=0.34, right=0.94)
     ax = fig.add_subplot(gs[0])
     bars = data["bars"]
-    y = np.arange(len(bars))[::-1]
+    y = np.arange(len(bars))[::-1].astype(float)
+    y[5:] -= 0.7  # visual gap: local addresses above, baselines below
     ax.barh(y, [b[1] for b in bars], height=0.58, color=[b[4] for b in bars], zorder=3)
     for yi, (_, val, defined, total, _) in zip(y, bars):
         ax.text(min(val + 0.018, 1.005), yi, f"{val:.3f}", va="center", ha="left",
@@ -459,7 +460,8 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     # -- A: model cosines -----------------------------------------------------
     ax = fig.add_subplot(gs[0])
     bars = data["bars"]
-    y = np.arange(len(bars))[::-1]
+    y = np.arange(len(bars))[::-1].astype(float)
+    y[5:] -= 0.7  # visual gap: local addresses above, baselines below
     ax.barh(y, [b[1] for b in bars], height=0.62, color=[b[4] for b in bars], zorder=3)
     for yi, (name, val, defined, total, color) in zip(y, bars):
         ax.text(val + 0.012, yi, f"{val:.4f}", va="center", ha="left",
