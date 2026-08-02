@@ -33,10 +33,6 @@ Not classify a state. Reconstruct the matched displacement.
     </div>
     <h2 id="one-minute-title">A nearby state is a better address than one global vector</h2>
     <p>On held-out scenario families, raw-activation retrieval reconstructs the matched displacement at 0.9326 cosine. The result survives the obvious global and shuffled controls.</p>
-    <div class="lead-bars" aria-label="Headline reconstruction comparison">
-      <div class="lead-bar lead-bar--local"><span>Local retrieval</span><i style="--score: 93.26%"></i><strong>0.9326</strong></div>
-      <div class="lead-bar lead-bar--global"><span>Global direction</span><i style="--score: 48.39%"></i><strong>0.4839</strong></div>
-    </div>
   </div>
   <div class="lead-insights">
     <article class="insight-tile insight-tile--retrieval">
