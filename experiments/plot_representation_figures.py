@@ -51,27 +51,72 @@ FIGURE_NAMES = (
 )
 
 # ---------------------------------------------------------------------------
-# Ledger theme
+# Themes. PRINT is the manuscript identity ("Archive Indigo"): white page,
+# near-black indigo protagonist, bronze comparators, mauve metadata baseline,
+# monochrome archival chronology stamps. WEB is the blog rendering (warm
+# surround); the PDF export must never inherit the web canvas.
 # ---------------------------------------------------------------------------
-INK = "#171814"          # warm near-black: text, primary marks
-INK_SOFT = "#5B554C"     # secondary text
-HAIR = "#C4B7A5"         # hairlines, grid
-PAPER = "#F5EDE1"
-WEB_PAPER = "#E9DFD0"
-BLUE = "#245FA8"         # muted steel blue: the local estimator / this paper's method
-EMBER = "#CF6F2E"        # soft amber: retrieval/alternative family (nearest, landmark)
-CHARCOAL = "#332F29"     # global / linear baselines
-GRAY = "#827668"         # nulls and shuffles
-RED = "#B3403A"          # reserved status color: refuted (never a series color)
-
-TIER_STYLE = {
-    "U": {"label": "RETROSPECTIVE UNREGISTERED DESCRIPTIVE", "fc": "#F1EFEC", "ec": HAIR,
-          "tc": INK_SOFT},
-    "D": {"label": "POST-EVIDENCE REGISTERED DESCRIPTIVE", "fc": "#F8E8DC", "ec": "#E5C4A8",
-          "tc": "#8A4415"},
-    "R": {"label": "REGISTERED ENDPOINT", "fc": "#E4E9F8", "ec": "#BCC8EE",
-          "tc": "#41598C"},
+THEMES = {
+    "print": {
+        "INK": "#33312C", "INK_SOFT": "#6E685C", "HAIR": "#E3DED3",
+        "PAPER": "#FFFFFF", "WEB_PAPER": "#FFFFFF",
+        "BLUE": "#5C6E6C",       # protagonist estimator (balsam green)
+        "EMBER": "#D2A96A",      # retrieval/alternative, primary (artemis gold)
+        "EMBER_LT": "#E8D5B0",   # retrieval/alternative, light (web only)
+        "MAUVE": "#D39D87",      # truth-aware metadata baseline (dusty coral)
+        "CHARCOAL": "#BB7154",   # global-mean baseline (warm copper)
+        "GRAY": "#A6B7AA",       # nulls and shuffles (aquatone sage)
+        "RED": "#A34A38",        # reserved: refuted only, never a series color
+        "BLUE_WASH": "#EDF1EF",  # hollow-variant fill, protagonist family
+        "EMBER_WASH": "#F7EDDA", # hollow-variant fill, retrieval family
+        "STAMP_FC": "#F4F2EC", "STAMP_EC": "#DCD6C9", "STAMP_TC": "#6E685C",
+    },
+    "web": {
+        "INK": "#171814", "INK_SOFT": "#5B554C", "HAIR": "#C4B7A5",
+        "PAPER": "#F5EDE1", "WEB_PAPER": "#E9DFD0",
+        "BLUE": "#245FA8", "EMBER": "#CF6F2E", "EMBER_LT": "#E69A54",
+        "MAUVE": "#675184", "CHARCOAL": "#332F29", "GRAY": "#827668",
+        "RED": "#B3403A",
+        "BLUE_WASH": "#E4EBF3", "EMBER_WASH": "#F6E3CE",
+        "STAMP_FC": "#F1EFEC", "STAMP_EC": "#C4B7A5", "STAMP_TC": "#5B554C",
+    },
 }
+ACTIVE_THEME = "print"
+INK = INK_SOFT = HAIR = PAPER = WEB_PAPER = ""
+BLUE = EMBER = EMBER_LT = MAUVE = CHARCOAL = GRAY = RED = ""
+BLUE_WASH = EMBER_WASH = ""
+TIER_STYLE: dict[str, dict[str, str]] = {}
+
+
+def apply_theme(name: str) -> None:
+    """Bind the named theme's colors to the module globals and rcParams."""
+    global INK, INK_SOFT, HAIR, PAPER, WEB_PAPER, BLUE, EMBER, EMBER_LT
+    global MAUVE, CHARCOAL, GRAY, RED, TIER_STYLE, ACTIVE_THEME
+    global BLUE_WASH, EMBER_WASH
+    th = THEMES[name]
+    ACTIVE_THEME = name
+    INK, INK_SOFT, HAIR = th["INK"], th["INK_SOFT"], th["HAIR"]
+    PAPER, WEB_PAPER = th["PAPER"], th["WEB_PAPER"]
+    BLUE, EMBER, EMBER_LT = th["BLUE"], th["EMBER"], th["EMBER_LT"]
+    MAUVE, CHARCOAL, GRAY, RED = th["MAUVE"], th["CHARCOAL"], th["GRAY"], th["RED"]
+    BLUE_WASH, EMBER_WASH = th["BLUE_WASH"], th["EMBER_WASH"]
+    TIER_STYLE = {
+        key: {"label": label, "fc": th["STAMP_FC"], "ec": th["STAMP_EC"],
+              "tc": th["STAMP_TC"]}
+        for key, label in (
+            ("U", "RETROSPECTIVE UNREGISTERED DESCRIPTIVE"),
+            ("D", "POST-EVIDENCE REGISTERED DESCRIPTIVE"),
+            ("R", "REGISTERED ENDPOINT"),
+        )
+    }
+    plt.rcParams.update({
+        "text.color": INK, "axes.labelcolor": INK_SOFT, "xtick.color": INK_SOFT,
+        "ytick.color": INK, "axes.edgecolor": HAIR, "figure.facecolor": PAPER,
+        "axes.facecolor": PAPER, "savefig.facecolor": PAPER,
+    })
+
+
+apply_theme("print")
 
 plt.rcParams.update({
     "font.family": "serif",
@@ -139,15 +184,15 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              EMBER),
             ("Raw-activation nearest", sa_models["raw_nn"]["cosine_mean"],
              sa_models["raw_nn"]["defined_count"], sa_models["raw_nn"]["total_count"],
-             "#E69A54"),
+             "HOLLOW_ALT"),
             ("Typed-graph local", models["local"]["cosine_mean"],
              models["local"]["defined_count"], models["local"]["total_count"], BLUE),
             ("Truth-aware design-cell mean", sa_models["design_cell_mean"]["cosine_mean"],
              sa_models["design_cell_mean"]["defined_count"],
-             sa_models["design_cell_mean"]["total_count"], "#675184"),
+             sa_models["design_cell_mean"]["total_count"], MAUVE),
             ("Typed-graph nearest", models["nearest"]["cosine_mean"],
              models["nearest"]["defined_count"], models["nearest"]["total_count"],
-             "#6E91C5"),
+             "HOLLOW"),
             ("Global train mean", models["global_mean"]["cosine_mean"],
              models["global_mean"]["defined_count"], models["global_mean"]["total_count"],
              CHARCOAL),
@@ -166,14 +211,14 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              comps["nearest"]["scenario_cluster_ci"], EMBER, False),
             ("local $-$ nearest, secondary view",
              sec_comps["nearest"]["mean_cosine_difference"],
-             sec_comps["nearest"]["scenario_cluster_ci"], "#6E91C5", True),
+             sec_comps["nearest"]["scenario_cluster_ci"], BLUE, True),
             ("graph local $-$ raw k=8",
              sa_comps["graph_local_minus_raw_k8"]["mean_cosine_difference"],
              sa_comps["graph_local_minus_raw_k8"]["scenario_cluster_ci"], EMBER, False),
             ("graph local $-$ design-cell mean",
              sa_comps["graph_local_minus_design_cell_mean"]["mean_cosine_difference"],
              sa_comps["graph_local_minus_design_cell_mean"]["scenario_cluster_ci"],
-             "#675184", False),
+             MAUVE, False),
         ],
         "specificity": [
             ("honestward $-$ generic",
@@ -198,7 +243,7 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              cmodels["full_exemplar_local"]["total_count"], BLUE),
             ("Rank-32 projection", cmodels["low_rank_projected_full"]["cosine_mean"],
              cmodels["low_rank_projected_full"]["defined_count"],
-             cmodels["low_rank_projected_full"]["total_count"], "#75A0D1"),
+             cmodels["low_rank_projected_full"]["total_count"], "HOLLOW"),
             ("256-landmark fallback", cmodels["landmark_local"]["cosine_mean"],
              cmodels["landmark_local"]["defined_count"],
              cmodels["landmark_local"]["total_count"], EMBER),
@@ -235,8 +280,8 @@ def _tier_fig(fig: plt.Figure, tier: str, x: float = 0.995, y: float = 0.99) -> 
     """One chronology stamp per figure, top-right of the canvas."""
     s = TIER_STYLE[tier]
     fig.text(x, y, s["label"], ha="right", va="top", fontsize=6.0, color=s["tc"],
-             bbox=dict(boxstyle="round,pad=0.42,rounding_size=0.35", fc=s["fc"],
-                       ec=s["ec"], lw=0.7))
+             bbox=dict(boxstyle="square,pad=0.45", fc=s["fc"],
+                       ec=s["ec"], lw=0.45))
 
 
 def _tier(ax: plt.Axes, tier: str, x: float = 1.0, y: float = 1.0875) -> None:
@@ -244,8 +289,8 @@ def _tier(ax: plt.Axes, tier: str, x: float = 1.0, y: float = 1.0875) -> None:
     s = TIER_STYLE[tier]
     ax.text(x, y, s["label"], transform=ax.transAxes, ha="right", va="center",
             fontsize=6.0, color=s["tc"], clip_on=False,
-            bbox=dict(boxstyle="round,pad=0.42,rounding_size=0.35", fc=s["fc"],
-                      ec=s["ec"], lw=0.7))
+            bbox=dict(boxstyle="square,pad=0.45", fc=s["fc"],
+                      ec=s["ec"], lw=0.45))
 
 
 def _coverage_chip(ax: plt.Axes, x: float, y: float, defined: int, total: int) -> None:
@@ -288,7 +333,12 @@ def figure_reconstruction_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax = fig.add_subplot(gs[0])
     bars = data["bars"]
     y = np.arange(len(bars))[::-1]
-    ax.barh(y, [b[1] for b in bars], height=0.58, color=[b[4] for b in bars], zorder=3)
+    mfills = [BLUE_WASH if b[4] == "HOLLOW" else EMBER_WASH if b[4] == "HOLLOW_ALT"
+              else b[4] for b in bars]
+    medges = [BLUE if b[4] == "HOLLOW" else EMBER if b[4] == "HOLLOW_ALT" else "none"
+              for b in bars]
+    ax.barh(y, [b[1] for b in bars], height=0.58, color=mfills, zorder=3,
+            edgecolor=medges, linewidth=1.1)
     for yi, (_, val, defined, total, _) in zip(y, bars):
         ax.text(min(val + 0.018, 1.005), yi, f"{val:.3f}", va="center", ha="left",
                 fontsize=13.5, color=INK, fontweight="bold")
@@ -347,7 +397,10 @@ def figure_structure_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax2 = fig.add_subplot(gs[1])
     comp = data["compression"]
     y2 = np.arange(len(comp))[::-1]
-    ax2.barh(y2, [c[1] for c in comp], height=0.58, color=[c[4] for c in comp], zorder=3)
+    mcfills = [BLUE_WASH if c[4] == "HOLLOW" else c[4] for c in comp]
+    mcedges = [BLUE if c[4] == "HOLLOW" else "none" for c in comp]
+    ax2.barh(y2, [c[1] for c in comp], height=0.58, color=mcfills, zorder=3,
+             edgecolor=mcedges, linewidth=1.1)
     for yi, (_, val, defined, total, _) in zip(y2, comp):
         ax2.text(val + 0.017, yi, f"{val:.3f}", va="center", fontsize=13,
                  color=INK, fontweight="bold")
@@ -450,49 +503,126 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
-    fig = plt.figure(figsize=(6.5, 5.6))
-    gs = fig.add_gridspec(2, 1, height_ratios=[1.15, 1.0], hspace=0.58,
-                          top=0.90, bottom=0.085)
+    fig = plt.figure(figsize=(6.5, 5.9))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.28, 1.0], hspace=0.42,
+                          top=0.93, bottom=0.085)
     # Mixed chronology (sealed models vs. registered baselines): stated in the
     # caption rather than stamped, to keep the header clean.
 
-    # -- A: model cosines -----------------------------------------------------
+    # -- A: one axis, the chasm and the clump --------------------------------
     ax = fig.add_subplot(gs[0])
     bars = data["bars"]
-    y = np.arange(len(bars))[::-1]
-    ax.barh(y, [b[1] for b in bars], height=0.62, color=[b[4] for b in bars], zorder=3)
-    for yi, (name, val, defined, total, color) in zip(y, bars):
-        ax.text(val + 0.012, yi, f"{val:.4f}", va="center", ha="left",
-                fontsize=12, color=INK, fontweight="bold")
-        _coverage_chip(ax, 0.012, yi, defined, total)
-    ax.set_yticks(y, [b[0] for b in bars])
-    ax.set_xlim(0, 1.06)
-    ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
+    def _rescolor(c):
+        return BLUE if c == "HOLLOW" else EMBER if c == "HOLLOW_ALT" else c
+
+    tied = [(n, v, _rescolor(c), str(c).startswith("HOLLOW"))
+            for n, v, d, tot, c in bars if v > 0.9]
+    others = [(n, v, d, tot, c) for n, v, d, tot, c in bars if v <= 0.9]
+    cover = {n: (d, tot) for n, v, d, tot, c in bars}
+    band_lo = min(v for _, v, _, _ in tied) - 0.004
+    band_hi = max(v for _, v, _, _ in tied) + 0.004
+    spread = max(v for _, v, _, _ in tied) - min(v for _, v, _, _ in tied)
+
+    ax.set_xlim(0.38, 0.97)
+    ax.set_ylim(0.0, 1.0)
+    ax.set_yticks([])
+    AXIS_Y = 0.30
+    ax.axhline(AXIS_Y, color=INK, lw=0.8, zorder=1)
+    ax.axvspan(band_lo, band_hi, ymin=AXIS_Y - 0.055, ymax=AXIS_Y + 0.055,
+               color="#E7E2D6", zorder=0,
+               transform=ax.get_xaxis_transform())
+
+    def _dot(x, y, color, hollow, ms=8.5):
+        ax.plot(x, y, "o", ms=ms, mfc=(BLUE_WASH if color == BLUE else EMBER_WASH)
+                if hollow else color, mec=color if hollow else INK,
+                mew=1.2 if hollow else 0.5, zorder=4, clip_on=False)
+
+    for name, v, c, hollow in sorted(tied, key=lambda r: r[1]):
+        _dot(v, AXIS_Y, c, hollow)
+    for name, v, d, tot, c in others:
+        _dot(v, AXIS_Y, c, False)
+        left = v == min(o[1] for o in others)
+        ax.annotate(f"{name.lower()}\n{v:.4f} $\\cdot$ {d}/{tot}",
+                    xy=(v, AXIS_Y - 0.035),
+                    xytext=(v - 0.014 if left else v + 0.014, AXIS_Y - 0.20),
+                    ha="right" if left else "left", va="top", fontsize=7.6,
+                    color=INK,
+                    arrowprops=dict(arrowstyle="-", color=INK_SOFT, lw=0.6))
+    ax.annotate("", xy=(band_lo - 0.006, AXIS_Y), xytext=(0.492, AXIS_Y),
+                arrowprops=dict(arrowstyle="<->", color=INK_SOFT, lw=0.9,
+                                shrinkA=0, shrinkB=0))
+    gap = next(row for row in data["paired"] if row[0] == "local $-$ global")
+    ax.text(0.70, AXIS_Y + 0.10,
+            "no address-free summary lives in this gap:\n"
+            f"local over global $+{gap[1]:.4f}$ "
+            f"$[+{gap[2][0]:.4f},+{gap[2][1]:.4f}]$, paired",
+            ha="center", va="bottom", fontsize=8.2, color=INK_SOFT, style="italic")
+
+    # the lens: five addresses magnified
+    axz = ax.inset_axes([0.40, 0.62, 0.585, 0.36])
+    axz.set_facecolor("#F1EEE6")
+    zlo, zhi = 0.9095, 0.9425
+    ys = np.linspace(0.80, 0.20, len(tied))
+    for (name, v, c, hollow), yy in zip(sorted(tied, key=lambda r: -r[1]), ys):
+        axz.plot(v, yy, "o", ms=7,
+                 mfc=(BLUE_WASH if c == BLUE else EMBER_WASH) if hollow else c,
+                 mec=c if hollow else INK, mew=1.1 if hollow else 0.5, zorder=4)
+        d, tot = cover[name]
+        label = f"{name}  {v:.4f} $\\cdot$ {d}/{tot}"
+        if v > (zlo + zhi) / 2:
+            axz.text(v - 0.0012, yy, label + "  ", va="center", ha="right",
+                     fontsize=6.9, color=INK)
+        else:
+            axz.text(v + 0.0012, yy, "  " + label, va="center", ha="left",
+                     fontsize=6.9, color=INK)
+    axz.set_xlim(zlo, zhi)
+    axz.set_ylim(0, 1)
+    axz.set_yticks([])
+    axz.set_xticks([0.915, 0.925, 0.935])
+    axz.tick_params(labelsize=6.6, colors=INK_SOFT, length=2)
+    for s in ("top", "right", "left"):
+        axz.spines[s].set_visible(False)
+    axz.spines["bottom"].set_color(HAIR)
+    for spine in axz.spines.values():
+        spine.set_linewidth(0.6)
+    axz.set_title(f"the five local addresses, magnified — spread {spread:.4f}",
+                  fontsize=7.4, color=INK_SOFT, style="italic", pad=2.5)
+    from matplotlib.patches import ConnectionPatch
+    for xf, corner in ((band_lo, zlo), (band_hi, zhi)):
+        fig.add_artist(ConnectionPatch(
+            xyA=(xf, AXIS_Y + 0.055), coordsA=ax.transData,
+            xyB=(corner, 0.0), coordsB=axz.transData,
+            color=HAIR, lw=0.8, zorder=1))
+
+    for s in ("top", "right", "left"):
+        ax.spines[s].set_visible(False)
+    ax.spines["bottom"].set_color(HAIR)
+    ax.set_xticks([0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    ax.tick_params(labelsize=8, colors=INK_SOFT)
     ax.set_xlabel("held-out reconstruction cosine  $\\cdot$  200 deceptive source roots")
-    ax.grid(axis="x", color=HAIR, lw=0.6, zorder=0)
-    ax.set_axisbelow(True)
-    _chip(ax, "A", "Simple local addresses predict held-out displacement")
+    _chip(ax, "A", "Every local address lands together; nothing global comes close",
+          y=1.10)
 
     # -- B: paired differences ------------------------------------------------
     ax2 = fig.add_subplot(gs[1])
     paired = data["paired"]
     y2 = np.arange(len(paired))[::-1]
     for yi, (name, point, ci, color, hollow) in zip(y2, paired):
-        ax2.plot([ci[0], ci[1]], [yi, yi], "-", color=color, lw=2.4,
+        ax2.plot([ci[0], ci[1]], [yi, yi], "-", color=color, lw=1.35,
                  solid_capstyle="butt", zorder=3)
         for cap in ci:
-            ax2.plot([cap, cap], [yi - 0.14, yi + 0.14], "-", color=color, lw=1.1,
+            ax2.plot([cap, cap], [yi - 0.14, yi + 0.14], "-", color=color, lw=0.75,
                      zorder=3)
-        ax2.plot(point, yi, "o", ms=6.5, mfc=PAPER if hollow else color,
-                 mec=color, mew=1.4, zorder=4)
+        ax2.plot(point, yi, "o", ms=5.2, mfc=PAPER if hollow else color,
+                 mec=color, mew=1.0, zorder=4)
         label = f"$+{point:.4f}$" if point >= 0 else f"$-{abs(point):.4f}$"
         ax2.text(ci[1] + 0.013, yi, label, va="center", ha="left",
-                 fontsize=9.5, color=INK)
+                 fontsize=9.0, color=INK)
     ax2.axvline(0.0, color=INK, lw=0.9, zorder=2)
     ax2.set_yticks(y2, [p[0] for p in paired])
     ax2.set_xlim(-0.075, 0.66)
     ax2.set_xlabel("paired cosine difference  $\\cdot$  scenario-cluster 95% interval")
-    ax2.grid(axis="x", color=HAIR, lw=0.6, zorder=0)
+    ax2.grid(axis="x", color=HAIR, lw=0.35, zorder=0)
     ax2.set_axisbelow(True)
     _chip(ax2, "B", "Retrieval carries the gain, under every address tested")
 
@@ -506,7 +636,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
 
 def figure_structure(data: dict[str, Any], out_dir: Path) -> None:
     fig = plt.figure(figsize=(6.5, 3.3))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.14, 1.0], wspace=0.55,
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.14, 1.0], wspace=0.45,
                           top=0.84, bottom=0.17)
     _tier_fig(fig, "U")
 
@@ -519,16 +649,16 @@ def figure_structure(data: dict[str, Any], out_dir: Path) -> None:
     spacing = np.array([0.0, 1.0, 2.6, 3.6, 5.2, 6.2])
     y = spacing.max() - spacing
     for yi, (name, pt, ci, color) in zip(y, rows):
-        ax.plot([ci[0], ci[1]], [yi, yi], "-", color=color, lw=2.4,
+        ax.plot([ci[0], ci[1]], [yi, yi], "-", color=color, lw=1.35,
                 solid_capstyle="butt", zorder=3)
         for cap in ci:
-            ax.plot([cap, cap], [yi - 0.17, yi + 0.17], "-", color=color, lw=1.1,
+            ax.plot([cap, cap], [yi - 0.17, yi + 0.17], "-", color=color, lw=0.75,
                     zorder=3)
-        ax.plot(pt, yi, "o", ms=6, mfc=color, mec=color, zorder=4)
+        ax.plot(pt, yi, "o", ms=5.2, mfc=color, mec=color, zorder=4)
     ax.axvline(0.0, color=INK, lw=0.9, zorder=2)
     ax.set_yticks(y, [r[0] for r in rows], fontsize=8)
     ax.set_xlabel("paired difference  $\\cdot$  scenario-cluster 95% interval")
-    ax.grid(axis="x", color=HAIR, lw=0.6, zorder=0)
+    ax.grid(axis="x", color=HAIR, lw=0.35, zorder=0)
     ax.set_axisbelow(True)
     _chip(ax, "A", "Specificity, both metrics")
 
@@ -536,19 +666,23 @@ def figure_structure(data: dict[str, Any], out_dir: Path) -> None:
     ax2 = fig.add_subplot(gs[1])
     comp = data["compression"]
     y2 = np.arange(len(comp))[::-1]
-    ax2.barh(y2, [c[1] for c in comp], height=0.6, color=[c[4] for c in comp], zorder=3)
+    cfills = [BLUE_WASH if c[4] == "HOLLOW" else c[4] for c in comp]
+    cedges = [BLUE if c[4] == "HOLLOW" else INK for c in comp]
+    cwidths = [0.9 if c[4] == "HOLLOW" else 0.35 for c in comp]
+    ax2.barh(y2, [c[1] for c in comp], height=0.48, color=cfills, zorder=3,
+             edgecolor=cedges, linewidth=cwidths)
     for yi, (name, val, defined, total, color) in zip(y2, comp):
-        ax2.text(val + 0.014, yi, f"{val:.4f}", va="center", ha="left", fontsize=10.5,
+        ax2.text(val + 0.014, yi, f"{val:.4f}", va="center", ha="left", fontsize=9.25,
                  color=INK, fontweight="bold")
-        if defined != total:
-            _coverage_chip(ax2, 0.014, yi, defined, total)
+    landmark = next(c for c in comp if c[2] != c[3])
     ax2.set_yticks(y2, [c[0] for c in comp], fontsize=8)
     ax2.set_xlim(0, 1.05)
     ax2.set_xticks([0, 0.5, 1.0])
     ax2.set_xlabel("generic cosine  $\\cdot$  849 roots")
-    ax2.grid(axis="x", color=HAIR, lw=0.6, zorder=0)
+    ax2.grid(axis="x", color=HAIR, lw=0.35, zorder=0)
     ax2.set_axisbelow(True)
-    ax2.text(0.99, 0.02, "rank 32 selected in every fold\n"
+    ax2.text(0.99, 0.02, f"landmark coverage {landmark[2]}/{landmark[3]}\n"
+             "rank 32 selected in every fold\n"
              f"({data['rank_var_min']*100:.2f}–{data['rank_var_max']*100:.2f}% "
              "train variance)", transform=ax2.transAxes, ha="right", va="bottom",
              fontsize=7.2, color=INK_SOFT, style="italic")
@@ -572,13 +706,16 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
 
     xs = np.array([0.0, 1.0, 2.0])
     w = 0.56
-    ax.bar(xs[0], action, w, color=CHARCOAL, zorder=3)
-    ax.bar(xs[1], constrained - action, w, bottom=action, color="#B98258", zorder=3)
-    ax.bar(xs[1], action, w, color=CHARCOAL, alpha=0.18, zorder=2)
-    ax.bar(xs[2], additive - constrained, w, bottom=constrained, color=BLUE, zorder=3)
-    ax.bar(xs[2], constrained - action, w, bottom=action, color="#B98258",
-           alpha=0.30, zorder=2)
-    ax.bar(xs[2], action, w, color=CHARCOAL, alpha=0.18, zorder=2)
+    ax.bar(xs[0], action, w, color=CHARCOAL, zorder=3,
+           edgecolor=INK, linewidth=0.45)
+    for x0, segs in ((xs[1], [(0.0, action, CHARCOAL), (action, constrained, EMBER)]),
+                     (xs[2], [(0.0, action, CHARCOAL), (action, constrained, EMBER),
+                              (constrained, additive, BLUE)])):
+        for lo, hi, color in segs:
+            ax.bar(x0, hi - lo, w, bottom=lo, color=color, zorder=3,
+                   edgecolor=PAPER, linewidth=0.4)
+        top = segs[-1][1]
+        ax.bar(x0, top, w, fill=False, zorder=4, edgecolor=INK, linewidth=0.45)
 
     for x0, level in ((xs[0], action), (xs[1], constrained)):
         ax.plot([x0 + w / 2, x0 + 1 - w / 2], [level, level], ls=(0, (2, 2)),
@@ -591,15 +728,17 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
         ax.plot(x0 + off, folds, "o", ms=3.6, mfc=PAPER, mec=INK, mew=0.9, zorder=5)
 
     for x0, v in ((xs[0], action), (xs[1], constrained), (xs[2], additive)):
-        ax.text(x0, v + 0.045, f"{v:.4f}", ha="center", fontsize=12, color=INK,
+        ax.text(x0, v + 0.045, f"{v:.4f}", ha="center", fontsize=10, color=INK,
                 fontweight="bold")
 
     ax.annotate(f"$+{constrained - action:.4f}$  endpoint subtraction\n"
-                f"({data['endpoint_ratio']*100:.1f}% of the observed cosine improvement)",
-                xy=(xs[1] + w / 2, (action + constrained) / 2),
-                xytext=(xs[1] + 0.55, (action + constrained) / 2 - 0.13),
-                fontsize=8, color=INK_SOFT, va="center",
-                arrowprops=dict(arrowstyle="-", color=INK_SOFT, lw=0.7))
+                f"({data['endpoint_ratio']*100:.1f}% of the observed\n"
+                "cosine improvement)",
+                xy=(xs[1] - w / 2, (action + constrained) / 2),
+                xytext=(-0.50, 0.985),
+                fontsize=8, color=INK_SOFT, va="top", ha="left",
+                arrowprops=dict(arrowstyle="-", color=INK_SOFT, lw=0.7,
+                                shrinkB=4))
     ax.annotate(f"$+{data['gap_free_minus_constrained']:.4f}$  learned source coupling",
                 xy=(xs[2] + w / 2, (constrained + additive) / 2),
                 xytext=(xs[2] + 0.42, (constrained + additive) / 2 + 0.06),
@@ -611,7 +750,7 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
     ax.set_xlim(-0.55, 3.55)
     ax.set_ylim(0, 1.02)
     ax.set_ylabel("family-macro cosine")
-    ax.grid(axis="y", color=HAIR, lw=0.6, zorder=0)
+    ax.grid(axis="y", color=HAIR, lw=0.35, zorder=0)
     ax.set_axisbelow(True)
     ax.text(0.0, -0.315, "open points: five held-out family folds "
             "(fold consistency, not a confidence interval)",
@@ -628,7 +767,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_FIG_DIR)
     parser.add_argument("--formats", default="pdf,png",
                         help="comma-separated subset of pdf,png")
+    parser.add_argument("--theme", default="print", choices=sorted(THEMES),
+                        help="print = manuscript (Archive Indigo); web = blog")
     args = parser.parse_args(argv)
+    apply_theme(args.theme)
     global ACTIVE_FORMATS
     ACTIVE_FORMATS = tuple(f for f in args.formats.split(",") if f in ("pdf", "png"))
     if not ACTIVE_FORMATS:
@@ -639,10 +781,13 @@ def main(argv: list[str] | None = None) -> int:
     figure_reconstruction(data, args.out_dir)
     figure_structure(data, args.out_dir)
     figure_factorization(data, args.out_dir)
-    figure_reconstruction_mobile(data, args.out_dir)
-    figure_structure_mobile(data, args.out_dir)
-    figure_factorization_mobile(data, args.out_dir)
-    figure_social_card(data, args.out_dir)
+    apply_theme("web")
+    web_data = parse_data(load_receipt(args.receipt))
+    figure_reconstruction_mobile(web_data, args.out_dir)
+    figure_structure_mobile(web_data, args.out_dir)
+    figure_factorization_mobile(web_data, args.out_dir)
+    figure_social_card(web_data, args.out_dir)
+    apply_theme(args.theme)
     return 0
 
 
