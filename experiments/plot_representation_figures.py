@@ -522,7 +522,7 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
 
 def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     fig = plt.figure(figsize=(6.5, 2.95))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.32, 1.0], wspace=0.44,
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.32, 1.0], wspace=0.52,
                           top=0.885, bottom=0.165, left=0.015, right=0.99)
     # Mixed chronology (sealed models vs. registered baselines): stated in the
     # caption rather than stamped, to keep the header clean.
@@ -636,7 +636,9 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
         ax2.text(ci[1] + 0.013, yi, label, va="center", ha="left",
                  fontsize=7.8, color=INK)
     ax2.axvline(0.0, color=INK, lw=0.9, zorder=2)
-    ax2.set_yticks(y2, [p[0] for p in paired], fontsize=7.2)
+    blabels = [p[0].replace("nearest, secondary view", "nearest,\nsecondary view")
+               for p in paired]
+    ax2.set_yticks(y2, blabels, fontsize=7.2)
     ax2.set_xlim(-0.075, 0.70)
     ax2.set_xticks([0.0, 0.2, 0.4, 0.6])
     ax2.set_xlabel("paired cosine difference")
@@ -895,8 +897,12 @@ def figure_pressure_behavior(out_dir: Path) -> None:
             edgecolor=INK, linewidth=0.35)
     for yi, k, rate in zip(y, order, rates):
         n = programs[k]["n"]
-        ax.text(rate + 0.012, yi, f"{rate * 100:.1f}%", va="center", ha="left",
-                fontsize=8.4, color=INK, fontweight="bold")
+        if rate >= 0.5:
+            ax.text(rate - 0.012, yi, f"{rate * 100:.1f}%", va="center", ha="right",
+                    fontsize=8.4, color=PAPER, fontweight="bold")
+        else:
+            ax.text(rate + 0.012, yi, f"{rate * 100:.1f}%", va="center", ha="left",
+                    fontsize=8.4, color=INK, fontweight="bold")
         ax.text(1.115, yi, f"{programs[k]['deceptive']}/{n}", va="center",
                 ha="right", fontsize=7.0, color=INK_SOFT)
     ax.set_yticks(y, [gloss[k] for k in order], fontsize=8)
