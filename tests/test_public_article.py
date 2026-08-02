@@ -9,15 +9,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ARTICLE = REPO_ROOT / "docs" / "index.md"
 FIGURES = {
-    "pressure_behavior_and_hazard.png",
-    "decodability_timing_gap.png",
-    "structured_action_control_audit.png",
-    "natural_prose_control_failure.png",
-    "gauge_control_null.png",
+    "representation_reconstruction.png",
+    "representation_structure.png",
+    "representation_factorization.png",
 }
 
 
-def test_article_uses_the_five_shipped_figures_by_relative_path() -> None:
+def test_article_uses_the_shipped_figures_by_relative_path() -> None:
     text = ARTICLE.read_text(encoding="utf-8")
     image_paths = re.findall(r"!\[[^\]]*\]\(figures/([^)]+\.png)\)", text)
 

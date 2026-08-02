@@ -4,7 +4,7 @@ title: The state before the model lies is an address
 deck: "What happened after the first study: a new question, a positive result, and the controls that kept it honest."
 byline: "Rajarshi Ghoshal"
 assistance_note: >-
-  The author owns the research design, methodology, claims, and prose. LLMs assisted
+  The author wrote the post and owns the research design, methodology, claims, and prose. LLMs assisted
   with experiment code, plots and tables, background lookup, typo correction, and
   drafting support.
 ---
@@ -166,8 +166,8 @@ That is where this stands. The state before the model lies is an address into a
 small, mostly generic, partially linear vocabulary of moves — and the test that
 decides whether it becomes a handle is fully specified and waiting to be run.
 
-The first study's artifact — registry, receipts, code — is public at
-[github.com/rajarshighoshal/lie-geometry-probes](https://github.com/rajarshighoshal/lie-geometry-probes).
+Both studies' artifact — registry, receipts, code — is public at
+[github.com/rajarshighoshal/deception-pressure-geometry](https://github.com/rajarshighoshal/deception-pressure-geometry).
 
 If you think I got something wrong, I'd like to hear it.
 

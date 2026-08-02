@@ -70,7 +70,9 @@ def _readme_figure_names() -> list[str]:
 
 
 def test_plot_public_figure_names_match_readme_and_figures() -> None:
-    expected = sorted(FIGURE_NAMES)
+    from experiments.plot_representation_figures import FIGURE_STEMS as REPR_STEMS
+
+    expected = sorted(set(FIGURE_NAMES) | {f"{stem}.png" for stem in REPR_STEMS})
     readme_names = _readme_figure_names()
     assert readme_names == expected
 

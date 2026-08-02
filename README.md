@@ -181,6 +181,14 @@ curvature and flatness are both unevaluable.
 
 ![Gauge-control and holonomy-instrument results](docs/figures/gauge_control_null.png)
 
+The follow-up representation study's figures (receipt-driven, deterministic):
+
+![Held-out displacement reconstruction](docs/figures/representation_reconstruction.png)
+
+![Specificity and output compression](docs/figures/representation_structure.png)
+
+![Action-plus-source factorization](docs/figures/representation_factorization.png)
+
 ## What this work contributes
 
 The geometry **organizes** locally and conditionally. Pre-imposing global or fixed structure
