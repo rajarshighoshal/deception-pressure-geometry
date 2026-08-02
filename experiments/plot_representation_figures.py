@@ -521,9 +521,9 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
-    fig = plt.figure(figsize=(6.5, 2.95))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.32, 1.0], wspace=0.52,
-                          top=0.885, bottom=0.165, left=0.015, right=0.99)
+    fig = plt.figure(figsize=(6.5, 4.05))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.48, 1.0], hspace=0.44,
+                          top=0.92, bottom=0.105)
     # Mixed chronology (sealed models vs. registered baselines): stated in the
     # caption rather than stamped, to keep the header clean.
 
@@ -570,14 +570,14 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
                 arrowprops=dict(arrowstyle="<->", color=INK_SOFT, lw=0.9,
                                 shrinkA=0, shrinkB=0))
     gap = next(row for row in data["paired"] if row[0] == "local $-$ global")
-    ax.text(0.675, AXIS_Y + 0.10,
+    ax.text(0.70, AXIS_Y + 0.075,
             "no address-free summary lives in this gap:\n"
             f"local over global $+{gap[1]:.4f}$ "
             f"$[+{gap[2][0]:.4f},+{gap[2][1]:.4f}]$, paired",
-            ha="center", va="bottom", fontsize=7.6, color=INK_SOFT, style="italic")
+            ha="center", va="bottom", fontsize=7.8, color=INK_SOFT, style="italic")
 
     # the lens: five addresses magnified
-    axz = ax.inset_axes([0.335, 0.615, 0.65, 0.355])
+    axz = ax.inset_axes([0.40, 0.66, 0.585, 0.32])
     axz.set_facecolor("#F1EEE6")
     zlo, zhi = 0.9095, 0.9425
     ys = np.linspace(0.80, 0.20, len(tied))
@@ -589,15 +589,15 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
         label = f"{name}  {v:.4f} $\\cdot$ {d}/{tot}"
         if v > zlo + 0.35 * (zhi - zlo):
             axz.text(v - 0.0012, yy, label + "  ", va="center", ha="right",
-                     fontsize=6.6, color=INK)
+                     fontsize=6.9, color=INK)
         else:
             axz.text(v + 0.0012, yy, "  " + label, va="center", ha="left",
-                     fontsize=6.6, color=INK)
+                     fontsize=6.9, color=INK)
     axz.set_xlim(zlo, zhi)
     axz.set_ylim(0, 1)
     axz.set_yticks([])
     axz.set_xticks([0.915, 0.925, 0.935])
-    axz.tick_params(labelsize=6.6, colors=INK_SOFT, length=2)
+    axz.tick_params(labelsize=6.3, colors=INK_SOFT, length=2)
     for s in ("top", "right", "left"):
         axz.spines[s].set_visible(False)
     axz.spines["bottom"].set_color(HAIR)
@@ -618,7 +618,8 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     ax.set_xticks([0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
     ax.tick_params(labelsize=8, colors=INK_SOFT)
     ax.set_xlabel("held-out reconstruction cosine  $\\cdot$  200 deceptive source roots")
-    _chip(ax, "A", "Every local address lands together", y=1.085)
+    _chip(ax, "A", "Every local address lands together; nothing global comes close",
+          y=1.10)
 
     # -- B: paired differences ------------------------------------------------
     ax2 = fig.add_subplot(gs[1])
@@ -634,17 +635,15 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
                  mec=color, mew=1.0, zorder=4)
         label = f"$+{point:.4f}$" if point >= 0 else f"$-{abs(point):.4f}$"
         ax2.text(ci[1] + 0.013, yi, label, va="center", ha="left",
-                 fontsize=7.8, color=INK)
+                 fontsize=8.4, color=INK)
     ax2.axvline(0.0, color=INK, lw=0.9, zorder=2)
-    blabels = [p[0].replace("nearest, secondary view", "nearest,\nsecondary view")
-               for p in paired]
-    ax2.set_yticks(y2, blabels, fontsize=7.2)
-    ax2.set_xlim(-0.075, 0.70)
+    ax2.set_yticks(y2, [p[0] for p in paired], fontsize=8)
+    ax2.set_xlim(-0.075, 0.66)
     ax2.set_xticks([0.0, 0.2, 0.4, 0.6])
-    ax2.set_xlabel("paired cosine difference")
+    ax2.set_xlabel("paired cosine difference  $\\cdot$  scenario-cluster 95% interval")
     ax2.grid(axis="x", color=HAIR, lw=0.35, zorder=0)
     ax2.set_axisbelow(True)
-    _chip(ax2, "B", "Retrieval carries the gain", y=1.085)
+    _chip(ax2, "B", "Retrieval carries the gain, under every address tested", y=1.14)
 
     _save_standard(fig, out_dir, FIGURE_STEMS[0])
     plt.close(fig)
