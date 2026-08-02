@@ -570,7 +570,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
                 arrowprops=dict(arrowstyle="<->", color=INK_SOFT, lw=0.9,
                                 shrinkA=0, shrinkB=0))
     gap = next(row for row in data["paired"] if row[0] == "local $-$ global")
-    ax.text(0.70, AXIS_Y + 0.075,
+    ax.text(0.70, AXIS_Y + 0.042,
             "no address-free summary lives in this gap:\n"
             f"local over global $+{gap[1]:.4f}$ "
             f"$[+{gap[2][0]:.4f},+{gap[2][1]:.4f}]$, paired",
@@ -597,7 +597,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     axz.set_ylim(0, 1)
     axz.set_yticks([])
     axz.set_xticks([0.915, 0.925, 0.935])
-    axz.tick_params(labelsize=6.3, colors=INK_SOFT, length=2)
+    axz.tick_params(labelsize=6.2, colors=INK_SOFT, length=2, pad=1.5)
     for s in ("top", "right", "left"):
         axz.spines[s].set_visible(False)
     axz.spines["bottom"].set_color(HAIR)
@@ -606,11 +606,11 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     axz.set_title(f"the five local addresses, magnified — spread {spread:.4f}",
                   fontsize=7.4, color=INK_SOFT, style="italic", pad=2.5)
     from matplotlib.patches import ConnectionPatch
-    for xf, corner in ((band_lo, zlo), (band_hi, zhi)):
-        fig.add_artist(ConnectionPatch(
-            xyA=(xf, AXIS_Y + 0.055), coordsA=ax.transData,
-            xyB=(corner, 0.0), coordsB=axz.transData,
-            color=HAIR, lw=0.8, zorder=1))
+    # one leader only: the left one would cross the gap annotation text
+    fig.add_artist(ConnectionPatch(
+        xyA=(band_hi, AXIS_Y + 0.055), coordsA=ax.transData,
+        xyB=(zhi, 0.0), coordsB=axz.transData,
+        color=HAIR, lw=0.8, zorder=1))
 
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)
