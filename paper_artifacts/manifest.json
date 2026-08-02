@@ -318,7 +318,7 @@
         "kind": "tracked_path",
         "path": "paper_artifacts/c14_representation_receipt.json"
       },
-      "sha256": "f833d7c4935e21b407a9fc82e57dcb06560025f5a92db73cabae87f45c920d00",
+      "sha256": "36f1306cc40fdd347d4d29e9902e470584e5db61ffb1e463ec3e362869aa755d",
       "byte_size": 38664,
       "producer": "experiments/report_public_representation_receipt.py",
       "producer_command": ".venv/bin/python experiments/report_public_representation_receipt.py --pre-status-honestward SOURCE_HONESTWARD.json --pre-status-specificity SOURCE_SPECIFICITY.json --pre-status-compression SOURCE_COMPRESSION.json --additive-transport SOURCE_ADDITIVE.json --endpoint-diagnostic SOURCE_ENDPOINT.json --simple-address-baselines SOURCE_SIMPLE_ADDRESS.json --within-cell-retrieval SOURCE_WITHIN_CELL.json --out paper_artifacts/c14_representation_receipt.json",

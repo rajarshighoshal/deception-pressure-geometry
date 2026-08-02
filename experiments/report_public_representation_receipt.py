@@ -525,6 +525,84 @@ def _build_within_cell(report: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _computed_checks(
+    honestward: dict[str, Any],
+    specificity: dict[str, Any],
+    compression: dict[str, Any],
+    additive: dict[str, Any],
+    endpoint: dict[str, Any],
+    simple_address: dict[str, Any],
+    within_cell: dict[str, Any],
+) -> dict[str, bool]:
+    """Compute every check flag from the receipt's own blocks (no hardcoded verdicts)."""
+    pv = "intervention_masked_action_free"
+
+    def _ci(block: dict[str, Any], name: str) -> tuple[float, float]:
+        lo, hi = block["comparisons"][pv][name]["scenario_cluster_ci"]
+        return float(lo), float(hi)
+
+    sa_not_beaten = all(
+        _ci(simple_address, name)[0] <= 0.0
+        for name in (
+            "graph_local_minus_raw_nn",
+            "graph_local_minus_raw_k8",
+            "graph_local_minus_design_cell_mean",
+        )
+    )
+    cell_lo, cell_hi = _ci(simple_address, "graph_local_minus_design_cell_mean")
+    wc_lo, wc_hi = _ci(within_cell, "within_cell_nn_minus_design_cell_mean")
+    in_cell = within_cell["comparisons"][pv]["within_cell_nn_minus_raw_nn"]
+    hw = honestward["primary_view_comparisons"]
+    sp = specificity["comparisons"]
+    return {
+        "simple_addresses_match_or_exceed_graph_local": sa_not_beaten,
+        "design_cell_mean_statistically_ties_graph_local": cell_lo < 0.0 < cell_hi,
+        "within_cell_selection_ties_cell_mean": wc_lo < 0.0 < wc_hi,
+        "nearest_neighbour_lands_in_cell_on_all_covered_queries": (
+            float(in_cell["mean_cosine_difference"]) == 0.0
+            and [float(v) for v in in_cell["scenario_cluster_ci"]] == [0.0, 0.0]
+        ),
+        # "substantially" is read as a mean cosine gap of at least 0.25 with positive
+        # normalized-error improvement.
+        "honestward_local_beats_global_substantially": (
+            float(hw["global_mean"]["mean_cosine_difference"]) > 0.25
+            and float(hw["global_mean"]["nse_improvement"]) > 0.0
+        ),
+        "honestward_shuffled_control_positive": (
+            float(hw["shuffled"]["mean_cosine_difference"]) > 0.0
+            and float(hw["shuffled"]["nse_improvement"]) > 0.0
+        ),
+        # "close" is read as a local-minus-nearest mean cosine gap under 0.05.
+        "honestward_nearest_is_close": (
+            0.0 <= float(hw["nearest"]["mean_cosine_difference"]) < 0.05
+        ),
+        # "mostly generic" is read as the generic estimator within 0.05 of honestward
+        # while itself exceeding 0.8.
+        "specificity_is_mostly_generic": (
+            float(sp["honestward_minus_generic"]["mean_cosine_difference"]) < 0.05
+            and float(
+                specificity["models"]["generic_all_orbit_local_calibrated"]["cosine_mean"]
+            )
+            > 0.8
+        ),
+        "compression_rank32_preserves_cosine": (
+            float(
+                compression["comparisons"]["full_minus_low_rank"]["mean_cosine_difference"]
+            )
+            < 0.01
+        ),
+        "additive_improves_over_action_only_in_all_folds": (
+            additive["verdict"] == "PASS"
+            and float(additive["delta_family_macro_cosine"])
+            > float(additive["pass_threshold"])
+        ),
+        "endpoint_explains_most_but_not_all_additive_gain": (
+            0.5 < float(endpoint["ratio_explained_by_endpoint"]) < 1.0
+            and float(endpoint["gap_free_minus_constrained"]) > 0.0
+        ),
+    }
+
+
 def build_c14_receipt(
     *,
     honestward_path: Path,
@@ -564,6 +642,30 @@ def build_c14_receipt(
     simple_address = load_json(simple_address_path)
     within_cell = load_json(within_cell_path)
 
+    honestward_block = _build_honestward(honestward)
+    specificity_block = _build_specificity(specificity)
+    compression_block = _build_compression(compression)
+    additive_block = _build_additive(additive)
+    simple_address_block = _build_simple_address(simple_address)
+    within_cell_block = _build_within_cell(within_cell)
+    endpoint_block = _build_endpoint(
+        endpoint,
+        action_only_cosine=_n(
+            _d(additive.get("results"), "additive.results")
+            .get("action_only", {})
+            .get("family_macro_mean", 0),
+            "additive.action_only",
+        ),
+    )
+    checks = _computed_checks(
+        honestward_block,
+        specificity_block,
+        compression_block,
+        additive_block,
+        endpoint_block,
+        simple_address_block,
+        within_cell_block,
+    )
     return {
         "schema_version": 1,
         "kind": "c14_representation_structure_public_receipt",
@@ -637,34 +739,14 @@ def build_c14_receipt(
                 ),
             },
         },
-        "honestward_field": _build_honestward(honestward),
-        "specificity_controls": _build_specificity(specificity),
-        "compression_frontier": _build_compression(compression),
-        "additive_compositional_transport": _build_additive(additive),
-        "simple_address_baselines": _build_simple_address(simple_address),
-        "within_cell_retrieval": _build_within_cell(within_cell),
-        "endpoint_prototype_diagnostic": _build_endpoint(
-            endpoint,
-            action_only_cosine=_n(
-                _d(additive.get("results"), "additive.results")
-                .get("action_only", {})
-                .get("family_macro_mean", 0),
-                "additive.action_only",
-            ),
-        ),
-        "checks": {
-            "within_cell_selection_ties_cell_mean": True,
-            "nearest_neighbour_lands_in_cell_on_all_covered_queries": True,
-            "simple_addresses_match_or_exceed_graph_local": True,
-            "design_cell_mean_statistically_ties_graph_local": True,
-            "honestward_local_beats_global_substantially": True,
-            "honestward_shuffled_control_positive": True,
-            "honestward_nearest_is_close": True,
-            "specificity_is_mostly_generic": True,
-            "compression_rank32_preserves_cosine": True,
-            "additive_improves_over_action_only_in_all_folds": True,
-            "endpoint_explains_most_but_not_all_additive_gain": True,
-        },
+        "honestward_field": honestward_block,
+        "specificity_controls": specificity_block,
+        "compression_frontier": compression_block,
+        "additive_compositional_transport": additive_block,
+        "simple_address_baselines": simple_address_block,
+        "within_cell_retrieval": within_cell_block,
+        "endpoint_prototype_diagnostic": endpoint_block,
+        "checks": checks,
     }
 
 

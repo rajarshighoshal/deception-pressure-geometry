@@ -53,6 +53,13 @@ def test_shipped_registry_is_structurally_valid(registry):
     assert validate_registry(registry) == []
 
 
+requires_git = pytest.mark.skipif(
+    not (REPO_ROOT / ".git").exists(),
+    reason="git-provenance checks require a git checkout",
+)
+
+
+@requires_git
 def test_produced_by_scripts_are_tracked(registry):
     for res in registry["results"]:
         assert _git_tracked(res["produced_by"]), f"{res['id']}: produced_by not tracked: {res['produced_by']}"
@@ -71,6 +78,7 @@ def test_claim_tests_exist(registry):
             assert (REPO_ROOT / test_path).exists(), f"claim {claim['id']}: cited test missing: {test_path}"
 
 
+@requires_git
 def test_artifact_state_matches_git(registry):
     for res in registry["results"]:
         artifact, state = res["artifact"], res["artifact_state"]
@@ -251,6 +259,7 @@ def test_companion_status_is_unregistered_descriptive(registry):
             )
 
 
+@requires_git
 def test_companion_producer_is_tracked(registry):
     """Every companion's produced_by script must be git-tracked."""
     results_by_id = {r["id"]: r for r in registry["results"]}
