@@ -544,71 +544,70 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     ax.set_xlim(0.38, 0.97)
     ax.set_ylim(0.0, 1.0)
     ax.set_yticks([])
-    AXIS_Y = 0.37
-    ax.axhline(AXIS_Y, color=INK, lw=0.8, zorder=1)
-    ax.axvspan(band_lo, band_hi, ymin=AXIS_Y - 0.055, ymax=AXIS_Y + 0.055,
+    # the bottom spine IS the number line: dots sit on it, ticks hang off it
+    ax.axvspan(band_lo, band_hi, ymin=0.0, ymax=0.055,
                color="#E7E2D6", zorder=0,
                transform=ax.get_xaxis_transform())
 
-    def _dot(x, y, color, hollow, ms=8.5):
+    def _dot(x, y, color, hollow, ms=9.0):
         ax.plot(x, y, "o", ms=ms, mfc=(BLUE_WASH if color == BLUE else EMBER_WASH)
                 if hollow else color, mec=color if hollow else INK,
                 mew=1.2 if hollow else 0.5, zorder=4, clip_on=False)
 
     for name, v, c, hollow in sorted(tied, key=lambda r: r[1]):
-        _dot(v, AXIS_Y, c, hollow)
+        _dot(v, 0.0, c, hollow)
     for name, v, d, tot, c in others:
-        _dot(v, AXIS_Y, c, False)
+        _dot(v, 0.0, c, False)
         left = v == min(o[1] for o in others)
         ax.annotate(f"{name.lower()}\n{v:.4f} $\\cdot$ {d}/{tot}",
-                    xy=(v, AXIS_Y - 0.035),
-                    xytext=(v - 0.014 if left else v + 0.014, AXIS_Y - 0.165),
-                    ha="right" if left else "left", va="top", fontsize=7.6,
+                    xy=(v, 0.05),
+                    xytext=(v - 0.014 if left else v + 0.014, 0.155),
+                    ha="right" if left else "left", va="bottom", fontsize=7.8,
                     color=INK,
                     arrowprops=dict(arrowstyle="-", color=INK_SOFT, lw=0.6))
-    ax.annotate("", xy=(band_lo - 0.006, AXIS_Y), xytext=(0.492, AXIS_Y),
+    ax.annotate("", xy=(band_lo - 0.006, 0.30), xytext=(0.492, 0.30),
                 arrowprops=dict(arrowstyle="<->", color=INK_SOFT, lw=0.9,
                                 shrinkA=0, shrinkB=0))
     gap = next(row for row in data["paired"] if row[0] == "local $-$ global")
-    ax.text(0.70, AXIS_Y + 0.042,
+    ax.text(0.695, 0.335,
             "no address-free summary lives in this gap:\n"
             f"local over global $+{gap[1]:.4f}$ "
             f"$[+{gap[2][0]:.4f},+{gap[2][1]:.4f}]$, paired",
-            ha="center", va="bottom", fontsize=7.8, color=INK_SOFT, style="italic")
+            ha="center", va="bottom", fontsize=8.0, color=INK_SOFT, style="italic")
 
-    # the lens: five addresses magnified
-    axz = ax.inset_axes([0.40, 0.66, 0.585, 0.32])
+    # the lens: five addresses magnified, large enough to read at print scale
+    axz = ax.inset_axes([0.355, 0.585, 0.63, 0.395])
     axz.set_facecolor("#F1EEE6")
     zlo, zhi = 0.9095, 0.9425
-    ys = np.linspace(0.83, 0.17, len(tied))
+    ys = np.linspace(0.84, 0.16, len(tied))
     for (name, v, c, hollow), yy in zip(sorted(tied, key=lambda r: -r[1]), ys):
-        axz.plot(v, yy, "o", ms=7,
+        axz.plot(v, yy, "o", ms=7.5,
                  mfc=(BLUE_WASH if c == BLUE else EMBER_WASH) if hollow else c,
                  mec=c if hollow else INK, mew=1.1 if hollow else 0.5, zorder=4)
         d, tot = cover[name]
         label = f"{name}  {v:.4f} $\\cdot$ {d}/{tot}"
         if v > zlo + 0.35 * (zhi - zlo):
             axz.text(v - 0.0012, yy, label + "  ", va="center", ha="right",
-                     fontsize=6.9, color=INK)
+                     fontsize=7.3, color=INK)
         else:
             axz.text(v + 0.0012, yy, "  " + label, va="center", ha="left",
-                     fontsize=6.9, color=INK)
+                     fontsize=7.3, color=INK)
     axz.set_xlim(zlo, zhi)
     axz.set_ylim(0, 1)
     axz.set_yticks([])
     axz.set_xticks([0.915, 0.925, 0.935])
-    axz.tick_params(labelsize=6.2, colors=INK_SOFT, length=2, pad=1.5)
-    for s in ("top", "right", "left"):
-        axz.spines[s].set_visible(False)
+    axz.tick_params(labelsize=6.6, colors=INK_SOFT, length=2, pad=1.5)
+    for sp in ("top", "right", "left"):
+        axz.spines[sp].set_visible(False)
     axz.spines["bottom"].set_color(HAIR)
     for spine in axz.spines.values():
         spine.set_linewidth(0.6)
     axz.set_title(f"the five local addresses, magnified — spread {spread:.4f}",
-                  fontsize=7.4, color=INK_SOFT, style="italic", pad=2.5)
+                  fontsize=7.6, color=INK_SOFT, style="italic", pad=3)
     from matplotlib.patches import ConnectionPatch
-    # one leader only: the left one would cross the gap annotation text
+    # one leader only: a left leader would cross the gap annotation
     fig.add_artist(ConnectionPatch(
-        xyA=(band_hi, AXIS_Y + 0.055), coordsA=ax.transData,
+        xyA=(band_hi, 0.055), coordsA=ax.get_xaxis_transform(),
         xyB=(zhi, 0.0), coordsB=axz.transData,
         color=HAIR, lw=0.8, zorder=1))
 
@@ -616,7 +615,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
         ax.spines[s].set_visible(False)
     ax.spines["bottom"].set_color(HAIR)
     ax.set_xticks([0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-    ax.tick_params(labelsize=8, colors=INK_SOFT)
+    ax.tick_params(labelsize=8, colors=INK_SOFT, pad=7)
     ax.set_xlabel("held-out reconstruction cosine  $\\cdot$  200 deceptive source roots")
     _chip(ax, "A", "Every local address lands together; nothing global comes close",
           y=1.10)
