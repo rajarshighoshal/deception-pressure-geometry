@@ -44,8 +44,12 @@ FIGURE_STEMS = [
 MOBILE_FIGURE_STEMS = [f"{stem}_mobile" for stem in FIGURE_STEMS]
 SOCIAL_CARD_NAME = "addressability_social_card.png"
 ACTIVE_FORMATS: tuple[str, ...] = ("pdf", "png")
+# Blog style (opt-in via --blog): de-framed fields and lighter labels for the
+# public article; the canonical manuscript outputs stay byte-stable.
+VALUE_WEIGHT = "bold"
+OUTPUT_SUFFIX = ""
 FIGURE_NAMES = (
-    [f"{stem}.{ext}" for stem in FIGURE_STEMS for ext in ("pdf", "png")]
+    [f"{stem}{OUTPUT_SUFFIX}.{ext}" for stem in FIGURE_STEMS for ext in ("pdf", "png")]
     + [f"{stem}.png" for stem in MOBILE_FIGURE_STEMS]
     + [SOCIAL_CARD_NAME]
 )
@@ -228,7 +232,7 @@ def _chip(ax: plt.Axes, letter: str, title: str, y: float = 1.0875,
     """Plain panel label: bold serif, no box."""
     label = f"{letter}.  {title}" if letter else title
     ax.text(0.0, y, label, transform=ax.transAxes, ha="left",
-            va="center", fontsize=10, color=INK, fontweight="bold", clip_on=False)
+            va="center", fontsize=10, color=INK, fontweight=VALUE_WEIGHT, clip_on=False)
 
 
 def _tier_fig(fig: plt.Figure, tier: str, x: float = 0.995, y: float = 0.99) -> None:
@@ -265,7 +269,7 @@ def _set_figure_background(fig: plt.Figure) -> None:
 def _save_standard(fig: plt.Figure, out_dir: Path, stem: str) -> None:
     _set_figure_background(fig)
     for ext in ACTIVE_FORMATS:
-        fig.savefig(out_dir / f"{stem}.{ext}", facecolor=WEB_PAPER)
+        fig.savefig(out_dir / f"{stem}{OUTPUT_SUFFIX}.{ext}", facecolor=WEB_PAPER)
 
 
 def _plot_interval_row(
@@ -292,7 +296,7 @@ def figure_reconstruction_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax.barh(y, [b[1] for b in bars], height=0.58, color=[b[4] for b in bars], zorder=3)
     for yi, (_, val, defined, total, _) in zip(y, bars):
         ax.text(min(val + 0.018, 1.005), yi, f"{val:.3f}", va="center", ha="left",
-                fontsize=13.5, color=INK, fontweight="bold")
+                fontsize=13.5, color=INK, fontweight=VALUE_WEIGHT)
         ax.text(0.018, yi, f"{defined}/{total}", va="center", ha="left", fontsize=9.8,
                 color=PAPER, style="italic")
     ax.set_yticks(y, [b[0] for b in bars], fontsize=11.5)
@@ -319,7 +323,7 @@ def figure_reconstruction_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax2.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
     _chip(ax2, "B", "Retrieval, not graph machinery, carries the gain", y=1.075)
     _set_figure_background(fig)
-    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[0]}.png", dpi=220, facecolor=WEB_PAPER)
+    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[0]}{OUTPUT_SUFFIX}.png", dpi=220, facecolor=WEB_PAPER)
     plt.close(fig)
 
 
@@ -351,7 +355,7 @@ def figure_structure_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax2.barh(y2, [c[1] for c in comp], height=0.58, color=[c[4] for c in comp], zorder=3)
     for yi, (_, val, defined, total, _) in zip(y2, comp):
         ax2.text(val + 0.017, yi, f"{val:.3f}", va="center", fontsize=13,
-                 color=INK, fontweight="bold")
+                 color=INK, fontweight=VALUE_WEIGHT)
         if defined != total:
             ax2.text(0.018, yi, f"{defined}/{total}", va="center", fontsize=9.5,
                      color=PAPER, style="italic")
@@ -363,7 +367,7 @@ def figure_structure_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax2.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
     _chip(ax2, "B", "Rank-32 projection preserves the output vocabulary", y=1.08)
     _set_figure_background(fig)
-    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[1]}.png", dpi=220, facecolor=WEB_PAPER)
+    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[1]}{OUTPUT_SUFFIX}.png", dpi=220, facecolor=WEB_PAPER)
     plt.close(fig)
 
 
@@ -384,9 +388,9 @@ def figure_factorization_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax.barh(y, [r[1] for r in rows], height=0.52, color=[r[2] for r in rows], zorder=3)
     for yi, (label, value, _) in zip(y, rows):
         ax.text(0.025, yi, label, va="center", ha="left", color=PAPER, fontsize=11.5,
-                fontweight="bold")
+                fontweight=VALUE_WEIGHT)
         ax.text(value + 0.018, yi, f"{value:.4f}", va="center", fontsize=14,
-                color=INK, fontweight="bold")
+                color=INK, fontweight=VALUE_WEIGHT)
     ax.text(0.03, -0.23,
             f"Endpoint subtraction explains {data['endpoint_ratio']*100:.1f}% of the observed lift",
             transform=ax.transAxes, fontsize=10.5, color=INK_SOFT, clip_on=False)
@@ -401,7 +405,7 @@ def figure_factorization_mobile(data: dict[str, Any], out_dir: Path) -> None:
     ax.grid(axis="x", color=HAIR, lw=0.7, zorder=0)
     _chip(ax, "", "A destination-conditioned rule predicts displacement", y=1.08)
     _set_figure_background(fig)
-    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[2]}.png", dpi=220, facecolor=WEB_PAPER)
+    fig.savefig(out_dir / f"{MOBILE_FIGURE_STEMS[2]}{OUTPUT_SUFFIX}.png", dpi=220, facecolor=WEB_PAPER)
     plt.close(fig)
 
 
@@ -424,18 +428,18 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
     ax.annotate("", xy=(10.9, 3.15), xytext=(8.9, 3.15),
                 arrowprops=dict(arrowstyle="-|>", lw=2.2, color=BLUE))
     ax.text(0.75, 5.55, "DECEPTION PRESSURE GEOMETRY", fontsize=13, color=BLUE,
-            fontweight="bold", family="sans-serif")
+            fontweight=VALUE_WEIGHT, family="sans-serif")
     ax.text(0.75, 4.72, "The state before the model lies", fontsize=34, color=INK,
-            fontweight="bold", family="sans-serif")
+            fontweight=VALUE_WEIGHT, family="sans-serif")
     ax.text(0.75, 4.23, "is an address", fontsize=34, color=INK,
-            fontweight="bold", family="sans-serif")
+            fontweight=VALUE_WEIGHT, family="sans-serif")
     ax.text(0.75, 3.25, "Local activation retrieval reconstructs held-out displacement",
             fontsize=15.5, color=INK_SOFT, family="sans-serif")
-    ax.text(0.75, 2.14, f"{local:.2f}", fontsize=43, color=BLUE, fontweight="bold",
+    ax.text(0.75, 2.14, f"{local:.2f}", fontsize=43, color=BLUE, fontweight=VALUE_WEIGHT,
             family="sans-serif")
     ax.text(2.32, 2.32, "local retrieval", fontsize=14, color=INK_SOFT, family="sans-serif")
     ax.text(4.15, 2.14, f"{global_mean:.2f}", fontsize=43, color=CHARCOAL,
-            fontweight="bold", family="sans-serif")
+            fontweight=VALUE_WEIGHT, family="sans-serif")
     ax.text(5.73, 2.32, "one global direction", fontsize=14, color=INK_SOFT,
             family="sans-serif")
     ax.text(0.75, 0.74,
@@ -465,7 +469,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     ax.barh(y, [b[1] for b in bars], height=0.62, color=[b[4] for b in bars], zorder=3)
     for yi, (name, val, defined, total, color) in zip(y, bars):
         ax.text(val + 0.012, yi, f"{val:.4f}", va="center", ha="left",
-                fontsize=12, color=INK, fontweight="bold")
+                fontsize=12, color=INK, fontweight=VALUE_WEIGHT)
         _coverage_chip(ax, 0.012, yi, defined, total)
     ax.set_yticks(y, [b[0] for b in bars])
     ax.set_xlim(0, 1.06)
@@ -541,7 +545,7 @@ def figure_structure(data: dict[str, Any], out_dir: Path) -> None:
     ax2.barh(y2, [c[1] for c in comp], height=0.6, color=[c[4] for c in comp], zorder=3)
     for yi, (name, val, defined, total, color) in zip(y2, comp):
         ax2.text(val + 0.014, yi, f"{val:.4f}", va="center", ha="left", fontsize=10.5,
-                 color=INK, fontweight="bold")
+                 color=INK, fontweight=VALUE_WEIGHT)
         if defined != total:
             _coverage_chip(ax2, 0.014, yi, defined, total)
     ax2.set_yticks(y2, [c[0] for c in comp], fontsize=8)
@@ -594,7 +598,7 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
 
     for x0, v in ((xs[0], action), (xs[1], constrained), (xs[2], additive)):
         ax.text(x0, v + 0.045, f"{v:.4f}", ha="center", fontsize=12, color=INK,
-                fontweight="bold")
+                fontweight=VALUE_WEIGHT)
 
     ax.annotate(f"$+{constrained - action:.4f}$  endpoint subtraction\n"
                 f"({data['endpoint_ratio']*100:.1f}% of the observed cosine improvement)",
@@ -630,8 +634,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_FIG_DIR)
     parser.add_argument("--formats", default="pdf,png",
                         help="comma-separated subset of pdf,png")
+    parser.add_argument("--blog", action="store_true",
+                        help="emit de-framed, lighter *_blog.png web variants only")
     args = parser.parse_args(argv)
-    global ACTIVE_FORMATS
+    global ACTIVE_FORMATS, VALUE_WEIGHT, OUTPUT_SUFFIX, PAPER, WEB_PAPER
+    if args.blog:
+        VALUE_WEIGHT = "normal"
+        OUTPUT_SUFFIX = "_blog"
+        PAPER = WEB_PAPER = "#FFFDF8"
+        args.formats = "png"
     ACTIVE_FORMATS = tuple(f for f in args.formats.split(",") if f in ("pdf", "png"))
     if not ACTIVE_FORMATS:
         die("--formats must include pdf and/or png")
@@ -644,7 +655,8 @@ def main(argv: list[str] | None = None) -> int:
     figure_reconstruction_mobile(data, args.out_dir)
     figure_structure_mobile(data, args.out_dir)
     figure_factorization_mobile(data, args.out_dir)
-    figure_social_card(data, args.out_dir)
+    if not args.blog:
+        figure_social_card(data, args.out_dir)
     return 0
 
 
