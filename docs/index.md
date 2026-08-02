@@ -82,7 +82,7 @@ the source state. Whether applying that difference changes behavior is a separat
       </div>
       <div class="delta-token"><span>observed displacement</span><strong>Δ = G<sub>H</sub> − G<sub>D</sub></strong></div>
     </div>
-    <div class="method-arrow" aria-hidden="true"><span>build</span>→</div>
+    <div class="method-arrow" aria-hidden="true"><span>store</span>→</div>
     <div class="method-stage method-stage--book">
       <p class="stage-label">Training address book</p>
       <div class="address-entry"><i></i><span>source state</span><b>→ Δ₁</b></div>

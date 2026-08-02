@@ -102,6 +102,7 @@ main {
 }
 
 .header-orbit {
+  display: none;
   position: absolute;
   width: 330px;
   height: 220px;
@@ -918,30 +919,30 @@ footer {
    Blog-specific evidence system, visual pass 2
    -------------------------------------------------------------------------- */
 :root {
-  --paper: #eee8dc;
-  --paper-deep: #ded4c3;
-  --surface: #f8f3e9;
-  --surface-rich: #f1e8d9;
-  --ink: #181713;
-  --soft-ink: #3f3a32;
-  --muted: #686055;
-  --rule: #cbbca8;
-  --rule-strong: #9d8e7b;
-  --link: #174f70;
-  --blue: #245fa8;
-  --blue-deep: #174779;
-  --blue-bright: #3b7ed0;
-  --blue-soft: #d9e7f5;
-  --amber: #cf6f2e;
-  --amber-deep: #8e431d;
-  --amber-soft: var(--amber-soft);
-  --green: #32634f;
-  --green-soft: #d9e8df;
-  --red: #a13e39;
-  --red-soft: #f0d8d2;
-  --violet: #76558f;
-  --violet-soft: #e7daed;
-  --shadow: 0 18px 44px rgba(49, 39, 25, 0.12);
+  --paper: #e9e2d5;
+  --paper-deep: #dcd4c3;
+  --surface: #fffdf8;
+  --surface-rich: #f4eee1;
+  --ink: #1d2329;
+  --soft-ink: #3a4148;
+  --muted: #555e66;
+  --rule: #c9bfb0;
+  --rule-strong: #a89c88;
+  --link: #1f5e8c;
+  --blue: #1f5e8c;
+  --blue-deep: #16486b;
+  --blue-bright: #2f7ab0;
+  --blue-soft: #e2ecf4;
+  --amber: #b0722a;
+  --amber-deep: #7d4f1c;
+  --amber-soft: #f0e2cd;
+  --green: #286c43;
+  --green-soft: #e2eee7;
+  --red: #a73b35;
+  --red-soft: #f3dedb;
+  --violet: #654d82;
+  --violet-soft: #e7e2ee;
+  --shadow: 0 18px 44px rgba(30, 27, 20, 0.10);
 }
 
 html,
@@ -1273,13 +1274,13 @@ body {
 
 .method-map-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) auto minmax(0, 0.9fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.8fr) auto minmax(0, 1.8fr) auto minmax(0, 0.8fr);
   align-items: center;
   gap: 0.85rem;
-  padding: 1.7rem;
+  padding: 1.4rem;
   background:
-    linear-gradient(rgba(203, 188, 168, 0.22) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(203, 188, 168, 0.22) 1px, transparent 1px),
+    linear-gradient(rgba(203, 188, 168, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 188, 168, 0.10) 1px, transparent 1px),
     var(--surface-rich);
   background-size: 30px 30px;
 }
@@ -1291,6 +1292,20 @@ body {
   border-radius: 14px;
   background: rgba(250, 246, 238, 0.94);
   font-family: var(--sans);
+}
+
+.method-stage--pair,
+.method-stage--query {
+  min-height: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--rule);
+  background: transparent;
+}
+
+.method-stage--book {
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .stage-label,
