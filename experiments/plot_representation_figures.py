@@ -536,7 +536,6 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     tied = [(n, v, _rescolor(c), str(c).startswith("HOLLOW"))
             for n, v, d, tot, c in bars if v > 0.9]
     others = [(n, v, d, tot, c) for n, v, d, tot, c in bars if v <= 0.9]
-    cover = {n: (d, tot) for n, v, d, tot, c in bars}
     band_lo = min(v for _, v, _, _ in tied) - 0.004
     band_hi = max(v for _, v, _, _ in tied) + 0.004
     spread = max(v for _, v, _, _ in tied) - min(v for _, v, _, _ in tied)
@@ -559,8 +558,7 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     for name, v, d, tot, c in others:
         _dot(v, 0.0, c, False)
         left = v == min(o[1] for o in others)
-        ax.annotate(f"{name.lower()}\n{v:.4f} $\\cdot$ {d}/{tot}",
-                    xy=(v, 0.05),
+        ax.annotate(name.lower(), xy=(v, 0.05),
                     xytext=(v - 0.014 if left else v + 0.014, 0.155),
                     ha="right" if left else "left", va="bottom", fontsize=7.8,
                     color=INK,
@@ -580,21 +578,16 @@ def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
     axz.set_facecolor("#F1EEE6")
     zlo, zhi = 0.9095, 0.9425
     ys = np.linspace(0.84, 0.16, len(tied))
-    for (name, v, c, hollow), yy in zip(sorted(tied, key=lambda r: -r[1]), ys):
+    ordered = sorted(tied, key=lambda r: -r[1])
+    for (name, v, c, hollow), yy in zip(ordered, ys):
+        axz.plot([zlo, v], [yy, yy], "-", color=HAIR, lw=0.6, zorder=2)
         axz.plot(v, yy, "o", ms=7.5,
                  mfc=(BLUE_WASH if c == BLUE else EMBER_WASH) if hollow else c,
                  mec=c if hollow else INK, mew=1.1 if hollow else 0.5, zorder=4)
-        d, tot = cover[name]
-        label = f"{name}  {v:.4f} $\\cdot$ {d}/{tot}"
-        if v > zlo + 0.35 * (zhi - zlo):
-            axz.text(v - 0.0012, yy, label + "  ", va="center", ha="right",
-                     fontsize=7.3, color=INK)
-        else:
-            axz.text(v + 0.0012, yy, "  " + label, va="center", ha="left",
-                     fontsize=7.3, color=INK)
     axz.set_xlim(zlo, zhi)
     axz.set_ylim(0, 1)
-    axz.set_yticks([])
+    axz.set_yticks(ys, [r[0] for r in ordered], fontsize=7.3)
+    axz.tick_params(axis="y", length=0, labelcolor=INK)
     axz.set_xticks([0.915, 0.925, 0.935])
     axz.tick_params(labelsize=6.6, colors=INK_SOFT, length=2, pad=1.5)
     for sp in ("top", "right", "left"):
