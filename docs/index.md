@@ -24,24 +24,30 @@ report falsely and a state that reports correctly—before the model samples the
 
 Not classify a state. Reconstruct the matched displacement.
 
-<section class="summary-panel" aria-labelledby="one-minute-title">
-  <p class="eyebrow">In one minute</p>
-  <h2 id="one-minute-title">The result, the control, and the boundary</h2>
-  <div class="summary-grid">
-    <article class="summary-card summary-card--blue">
-      <p class="summary-kicker">Strong reconstruction</p>
-      <p class="summary-number">0.9326</p>
-      <p>Raw-activation retrieval reconstructs held-out displacement, versus 0.4839 for one global direction.</p>
+<section class="lead-dashboard" aria-labelledby="one-minute-title">
+  <div class="lead-finding">
+    <p class="eyebrow">The central result</p>
+    <div class="lead-score-line">
+      <p class="lead-score"><span>0.93</span><small>cosine</small></p>
+      <p class="lead-versus">versus <strong>0.48</strong> for one global direction</p>
+    </div>
+    <h2 id="one-minute-title">A nearby state is a better address than one global vector</h2>
+    <p>On held-out scenario families, raw-activation retrieval reconstructs the matched displacement at 0.9326 cosine. The result survives the obvious global and shuffled controls.</p>
+    <div class="lead-bars" aria-label="Headline reconstruction comparison">
+      <div class="lead-bar lead-bar--local"><span>Local retrieval</span><i style="--score: 93.26%"></i><strong>0.9326</strong></div>
+      <div class="lead-bar lead-bar--global"><span>Global direction</span><i style="--score: 48.39%"></i><strong>0.4839</strong></div>
+    </div>
+  </div>
+  <div class="lead-insights">
+    <article class="insight-tile insight-tile--retrieval">
+      <p class="insight-index">01</p>
+      <h3>One example is almost enough</h3>
+      <p>A single raw nearest neighbor reaches 0.9304. Elaborate graph machinery is not carrying the result.</p>
     </article>
-    <article class="summary-card summary-card--amber">
-      <p class="summary-kicker">Simple address</p>
-      <p class="summary-number">k = 1</p>
-      <p>One nearby training exemplar nearly saturates the result. The relational graph is not required.</p>
-    </article>
-    <article class="summary-card summary-card--ink">
-      <p class="summary-kicker">Control remains open</p>
-      <p class="summary-number">Not run</p>
-      <p>The reconstructed displacement has not been injected. Accurate prediction is not yet causal control.</p>
+    <article class="insight-tile insight-tile--boundary">
+      <p class="insight-index">02</p>
+      <h3>This is not yet control</h3>
+      <p>The displacement is reconstructed offline. It has not been injected, and the destination is not inferred autonomously.</p>
     </article>
   </div>
 </section>
@@ -64,39 +70,40 @@ This is different from a probe. A probe asks what information can be read from o
 experiment asks whether an observed difference between matched states can be reconstructed from
 the source state. Whether applying that difference changes behavior is a separate causal test.
 
-<div class="concept-figure" role="img" aria-labelledby="concept-title concept-description">
-  <div class="concept-heading">
-    <p class="eyebrow">How the offline test works</p>
-    <h3 id="concept-title">Use a source state as an address into stored displacements</h3>
-    <p id="concept-description">Matched branches define honestward displacements in training families. For a held-out source state, nearest training states retrieve stored displacements that are averaged into a prediction. No vector is injected.</p>
+<section class="method-map" aria-labelledby="concept-title">
+  <header class="visual-header visual-header--method">
+    <div><p class="visual-kicker">Measurement design</p><h3 id="concept-title">From matched branches to a held-out prediction</h3></div>
+    <p>The key is a source activation. The stored value is a supervised displacement.</p>
+  </header>
+  <div class="method-map-grid" role="img" aria-label="A shared scenario branches into false and correct reports, defining an observed honestward displacement. Training pairs form an address book. A held-out source retrieves nearby entries to predict its displacement.">
+    <div class="method-stage method-stage--pair">
+      <p class="stage-label">Observed pair</p>
+      <div class="shared-root">Same scenario<br><strong>same machine truth</strong></div>
+      <div class="branch-lines" aria-hidden="true"></div>
+      <div class="branch-nodes">
+        <span class="state-node state-node--false">false report</span>
+        <span class="state-node state-node--honest">correct report</span>
+      </div>
+      <div class="delta-token"><span>observed displacement</span><strong>Δ = G<sub>H</sub> − G<sub>D</sub></strong></div>
+    </div>
+    <div class="method-arrow" aria-hidden="true"><span>build</span>→</div>
+    <div class="method-stage method-stage--book">
+      <p class="stage-label">Training address book</p>
+      <div class="address-entry"><i></i><span>source state</span><b>→ Δ₁</b></div>
+      <div class="address-entry"><i></i><span>source state</span><b>→ Δ₂</b></div>
+      <div class="address-entry"><i></i><span>source state</span><b>→ Δ₃</b></div>
+      <p class="stage-note">Outcome-blind keys.<br>Supervised stored values.</p>
+    </div>
+    <div class="method-arrow" aria-hidden="true"><span>retrieve</span>→</div>
+    <div class="method-stage method-stage--query">
+      <p class="stage-label">Held-out family</p>
+      <div class="query-orbit"><span class="query-node">query</span><i></i><i></i><i></i></div>
+      <div class="prediction-token"><span>predicted displacement</span><strong>Δ̂(query)</strong></div>
+      <p class="stage-note">Score against the realized matched difference.</p>
+    </div>
   </div>
-  <div class="concept-flow">
-    <div class="concept-step concept-step--source">
-      <span class="step-number">1</span>
-      <strong>Measure matched branches</strong>
-      <span>Same scenario and truth; one false report, one correct report.</span>
-    </div>
-    <span class="flow-arrow" aria-hidden="true">→</span>
-    <div class="concept-step">
-      <span class="step-number">2</span>
-      <strong>Store the difference</strong>
-      <span>Each training source state points to its measured honestward displacement.</span>
-    </div>
-    <span class="flow-arrow" aria-hidden="true">→</span>
-    <div class="concept-step concept-step--query">
-      <span class="step-number">3</span>
-      <strong>Look up a held-out state</strong>
-      <span>Find nearby training states without using the held-out outcome label in the key.</span>
-    </div>
-    <span class="flow-arrow" aria-hidden="true">→</span>
-    <div class="concept-step concept-step--target">
-      <span class="step-number">4</span>
-      <strong>Predict its displacement</strong>
-      <span>Average retrieved values and compare with the realized matched difference.</span>
-    </div>
-  </div>
-  <p class="concept-boundary"><strong>Offline reconstruction only:</strong> the predicted displacement is scored against a realized target; it is not injected into the model in this study.</p>
-</div>
+  <footer class="visual-boundary"><strong>Offline reconstruction only.</strong> <strong>What this tests:</strong> whether the displacement is reconstructible before the status token. <strong>What it does not test:</strong> whether injecting Δ̂ changes behavior.</footer>
+</section>
 
 <div class="term-strip" aria-label="Key terms">
   <div><strong>Activation</strong><span>The model's internal numerical state at a token.</span></div>
@@ -109,30 +116,50 @@ the source state. Whether applying that difference changes behavior is a separat
 I retrieve a displacement by neighborhood: find training source states near a held-out query,
 then reuse their measured displacements. Entire scenario families are held out during fitting.
 
-<div class="table-wrap table-wrap--results">
-<table class="responsive-table">
-  <caption>Held-out-family displacement reconstruction. Higher cosine is better.</caption>
-  <thead><tr><th scope="col">Estimator</th><th scope="col">Reconstruction cosine</th><th scope="col">Coverage</th></tr></thead>
-  <tbody>
-    <tr><th scope="row">Raw activation, nearest 8</th><td data-label="Cosine"><strong>0.9326</strong></td><td data-label="Coverage">200/200</td></tr>
-    <tr><th scope="row">Raw activation, single nearest</th><td data-label="Cosine"><strong>0.9304</strong></td><td data-label="Coverage">200/200</td></tr>
-    <tr><th scope="row">Typed-graph neighborhood</th><td data-label="Cosine"><strong>0.9289</strong></td><td data-label="Coverage">193/200</td></tr>
-    <tr><th scope="row">Truth-aware design-cell mean</th><td data-label="Cosine"><strong>0.9223</strong></td><td data-label="Coverage">200/200</td></tr>
-    <tr><th scope="row">Typed-graph single nearest</th><td data-label="Cosine"><strong>0.9149</strong></td><td data-label="Coverage">193/200</td></tr>
-    <tr><th scope="row">One global mean direction</th><td data-label="Cosine">0.4839</td><td data-label="Coverage">200/200</td></tr>
-    <tr><th scope="row">Cyclic reuse of other targets</th><td data-label="Cosine">0.4228</td><td data-label="Coverage">193/200</td></tr>
-  </tbody>
-</table>
-</div>
+<section class="visual-card visual-card--ranking" aria-labelledby="ranking-title">
+  <header class="visual-header">
+    <div><p class="visual-kicker">Finding 1 · Reconstruction</p><h3 id="ranking-title">Local addresses form a separate performance tier</h3></div>
+    <p>Exact values and coverage are shown on every row; bar length encodes cosine.</p>
+  </header>
+  <div class="method-ranking" role="img" aria-label="Raw activation nearest 8 scores 0.9326, raw single nearest 0.9304, typed graph neighborhood 0.9289, truth-aware design cell mean 0.9223, typed graph nearest 0.9149, global mean 0.4839, and cyclic shuffle 0.4228.">
+    <div class="ranking-group-label"><span>Local and design-conditioned addresses</span><small>0.91–0.93</small></div>
+    <div class="ranking-row ranking-row--retrieval"><span>Raw activation · nearest 8</span><i><b style="--score:93.26%"></b></i><strong>0.9326</strong><small>200/200</small></div>
+    <div class="ranking-row ranking-row--retrieval"><span>Raw activation · single nearest</span><i><b style="--score:93.04%"></b></i><strong>0.9304</strong><small>200/200</small></div>
+    <div class="ranking-row ranking-row--graph"><span>Typed-graph neighborhood</span><i><b style="--score:92.89%"></b></i><strong>0.9289</strong><small>193/200</small></div>
+    <div class="ranking-row ranking-row--cell"><span>Truth-aware design-cell mean</span><i><b style="--score:92.23%"></b></i><strong>0.9223</strong><small>200/200</small></div>
+    <div class="ranking-row ranking-row--graph"><span>Typed-graph single nearest</span><i><b style="--score:91.49%"></b></i><strong>0.9149</strong><small>193/200</small></div>
+    <div class="ranking-group-label ranking-group-label--baseline"><span>Global and shuffled baselines</span><small>below 0.49</small></div>
+    <div class="ranking-row ranking-row--baseline"><span>One global mean direction</span><i><b style="--score:48.39%"></b></i><strong>0.4839</strong><small>200/200</small></div>
+    <div class="ranking-row ranking-row--null"><span>Cyclic reuse of other targets</span><i><b style="--score:42.28%"></b></i><strong>0.4228</strong><small>193/200</small></div>
+  </div>
+  <footer class="visual-caption"><span><b>Read</b> Locality—not graph complexity—is the visible separation.</span><span><b>Coverage</b> Counts are defined roots out of 200.</span></footer>
+  <details class="technical-ledger">
+    <summary>Open exact estimator ledger</summary>
+    <table class="responsive-table">
+      <caption class="sr-only">Held-out-family displacement reconstruction. Higher cosine is better.</caption>
+      <thead><tr><th scope="col">Estimator</th><th scope="col">Reconstruction cosine</th><th scope="col">Coverage</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Raw activation, nearest 8</th><td data-label="Cosine"><strong>0.9326</strong></td><td data-label="Coverage">200/200</td></tr>
+        <tr><th scope="row">Raw activation, single nearest</th><td data-label="Cosine"><strong>0.9304</strong></td><td data-label="Coverage">200/200</td></tr>
+        <tr><th scope="row">Typed-graph neighborhood</th><td data-label="Cosine"><strong>0.9289</strong></td><td data-label="Coverage">193/200</td></tr>
+        <tr><th scope="row">Truth-aware design-cell mean</th><td data-label="Cosine"><strong>0.9223</strong></td><td data-label="Coverage">200/200</td></tr>
+        <tr><th scope="row">Typed-graph single nearest</th><td data-label="Cosine"><strong>0.9149</strong></td><td data-label="Coverage">193/200</td></tr>
+        <tr><th scope="row">One global mean direction</th><td data-label="Cosine">0.4839</td><td data-label="Coverage">200/200</td></tr>
+        <tr><th scope="row">Cyclic reuse of other targets</th><td data-label="Cosine">0.4228</td><td data-label="Coverage">193/200</td></tr>
+      </tbody>
+    </table>
+  </details>
+</section>
 
 <figure class="evidence-figure">
+  <header class="visual-header"><div><p class="visual-kicker">Comparator audit</p><h3>Where the reconstruction gain comes from</h3></div><p>Paired differences with scenario-cluster 95% intervals.</p></header>
   <a class="figure-link" href="figures/representation_reconstruction.png" aria-label="Open the full-resolution reconstruction figure">
     <picture>
       <source media="(max-width: 700px)" srcset="figures/representation_reconstruction_mobile.png">
       <img src="figures/representation_reconstruction.png" alt="Comparison of held-out displacement reconstruction. Raw k-nearest-neighbor, raw nearest, typed-graph local, and the truth-aware cell mean cluster between 0.922 and 0.933 cosine; the global mean reaches 0.484 and the cyclic shuffle 0.423.">
     </picture>
   </a>
-  <figcaption><strong>Question:</strong> Does a local address reconstruct a held-out displacement? <strong>Result:</strong> local methods cluster near 0.93 cosine, while one global direction reaches 0.48. <strong>Boundary:</strong> this is held-out-family reconstruction, not intervention.</figcaption>
+  <figcaption class="visual-caption"><span><b>Result</b> Local methods cluster near 0.93; the global direction reaches 0.48.</span><span><b>Boundary</b> Held-out-family reconstruction, not intervention.</span></figcaption>
 </figure>
 
 The typed-graph local estimator beats its global direction by
@@ -175,16 +202,47 @@ Two controls ask how specifically this organization belongs to deceptive-to-hone
 - a nuisance shuffle that preserves the design-cell target distribution while destroying exact
   source–target pairing reaches **0.9175**.
 
-<div class="table-wrap table-wrap--compact">
-<table class="responsive-table">
-  <caption>Specificity margins over generic and design-matched controls.</caption>
-  <thead><tr><th scope="col">Comparison</th><th scope="col">Cosine margin</th><th scope="col">Normalized-error margin</th></tr></thead>
-  <tbody>
-    <tr><th scope="row">Honestward over generic motion</th><td data-label="Cosine">+0.0135 [+0.0034, +0.0237]</td><td data-label="Normalized error">+0.0144 [−0.0091, +0.0362] <span class="verdict verdict--mixed">metric-dependent</span></td></tr>
-    <tr><th scope="row">Exact pairing over nuisance shuffle</th><td data-label="Cosine"><strong>+0.0114 [+0.0064, +0.0166]</strong></td><td data-label="Normalized error"><strong>+0.0198 [+0.0097, +0.0293]</strong> <span class="verdict verdict--positive">both positive</span></td></tr>
-  </tbody>
-</table>
-</div>
+<section class="visual-card visual-card--specificity" aria-labelledby="specificity-title">
+  <header class="visual-header">
+    <div><p class="visual-kicker">Finding 2 · Specificity</p><h3 id="specificity-title">Most of the motion is generic; the remaining margins are small</h3></div>
+    <p>Aggregate reconstruction gives orientation. Paired intervals decide the comparisons.</p>
+  </header>
+  <div class="specificity-dashboard">
+    <div class="aggregate-stack">
+      <p class="mini-title">Aggregate reconstruction</p>
+      <div class="aggregate-row aggregate-row--generic"><span>Generic transitions</span><i style="--score:90.60%"></i><strong>0.9060</strong></div>
+      <div class="aggregate-row aggregate-row--shuffle"><span>Design-cell shuffle</span><i style="--score:91.75%"></i><strong>0.9175</strong></div>
+      <div class="aggregate-row aggregate-row--honest"><span>Honestward field</span><i style="--score:92.89%"></i><strong>0.9289</strong></div>
+      <p class="aggregate-note">These aggregate means are not arithmetic substitutes for the paired margins.</p>
+    </div>
+    <div class="margin-cards">
+      <article class="margin-card margin-card--mixed">
+        <p>Honestward over generic motion</p>
+        <strong>+0.0135</strong><span>cosine · CI above zero</span>
+        <strong>+0.0144</strong><span>normalized error · CI crosses zero</span>
+        <em>metric-dependent</em>
+      </article>
+      <article class="margin-card margin-card--positive">
+        <p>Exact pairing over cell shuffle</p>
+        <strong>+0.0114</strong><span>cosine · CI above zero</span>
+        <strong>+0.0198</strong><span>normalized error · CI above zero</span>
+        <em>positive on both metrics</em>
+      </article>
+    </div>
+  </div>
+  <footer class="visual-caption"><span><b>Interpretation</b> Design-conditioned transition structure explains most of the result.</span><span><b>Residue</b> Small, and only the exact-pairing margin is stable across both metrics.</span></footer>
+  <details class="technical-ledger">
+    <summary>Open paired intervals</summary>
+    <table class="responsive-table">
+      <caption class="sr-only">Specificity margins over generic and design-matched controls.</caption>
+      <thead><tr><th scope="col">Comparison</th><th scope="col">Cosine margin</th><th scope="col">Normalized-error margin</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Honestward over generic motion</th><td data-label="Cosine">+0.0135 [+0.0034, +0.0237]</td><td data-label="Normalized error">+0.0144 [−0.0091, +0.0362] <span class="verdict verdict--mixed">metric-dependent</span></td></tr>
+        <tr><th scope="row">Exact pairing over nuisance shuffle</th><td data-label="Cosine"><strong>+0.0114 [+0.0064, +0.0166]</strong></td><td data-label="Normalized error"><strong>+0.0198 [+0.0097, +0.0293]</strong> <span class="verdict verdict--positive">both positive</span></td></tr>
+      </tbody>
+    </table>
+  </details>
+</section>
 
 Most of what the address retrieves is generic, design-conditioned transition organization.
 The honestward advantage over generic motion is small and metric-dependent: positive in cosine,
@@ -193,19 +251,46 @@ shuffle is also small, but positive on both reported metrics.
 
 ## The vocabulary is compact and partially factorized
 
+<section class="visual-card visual-card--structure" aria-labelledby="structure-title">
+  <header class="visual-header">
+    <div><p class="visual-kicker">Finding 3 · Representation</p><h3 id="structure-title">A compact output vocabulary, with a destination-conditioned rule</h3></div>
+    <p>Compression describes the outputs. Factorization describes how to construct them.</p>
+  </header>
+  <div class="structure-dashboard">
+    <div class="rank-module">
+      <p class="module-label">Output compression</p>
+      <div class="rank-number"><strong>32</strong><span>dimensions</span></div>
+      <div class="variance-meter"><i></i></div>
+      <p><strong>96.75–96.92%</strong> of training variance retained in every fold.</p>
+      <div class="performance-pair"><span>Full <b>0.8787</b></span><span>Rank-32 <b>0.8760</b></span></div>
+    </div>
+    <div class="factor-module">
+      <p class="module-label">Destination-conditioned factorization</p>
+      <div class="factor-step"><span>Action only</span><i style="--score:68.08%"></i><strong>0.6808</strong></div>
+      <div class="factor-arrow">+ endpoint subtraction</div>
+      <div class="factor-step factor-step--middle"><span>Constrained source</span><i style="--score:82.05%"></i><strong>0.8205</strong></div>
+      <div class="factor-arrow">+ learned source coupling</div>
+      <div class="factor-step factor-step--final"><span>Free source + action</span><i style="--score:89.15%"></i><strong>0.8915</strong></div>
+      <p class="factor-note">Desired status and destination program are supplied.</p>
+    </div>
+  </div>
+  <footer class="visual-caption"><span><b>Compactness</b> Output prediction survives projection to rank 32.</span><span><b>Use</b> The rule constructs a target; it does not choose one.</span></footer>
+</section>
+
 **Output compactness.** A rank-32 projection preserves the full estimator almost exactly
 (0.8760 versus 0.8787 across 849 roots). A tested 256-landmark compression of the source-side
 address book misses its frozen target. That scheme was insufficient; other source-side
 representations remain open.
 
 <figure class="evidence-figure">
+  <header class="visual-header"><div><p class="visual-kicker">Specificity + compression audit</p><h3>Small directional residue, compact output space</h3></div><p>Paired intervals and the frozen compression frontier.</p></header>
   <a class="figure-link" href="figures/representation_structure.png" aria-label="Open the full-resolution specificity and compression figure">
     <picture>
       <source media="(max-width: 700px)" srcset="figures/representation_structure_mobile.png">
       <img src="figures/representation_structure.png" alt="Specificity margins are small: honestward over generic motion is positive in cosine but crosses zero in normalized error, while exact pairing beats the nuisance shuffle on both metrics. A rank-32 projection retains nearly all reconstruction performance.">
     </picture>
   </a>
-  <figcaption><strong>Question:</strong> What part of the displacement is specific, and how compact is its output vocabulary? <strong>Result:</strong> specificity margins are small, while a rank-32 projection preserves the estimator. <strong>Boundary:</strong> the tested landmark scheme does not establish general source-side incompressibility.</figcaption>
+  <figcaption class="visual-caption"><span><b>Result</b> Rank-32 preserves the estimator; specificity margins remain small.</span><span><b>Boundary</b> One failed landmark scheme does not establish general source-side incompressibility.</span></figcaption>
 </figure>
 
 **Destination-conditioned factorization.** The symbolic descriptor receives the requested
@@ -215,13 +300,14 @@ all five held-out-family folds. Endpoint subtraction explains 66.3% of the obser
 learned source coupling supplies the remaining +0.0710.
 
 <figure class="evidence-figure">
+  <header class="visual-header"><div><p class="visual-kicker">Factorization audit</p><h3>Source coordinates add beyond endpoint subtraction</h3></div><p>Five held-out-family folds; fold consistency, not a confidence interval.</p></header>
   <a class="figure-link" href="figures/representation_factorization.png" aria-label="Open the full-resolution factorization figure">
     <picture>
       <source media="(max-width: 700px)" srcset="figures/representation_factorization_mobile.png">
       <img src="figures/representation_factorization.png" alt="Family-macro reconstruction cosine rises from 0.681 for action alone to 0.821 after endpoint subtraction and 0.892 with learned source coupling; five held-out-family points show the same ordering.">
     </picture>
   </a>
-  <figcaption><strong>Question:</strong> Can a compact rule construct the displacement once a destination is given? <strong>Result:</strong> action plus source reaches 0.8915 cosine. <strong>Boundary:</strong> the model receives the desired status and destination program; it does not infer the target.</figcaption>
+  <figcaption class="visual-caption"><span><b>Result</b> Action plus source reaches 0.8915 cosine.</span><span><b>Boundary</b> Desired status and destination are inputs; this is not target inference.</span></figcaption>
 </figure>
 
 The displacement vocabulary is therefore partially a linear function of what destination was
@@ -242,9 +328,10 @@ predictor.
 
 The earlier experiments draw the boundary:
 
-<div class="table-wrap table-wrap--boundary">
+<section class="visual-card visual-card--boundary-table" aria-labelledby="boundary-table-title">
+  <header class="visual-header"><div><p class="visual-kicker">Capability ledger</p><h3 id="boundary-table-title">The information budget changes at every rung</h3></div><p>These are different estimands, not one leaderboard.</p></header>
 <table class="responsive-table">
-  <caption>Different capabilities require different information and cannot be ranked as one leaderboard.</caption>
+  <caption class="sr-only">Different capabilities require different information and cannot be ranked as one leaderboard.</caption>
   <thead><tr><th scope="col">Capability</th><th scope="col">Instrument</th><th scope="col">Result</th><th scope="col">Verdict</th></tr></thead>
   <tbody>
     <tr><th scope="row">Supplied-target actuation</th><td data-label="Instrument">Fixed-dose steering; target given</td><td data-label="Result">591/600 fixes, 0 honest harms</td><td data-label="Verdict"><span class="verdict verdict--positive">Works given target</span></td></tr>
@@ -255,7 +342,8 @@ The earlier experiments draw the boundary:
     <tr><th scope="row">Causal displacement injection</th><td data-label="Instrument">Matched controls</td><td data-label="Result">Not run</td><td data-label="Verdict"><span class="verdict verdict--open">Open</span></td></tr>
   </tbody>
 </table>
-</div>
+  <footer class="visual-caption"><span><b>Reading</b> Post-commitment state is nearly linear.</span><span><b>Control</b> Supplied targets work; autonomous target inference remains open.</span></footer>
+</section>
 
 Actuation works when the corrective target is supplied and fails in the one prospective test
 where the controller had to find a target itself. Inferring the destination remains the

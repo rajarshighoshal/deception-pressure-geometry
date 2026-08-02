@@ -25,7 +25,7 @@ def test_article_uses_responsive_shipped_figures_by_relative_path() -> None:
     assert desktop == DESKTOP_FIGURES
     assert mobile == MOBILE_FIGURES
     assert text.count('<figure class="evidence-figure">') == 3
-    assert text.count("<figcaption>") == 3
+    assert text.count("<figcaption") == 3
     assert "raw.githubusercontent.com" not in text
     for name in desktop | mobile:
         assert (REPO_ROOT / "docs" / "figures" / name).is_file()
@@ -38,10 +38,28 @@ def test_article_has_meaningful_figure_alt_text_and_table_captions() -> None:
     assert len(alt_texts) == 3
     assert all(len(alt) >= 100 for alt in alt_texts)
     assert all("chart" not in alt.lower() for alt in alt_texts)
-    assert text.count("<caption>") == 3
+    assert text.count("<caption") == 3
     assert text.count('class="responsive-table"') == 3
+    assert text.count('class="visual-header') >= 7
+    assert text.count('class="visual-caption"') >= 6
+    assert text.count('class="technical-ledger"') == 2
     assert text.count('data-label="') >= 20
 
+
+
+def test_visual_captions_are_integrated_into_result_cards() -> None:
+    text = ARTICLE.read_text(encoding="utf-8")
+    css = (REPO_ROOT / "docs" / "assets" / "article.css").read_text(encoding="utf-8")
+
+    assert text.count('caption class="sr-only"') == 3
+    assert '<caption>Held-out-family' not in text
+    assert '<caption>Specificity margins' not in text
+    assert 'class="visual-card visual-card--boundary-table"' in text
+    assert '.visual-header' in css
+    assert '.visual-caption' in css
+    assert '--paper: #eee8dc' in css
+    assert '--blue: #245fa8' in css
+    assert '--amber: #cf6f2e' in css
 
 def test_article_preserves_the_human_authorship_boundary() -> None:
     text = ARTICLE.read_text(encoding="utf-8")
@@ -99,9 +117,13 @@ def test_article_preserves_the_scientific_claim_boundaries() -> None:
 def test_article_has_skimmer_and_method_visuals() -> None:
     text = ARTICLE.read_text(encoding="utf-8")
 
-    assert 'class="summary-panel"' in text
-    assert text.count('class="summary-card ') == 3
-    assert 'class="concept-figure"' in text
+    assert 'class="lead-dashboard"' in text
+    assert 'class="lead-finding"' in text
+    assert text.count('class="insight-tile ') == 2
+    assert 'class="method-map"' in text
+    assert 'class="visual-card visual-card--ranking"' in text
+    assert 'class="visual-card visual-card--specificity"' in text
+    assert 'class="visual-card visual-card--structure"' in text
     assert 'class="term-strip"' in text
     assert 'class="evidence-ladder"' in text
     assert "0.9326" in text

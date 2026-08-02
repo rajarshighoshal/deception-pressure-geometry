@@ -53,15 +53,15 @@ FIGURE_NAMES = (
 # ---------------------------------------------------------------------------
 # Ledger theme
 # ---------------------------------------------------------------------------
-INK = "#1A1814"          # warm near-black: text, primary marks
-INK_SOFT = "#6E6862"     # secondary text
-HAIR = "#D8D3CC"         # hairlines, grid
-PAPER = "#FFFFFF"
-WEB_PAPER = "#FBFAF6"
-BLUE = "#4F72AE"         # muted steel blue: the local estimator / this paper's method
-EMBER = "#C9834F"        # soft amber: retrieval/alternative family (nearest, landmark)
-CHARCOAL = "#3A362F"     # global / linear baselines
-GRAY = "#8A847C"         # nulls and shuffles
+INK = "#171814"          # warm near-black: text, primary marks
+INK_SOFT = "#5B554C"     # secondary text
+HAIR = "#C4B7A5"         # hairlines, grid
+PAPER = "#F5EDE1"
+WEB_PAPER = "#E9DFD0"
+BLUE = "#245FA8"         # muted steel blue: the local estimator / this paper's method
+EMBER = "#CF6F2E"        # soft amber: retrieval/alternative family (nearest, landmark)
+CHARCOAL = "#332F29"     # global / linear baselines
+GRAY = "#827668"         # nulls and shuffles
 RED = "#B3403A"          # reserved status color: refuted (never a series color)
 
 TIER_STYLE = {
@@ -139,15 +139,15 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              EMBER),
             ("Raw-activation nearest", sa_models["raw_nn"]["cosine_mean"],
              sa_models["raw_nn"]["defined_count"], sa_models["raw_nn"]["total_count"],
-             "#DA9E6F"),
+             "#E69A54"),
             ("Typed-graph local", models["local"]["cosine_mean"],
              models["local"]["defined_count"], models["local"]["total_count"], BLUE),
             ("Truth-aware design-cell mean", sa_models["design_cell_mean"]["cosine_mean"],
              sa_models["design_cell_mean"]["defined_count"],
-             sa_models["design_cell_mean"]["total_count"], "#5C564E"),
+             sa_models["design_cell_mean"]["total_count"], "#675184"),
             ("Typed-graph nearest", models["nearest"]["cosine_mean"],
              models["nearest"]["defined_count"], models["nearest"]["total_count"],
-             "#8FA3CB"),
+             "#6E91C5"),
             ("Global train mean", models["global_mean"]["cosine_mean"],
              models["global_mean"]["defined_count"], models["global_mean"]["total_count"],
              CHARCOAL),
@@ -166,14 +166,14 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              comps["nearest"]["scenario_cluster_ci"], EMBER, False),
             ("local $-$ nearest, secondary view",
              sec_comps["nearest"]["mean_cosine_difference"],
-             sec_comps["nearest"]["scenario_cluster_ci"], "#8FA3CB", True),
+             sec_comps["nearest"]["scenario_cluster_ci"], "#6E91C5", True),
             ("graph local $-$ raw k=8",
              sa_comps["graph_local_minus_raw_k8"]["mean_cosine_difference"],
              sa_comps["graph_local_minus_raw_k8"]["scenario_cluster_ci"], EMBER, False),
             ("graph local $-$ design-cell mean",
              sa_comps["graph_local_minus_design_cell_mean"]["mean_cosine_difference"],
              sa_comps["graph_local_minus_design_cell_mean"]["scenario_cluster_ci"],
-             "#5C564E", False),
+             "#675184", False),
         ],
         "specificity": [
             ("honestward $-$ generic",
@@ -198,7 +198,7 @@ def parse_data(receipt: dict[str, Any]) -> dict[str, Any]:
              cmodels["full_exemplar_local"]["total_count"], BLUE),
             ("Rank-32 projection", cmodels["low_rank_projected_full"]["cosine_mean"],
              cmodels["low_rank_projected_full"]["defined_count"],
-             cmodels["low_rank_projected_full"]["total_count"], "#9FB2D2"),
+             cmodels["low_rank_projected_full"]["total_count"], "#75A0D1"),
             ("256-landmark fallback", cmodels["landmark_local"]["cosine_mean"],
              cmodels["landmark_local"]["defined_count"],
              cmodels["landmark_local"]["total_count"], EMBER),
@@ -376,7 +376,7 @@ def figure_factorization_mobile(data: dict[str, Any], out_dir: Path) -> None:
     additive = data["additive_cos"]
     rows = [
         ("Action only", action, CHARCOAL),
-        ("+ endpoint subtraction", constrained, "#9AA8B8"),
+        ("+ endpoint subtraction", constrained, "#B98258"),
         ("+ learned source coupling", additive, BLUE),
     ]
     y = np.arange(len(rows))[::-1]
@@ -413,7 +413,7 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
     ax.set_xlim(0, 12)
     ax.set_ylim(0, 6.3)
     ax.axis("off")
-    for radius, color, alpha, angle in ((2.4, BLUE, 0.22, -12), (1.6, EMBER, 0.24, 16)):
+    for radius, color, alpha, angle in ((2.4, BLUE, 0.42, -12), (1.6, EMBER, 0.44, 16)):
         ellipse = matplotlib.patches.Ellipse((10.2, 3.25), radius * 2, radius * 0.95,
                                              angle=angle, fill=False, lw=1.6,
                                              edgecolor=color, alpha=alpha)
@@ -573,10 +573,10 @@ def figure_factorization(data: dict[str, Any], out_dir: Path) -> None:
     xs = np.array([0.0, 1.0, 2.0])
     w = 0.56
     ax.bar(xs[0], action, w, color=CHARCOAL, zorder=3)
-    ax.bar(xs[1], constrained - action, w, bottom=action, color="#9AA8B8", zorder=3)
+    ax.bar(xs[1], constrained - action, w, bottom=action, color="#B98258", zorder=3)
     ax.bar(xs[1], action, w, color=CHARCOAL, alpha=0.18, zorder=2)
     ax.bar(xs[2], additive - constrained, w, bottom=constrained, color=BLUE, zorder=3)
-    ax.bar(xs[2], constrained - action, w, bottom=action, color="#9AA8B8",
+    ax.bar(xs[2], constrained - action, w, bottom=action, color="#B98258",
            alpha=0.30, zorder=2)
     ax.bar(xs[2], action, w, color=CHARCOAL, alpha=0.18, zorder=2)
 
