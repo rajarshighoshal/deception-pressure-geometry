@@ -82,7 +82,10 @@ def test_plot_public_figure_names_match_readme_and_figures() -> None:
     assert _readme_figure_names() == readme_expected
 
     article_only = {f"{stem}.png" for stem in MOBILE_FIGURE_STEMS} | {SOCIAL_CARD_NAME}
-    required = set(readme_expected) | article_only
+    blog_variants = {f"{stem}_blog.png" for stem in REPR_STEMS} | {
+        f"{stem}_blog.png" for stem in MOBILE_FIGURE_STEMS
+    }
+    required = set(readme_expected) | article_only | blog_variants
     manuscript_optional = {f"{COMBINED_STEM}.png", f"{PRESSURE_STEM}.png"}
     figures_dir = REPO_ROOT / "docs" / "figures"
     actual = {p.name for p in figures_dir.glob("*.png")}

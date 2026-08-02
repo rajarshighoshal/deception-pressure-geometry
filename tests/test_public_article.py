@@ -10,11 +10,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ARTICLE = REPO_ROOT / "docs" / "index.md"
 LAYOUT = REPO_ROOT / "docs" / "_layouts" / "article.html"
 DESKTOP_FIGURES = {
-    "representation_reconstruction.png",
-    "representation_structure.png",
-    "representation_factorization.png",
+    "representation_reconstruction_blog.png",
+    "representation_structure_blog.png",
+    "representation_factorization_blog.png",
 }
-MOBILE_FIGURES = {name.replace(".png", "_mobile.png") for name in DESKTOP_FIGURES}
+MOBILE_FIGURES = {name.replace("_blog.png", "_mobile_blog.png") for name in DESKTOP_FIGURES}
 
 
 def test_article_uses_responsive_shipped_figures_by_relative_path() -> None:
@@ -57,9 +57,9 @@ def test_visual_captions_are_integrated_into_result_cards() -> None:
     assert 'class="visual-card visual-card--boundary-table"' in text
     assert '.visual-header' in css
     assert '.visual-caption' in css
-    assert '--paper: #eee8dc' in css
-    assert '--blue: #245fa8' in css
-    assert '--amber: #cf6f2e' in css
+    assert '--paper: #e9e2d5' in css
+    assert '--blue: #1f5e8c' in css
+    assert '--amber: #b0722a' in css
 
 def test_article_preserves_the_human_authorship_boundary() -> None:
     text = ARTICLE.read_text(encoding="utf-8")

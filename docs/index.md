@@ -33,10 +33,6 @@ Not classify a state. Reconstruct the matched displacement.
     </div>
     <h2 id="one-minute-title">A nearby state is a better address than one global vector</h2>
     <p>On held-out scenario families, raw-activation retrieval reconstructs the matched displacement at 0.9326 cosine. The result survives the obvious global and shuffled controls.</p>
-    <div class="lead-bars" aria-label="Headline reconstruction comparison">
-      <div class="lead-bar lead-bar--local"><span>Local retrieval</span><i style="--score: 93.26%"></i><strong>0.9326</strong></div>
-      <div class="lead-bar lead-bar--global"><span>Global direction</span><i style="--score: 48.39%"></i><strong>0.4839</strong></div>
-    </div>
   </div>
   <div class="lead-insights">
     <article class="insight-tile insight-tile--retrieval">
@@ -86,7 +82,7 @@ the source state. Whether applying that difference changes behavior is a separat
       </div>
       <div class="delta-token"><span>observed displacement</span><strong>Δ = G<sub>H</sub> − G<sub>D</sub></strong></div>
     </div>
-    <div class="method-arrow" aria-hidden="true"><span>build</span>→</div>
+    <div class="method-arrow" aria-hidden="true"><span>store</span>→</div>
     <div class="method-stage method-stage--book">
       <p class="stage-label">Training address book</p>
       <div class="address-entry"><i></i><span>source state</span><b>→ Δ₁</b></div>
@@ -153,10 +149,10 @@ then reuse their measured displacements. Entire scenario families are held out d
 
 <figure class="evidence-figure">
   <header class="visual-header"><div><p class="visual-kicker">Comparator audit</p><h3>Where the reconstruction gain comes from</h3></div><p>Paired differences with scenario-cluster 95% intervals.</p></header>
-  <a class="figure-link" href="figures/representation_reconstruction.png" aria-label="Open the full-resolution reconstruction figure">
+  <a class="figure-link" href="figures/representation_reconstruction_blog.png" aria-label="Open the full-resolution reconstruction figure">
     <picture>
-      <source media="(max-width: 700px)" srcset="figures/representation_reconstruction_mobile.png">
-      <img src="figures/representation_reconstruction.png" alt="Comparison of held-out displacement reconstruction. Raw k-nearest-neighbor, raw nearest, typed-graph local, and the truth-aware cell mean cluster between 0.922 and 0.933 cosine; the global mean reaches 0.484 and the cyclic shuffle 0.423.">
+      <source media="(max-width: 700px)" srcset="figures/representation_reconstruction_mobile_blog.png">
+      <img src="figures/representation_reconstruction_blog.png" alt="Comparison of held-out displacement reconstruction. Raw k-nearest-neighbor, raw nearest, typed-graph local, and the truth-aware cell mean cluster between 0.922 and 0.933 cosine; the global mean reaches 0.484 and the cyclic shuffle 0.423.">
     </picture>
   </a>
   <figcaption class="visual-caption"><span><b>Result</b> Local methods cluster near 0.93; the global direction reaches 0.48.</span><span><b>Boundary</b> Held-out-family reconstruction, not intervention.</span></figcaption>
@@ -284,10 +280,10 @@ representations remain open.
 
 <figure class="evidence-figure">
   <header class="visual-header"><div><p class="visual-kicker">Specificity + compression audit</p><h3>Small directional residue, compact output space</h3></div><p>Paired intervals and the frozen compression frontier.</p></header>
-  <a class="figure-link" href="figures/representation_structure.png" aria-label="Open the full-resolution specificity and compression figure">
+  <a class="figure-link" href="figures/representation_structure_blog.png" aria-label="Open the full-resolution specificity and compression figure">
     <picture>
-      <source media="(max-width: 700px)" srcset="figures/representation_structure_mobile.png">
-      <img src="figures/representation_structure.png" alt="Specificity margins are small: honestward over generic motion is positive in cosine but crosses zero in normalized error, while exact pairing beats the nuisance shuffle on both metrics. A rank-32 projection retains nearly all reconstruction performance.">
+      <source media="(max-width: 700px)" srcset="figures/representation_structure_mobile_blog.png">
+      <img src="figures/representation_structure_blog.png" alt="Specificity margins are small: honestward over generic motion is positive in cosine but crosses zero in normalized error, while exact pairing beats the nuisance shuffle on both metrics. A rank-32 projection retains nearly all reconstruction performance.">
     </picture>
   </a>
   <figcaption class="visual-caption"><span><b>Result</b> Rank-32 preserves the estimator; specificity margins remain small.</span><span><b>Boundary</b> One failed landmark scheme does not establish general source-side incompressibility.</span></figcaption>
@@ -301,10 +297,10 @@ learned source coupling supplies the remaining +0.0710.
 
 <figure class="evidence-figure">
   <header class="visual-header"><div><p class="visual-kicker">Factorization audit</p><h3>Source coordinates add beyond endpoint subtraction</h3></div><p>Five held-out-family folds; fold consistency, not a confidence interval.</p></header>
-  <a class="figure-link" href="figures/representation_factorization.png" aria-label="Open the full-resolution factorization figure">
+  <a class="figure-link" href="figures/representation_factorization_blog.png" aria-label="Open the full-resolution factorization figure">
     <picture>
-      <source media="(max-width: 700px)" srcset="figures/representation_factorization_mobile.png">
-      <img src="figures/representation_factorization.png" alt="Family-macro reconstruction cosine rises from 0.681 for action alone to 0.821 after endpoint subtraction and 0.892 with learned source coupling; five held-out-family points show the same ordering.">
+      <source media="(max-width: 700px)" srcset="figures/representation_factorization_mobile_blog.png">
+      <img src="figures/representation_factorization_blog.png" alt="Family-macro reconstruction cosine rises from 0.681 for action alone to 0.821 after endpoint subtraction and 0.892 with learned source coupling; five held-out-family points show the same ordering.">
     </picture>
   </a>
   <figcaption class="visual-caption"><span><b>Result</b> Action plus source reaches 0.8915 cosine.</span><span><b>Boundary</b> Desired status and destination are inputs; this is not target inference.</span></figcaption>
