@@ -521,9 +521,9 @@ def figure_social_card(data: dict[str, Any], out_dir: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def figure_reconstruction(data: dict[str, Any], out_dir: Path) -> None:
-    fig = plt.figure(figsize=(6.5, 4.05))
-    gs = fig.add_gridspec(2, 1, height_ratios=[1.48, 1.0], hspace=0.44,
-                          top=0.92, bottom=0.105)
+    fig = plt.figure(figsize=(6.5, 4.45))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.46, 1.0], hspace=0.58,
+                          top=0.925, bottom=0.10)
     # Mixed chronology (sealed models vs. registered baselines): stated in the
     # caption rather than stamped, to keep the header clean.
 
