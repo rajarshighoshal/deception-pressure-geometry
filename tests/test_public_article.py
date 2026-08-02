@@ -10,11 +10,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ARTICLE = REPO_ROOT / "docs" / "index.md"
 LAYOUT = REPO_ROOT / "docs" / "_layouts" / "article.html"
 DESKTOP_FIGURES = {
-    "representation_reconstruction.png",
-    "representation_structure.png",
-    "representation_factorization.png",
+    "representation_reconstruction_blog.png",
+    "representation_structure_blog.png",
+    "representation_factorization_blog.png",
 }
-MOBILE_FIGURES = {name.replace(".png", "_mobile.png") for name in DESKTOP_FIGURES}
+MOBILE_FIGURES = {name.replace("_blog.png", "_mobile_blog.png") for name in DESKTOP_FIGURES}
 
 
 def test_article_uses_responsive_shipped_figures_by_relative_path() -> None:
