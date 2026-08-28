@@ -130,6 +130,16 @@ def test_article_has_skimmer_and_method_visuals() -> None:
     assert "0.4839" in text
 
 
+def test_article_index_targets_stable_sections() -> None:
+    text = ARTICLE.read_text(encoding="utf-8")
+
+    assert '<nav class="article-index" aria-label="On this page">' in text
+    anchors = ("object", "reconstruction", "specificity", "factorization", "control", "meaning")
+    for anchor in anchors:
+        assert f'href="#{anchor}"' in text
+        assert f'id="{anchor}"' in text
+
+
 def test_article_metadata_uses_current_assets_and_dates() -> None:
     article = ARTICLE.read_text(encoding="utf-8")
     layout = LAYOUT.read_text(encoding="utf-8")
