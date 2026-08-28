@@ -1534,6 +1534,11 @@ body {
 .query-orbit i:nth-of-type(3) { right: 2rem; bottom: 0.65rem; }
 
 .visual-boundary {
+  display: grid;
+  grid-template-columns: 0.75fr 1.5fr 1.5fr;
+  gap: 1rem;
+  width: auto;
+  margin: 0;
   padding: 0.9rem 1.15rem;
   border-top: 1px solid var(--rule);
   background: #ddcfbd;
@@ -1979,6 +1984,10 @@ body {
   }
 
   .visual-caption {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-boundary {
     grid-template-columns: 1fr;
   }
 

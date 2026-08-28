@@ -110,7 +110,11 @@ the source state. Whether applying that difference changes behavior is a separat
       <p class="stage-note">Score against the realized matched difference.</p>
     </div>
   </div>
-  <footer class="visual-boundary"><strong>Offline reconstruction only.</strong> <strong>What this tests:</strong> whether the displacement is reconstructible before the status token. <strong>What it does not test:</strong> whether injecting Δ̂ changes behavior.</footer>
+  <footer class="visual-boundary">
+    <span><strong>Offline reconstruction only.</strong></span>
+    <span><strong>What this tests:</strong> whether the displacement is reconstructible before the status token.</span>
+    <span><strong>What it does not test:</strong> whether injecting Δ̂ changes behavior.</span>
+  </footer>
 </section>
 
 <div class="term-strip" aria-label="Key terms">
