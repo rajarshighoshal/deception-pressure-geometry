@@ -190,6 +190,44 @@ h1 {
   font-weight: 620;
 }
 
+.article-index {
+  width: min(700px, 100%);
+  margin: 0 auto 3.4rem;
+  padding: 1rem 1.2rem 1.05rem;
+  border: 1px solid var(--rule);
+  border-radius: 11px;
+  background: var(--surface);
+  font-family: var(--sans);
+  font-size: 13px;
+}
+
+.article-index__label {
+  margin: 0 0 0.45rem;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.article-index ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.3rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.article-index li {
+  margin: 0;
+  padding-left: 0.1rem;
+}
+
+.article-index a {
+  color: var(--ink);
+  text-decoration-color: var(--rule-strong);
+}
+
 .article-body > p,
 .article-body > ul,
 .article-body > ol,
@@ -758,6 +796,22 @@ footer {
 
   .deck {
     font-size: 1.1rem;
+  }
+
+  .article-index {
+    margin-bottom: 2.8rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .article-index ol {
+    display: block;
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+
+  .article-index li {
+    break-inside: avoid;
+    margin: 0.2rem 0;
   }
 
   .article-body h2 {
@@ -1480,6 +1534,11 @@ body {
 .query-orbit i:nth-of-type(3) { right: 2rem; bottom: 0.65rem; }
 
 .visual-boundary {
+  display: grid;
+  grid-template-columns: 0.75fr 1.5fr 1.5fr;
+  gap: 1rem;
+  width: auto;
+  margin: 0;
   padding: 0.9rem 1.15rem;
   border-top: 1px solid var(--rule);
   background: #ddcfbd;
@@ -1925,6 +1984,10 @@ body {
   }
 
   .visual-caption {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-boundary {
     grid-template-columns: 1fr;
   }
 

@@ -48,7 +48,19 @@ Not classify a state. Reconstruct the matched displacement.
   </div>
 </section>
 
-## The object: a displacement, not a label
+<nav class="article-index" aria-label="On this page">
+  <p class="article-index__label">On this page</p>
+  <ol>
+    <li><a href="#object">The object</a></li>
+    <li><a href="#reconstruction">Reconstruction</a></li>
+    <li><a href="#specificity">Specificity</a></li>
+    <li><a href="#factorization">Factorization</a></li>
+    <li><a href="#control">From reconstruction to control</a></li>
+    <li><a href="#meaning">What this means</a></li>
+  </ol>
+</nav>
+
+<h2 id="object">The object: a displacement, not a label</h2>
 
 Here **lie** is shorthand for a false operational status after the model has demonstrated
 the correct answer. It does not assert human-like intent or a hidden goal.
@@ -98,7 +110,11 @@ the source state. Whether applying that difference changes behavior is a separat
       <p class="stage-note">Score against the realized matched difference.</p>
     </div>
   </div>
-  <footer class="visual-boundary"><strong>Offline reconstruction only.</strong> <strong>What this tests:</strong> whether the displacement is reconstructible before the status token. <strong>What it does not test:</strong> whether injecting Δ̂ changes behavior.</footer>
+  <footer class="visual-boundary">
+    <span><strong>Offline reconstruction only.</strong></span>
+    <span><strong>What this tests:</strong> whether the displacement is reconstructible before the status token.</span>
+    <span><strong>What it does not test:</strong> whether injecting Δ̂ changes behavior.</span>
+  </footer>
 </section>
 
 <div class="term-strip" aria-label="Key terms">
@@ -107,7 +123,7 @@ the source state. Whether applying that difference changes behavior is a separat
   <div><strong>Held-out family</strong><span>An entire scenario category excluded while fitting the estimator.</span></div>
 </div>
 
-## The headline: yes for offline reconstruction
+<h2 id="reconstruction">The headline: yes for offline reconstruction</h2>
 
 I retrieve a displacement by neighborhood: find training source states near a held-out query,
 then reuse their measured displacements. Entire scenario families are held out during fitting.
@@ -169,7 +185,7 @@ reconstruction is consistently directed rather than benefiting from unsigned sim
   <p>One Llama-3.1-8B-Instruct model; sixty scenarios and twenty families; a developmental bank whose frozen baseline-knowledge gate reached 56/60 against a required 57/60. The retrieval key is outcome-blind, but its stored displacement values are supervised. Reconstruction, specificity, and compression are retrospective unregistered descriptive analyses; the simple-address, within-cell, and factorization diagnostics are post-evidence registered descriptive follow-ups. None is confirmatory.</p>
 </aside>
 
-## The twist: the address is coarse and simple
+<h2 id="specificity">The twist: the address is coarse and simple</h2>
 
 I built the first estimator on a typed relational graph using residual streams, attention rows,
 and typed metadata. The registered simple-address diagnostic then asked whether that machinery
@@ -245,7 +261,7 @@ The honestward advantage over generic motion is small and metric-dependent: posi
 with the normalized-error interval crossing zero. The exact-pairing advantage over the nuisance
 shuffle is also small, but positive on both reported metrics.
 
-## The vocabulary is compact and partially factorized
+<h2 id="factorization">The vocabulary is compact and partially factorized</h2>
 
 <section class="visual-card visual-card--structure" aria-labelledby="structure-title">
   <header class="visual-header">
@@ -310,7 +326,7 @@ The displacement vocabulary is therefore partially a linear function of what des
 requested and where the model was. This is a compact target constructor, not a target-free
 predictor.
 
-## From reconstruction to control
+<h2 id="control">From reconstruction to control</h2>
 
 <div class="evidence-ladder" aria-label="Evidence ladder from reconstruction to autonomous control">
   <div class="ladder-step ladder-step--strong"><span>1</span><strong>Reconstruct</strong><small>Strong descriptive result<br>0.9326 cosine</small></div>
@@ -346,7 +362,7 @@ where the controller had to find a target itself. Inferring the destination rema
 unsolved step. The reconstructed displacement has not yet crossed the separate prediction-to-
 intervention boundary.
 
-## What I think this means
+<h2 id="meaning">What I think this means</h2>
 
 The first study said: reading is linear, control is selection. This one adds a third clause:
 **the transition is coarsely addressable.** Nearby source activations retrieve displacement
